@@ -13,7 +13,7 @@ class FavouriteCollectionViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.backgroundColor = .brown
+        
         
 
         // Register cell classes
