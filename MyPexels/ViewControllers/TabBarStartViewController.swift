@@ -24,8 +24,8 @@ class TabBarStartViewController: UITabBarController {
     }
     
     private func setupTabBar() {
-        let photosVC = PhotoCollectionViewController(collectionViewLayout: UICollectionViewLayout())
-        let favouriteVC = FavouriteCollectionViewController(collectionViewLayout: UICollectionViewLayout())
+        let photosVC = PhotoCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        let favouriteVC = FavouriteCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
         let userVC = UserViewController()
         
         photosVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 1)

@@ -7,64 +7,55 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
-
 class PhotoCollectionViewController: UICollectionViewController {
-
-
+    
+    private let cellID = "cell"
+    
+    let itemsPerRow: CGFloat = 2
+    let sectionInserts = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+    
+    let fixPhotos = ["Astrakhan","Chelyabinsk", "Ekaterinburg", "Gelendzhik", "Irkutsk", "Izhevsk", "Kaliningrad", "Kazan", "Krasnodar", "Krasnoyarsk", "Moskow", "NizhnyNovgorod"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.collectionView!.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
         
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
     // MARK: UICollectionViewDataSource
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 4
+        fixPhotos.count
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-    
-        // Configure the cell
-    
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoViewCell
+        let imageName = fixPhotos[indexPath.item]
+        let image = UIImage(named: imageName)
+        cell.imageView.image = image
+        
         return cell
     }
-
-
 }
 
 extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
-
-func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-CGSize(width: UIScreen.main.bounds.width - 48, height: 100)
-}
-
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let paddingWidth = sectionInserts.left * (itemsPerRow + 1)
+        let avaibleWidth = collectionView.frame.width - paddingWidth
+        let widthPerItem = avaibleWidth / itemsPerRow
+        return CGSize(width: widthPerItem, height: widthPerItem)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        sectionInserts
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        sectionInserts.left
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        sectionInserts.left
+    }
 }
 
