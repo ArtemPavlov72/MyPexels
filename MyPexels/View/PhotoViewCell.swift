@@ -23,6 +23,16 @@ class PhotoViewCell: UICollectionViewCell {
         setupItem()
     }
     
+    func configureCell(with photo: Photo) {
+        DispatchQueue.global().async {
+            guard let imageData = ImageManager.shared.fetchImage(from: photo.src?.medium ?? "") else { return }
+            
+            DispatchQueue.main.async {
+                self.imageView.image = UIImage(data: imageData)
+            }
+        }
+    }
+    
     private func setupItem() {
         addSubview(imageView)
         imageView.constraintsFill(to: self)

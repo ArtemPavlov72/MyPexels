@@ -9,31 +9,39 @@ import UIKit
 
 class PhotoCollectionViewController: UICollectionViewController {
     
+    private let itemsPerRow: CGFloat = 2
+    private let sectionInserts = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+    private var pexelsData: Pexels?
     private let cellID = "cell"
-    
-    let itemsPerRow: CGFloat = 2
-    let sectionInserts = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-    
-    let fixPhotos = ["Astrakhan","Chelyabinsk", "Ekaterinburg", "Gelendzhik", "Irkutsk", "Izhevsk", "Kaliningrad", "Kazan", "Krasnodar", "Krasnoyarsk", "Moskow", "NizhnyNovgorod"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView!.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
-        
+        loadPexelsData()
+    }
+    
+    private func loadPexelsData() {
+        NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue) { result in
+            switch result {
+            case .success(let pexelsData):
+                self.pexelsData = pexelsData
+                self.collectionView.reloadData()
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     // MARK: UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        fixPhotos.count
+        pexelsData?.photos?.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoViewCell
-        let imageName = fixPhotos[indexPath.item]
-        let image = UIImage(named: imageName)
-        cell.imageView.image = image
-        
+        if let photo = pexelsData?.photos?[indexPath.item] {
+            cell.configureCell(with: photo)
+        }
         return cell
     }
 }
