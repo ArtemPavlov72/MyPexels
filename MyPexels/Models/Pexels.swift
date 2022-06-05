@@ -6,16 +6,6 @@
 //
 import Foundation
 
-enum Link: String {
-    case pexelsBaseURL = "https://api.pexels.com/v1"
-    case pexelsCuratedPhotos = "https://api.pexels.com/v1/curated/"
-}
-
-enum ApiKey: String {
-    case pexelsKey = "563492ad6f91700001000001253d7c5e346445889db51ee382e45bd2"
-    case keyForHeader = "Authorization"
-}
-
 struct Pexels: Codable {
     let page: Int?
     let perPage: Int?
@@ -57,9 +47,25 @@ struct Photo: Codable {
 }
 
 struct Src: Codable {
+    let original: String?
+    let large: String?
     let medium: String?
+    let small: String?
     
     enum CodingKeys: String, CodingKey {
+        case original
+        case large
         case medium
+        case small
     }
+}
+
+enum Link: String {
+    case pexelsBaseURL = "https://api.pexels.com/v1"
+    case pexelsCuratedPhotos = "https://api.pexels.com/v1/curated"
+}
+
+enum ApiKey: String {
+    case pexelsKey = "563492ad6f91700001000001253d7c5e346445889db51ee382e45bd2"
+    case keyForHeader = "Authorization"
 }

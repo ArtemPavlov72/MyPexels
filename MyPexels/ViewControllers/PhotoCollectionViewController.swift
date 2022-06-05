@@ -21,7 +21,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     }
     
     private func loadPexelsData() {
-        NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue) { result in
+        NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: 10, numberOfPage: 1) { result in
             switch result {
             case .success(let pexelsData):
                 self.pexelsData = pexelsData

@@ -3,7 +3,7 @@
 //  MyPexels
 //
 //  Created by Artem Pavlov on 28.05.2022.
-//
+// "https://api.pexels.com/v1/curated?per_page=20&page=1"
 
 import Foundation
 
@@ -17,8 +17,8 @@ class NetworkManager {
     static let shared = NetworkManager()
     private init() {}
     
-    func fetchData(from url: String, completion: @escaping(Result<Pexels, NetworkError>) -> Void) {
-        guard let url = URL(string: url) else {
+    func fetchData(from url: String, withNumberOfPhotosOnPage: Int, numberOfPage: Int, completion: @escaping(Result<Pexels, NetworkError>) -> Void) {
+        guard let url = URL(string: "\(url)?per_page=\(withNumberOfPhotosOnPage)&page=\(numberOfPage)") else {
             completion(.failure(.invalidURL))
             return
         }
@@ -29,7 +29,6 @@ class NetworkManager {
         URLSession.shared.dataTask(with: request) { data, _, error in
             guard let data = data else {
                 completion(.failure(.noData))
-                print(error?.localizedDescription ?? "no description")
                 return
             }
             
@@ -40,7 +39,6 @@ class NetworkManager {
                 }
             } catch {
                 completion(.failure(.decodingError))
-                print(error.localizedDescription)
             }
         } .resume()
     }
