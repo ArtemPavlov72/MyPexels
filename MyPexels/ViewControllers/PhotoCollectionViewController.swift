@@ -11,8 +11,12 @@ class PhotoCollectionViewController: UICollectionViewController {
     
     private let itemsPerRow: CGFloat = 2
     private let sectionInserts = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+    
     private var pexelsData: Pexels?
     private let cellID = "cell"
+    private var numberOfPhotosOnPage = 10
+    private var numberOfPage = 1
+    private var photos: [Photo]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,28 +25,47 @@ class PhotoCollectionViewController: UICollectionViewController {
     }
     
     private func loadPexelsData() {
-        NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: 10, numberOfPage: 1) { result in
+        NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { result in
             switch result {
             case .success(let pexelsData):
                 self.pexelsData = pexelsData
+                self.photos = pexelsData.photos
+                self.numberOfPage += 1
                 self.collectionView.reloadData()
             case .failure(let error):
                 print(error)
             }
         }
     }
-    
+        
     // MARK: UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        pexelsData?.photos?.count ?? 0
+        photos?.count ?? 2
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoViewCell
-        if let photo = pexelsData?.photos?[indexPath.item] {
+        if let photo = photos?[indexPath.item] {
             cell.configureCell(with: photo)
         }
         return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == collectionView.numberOfItems(inSection: indexPath.section) - 1 {
+            
+            NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { result in
+                switch result {
+                case .success(let pexelsData):
+                    self.pexelsData = pexelsData
+                    self.photos? += pexelsData.photos ?? []
+                    self.numberOfPage += 1
+                    self.collectionView.reloadData()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
     }
 }
 
