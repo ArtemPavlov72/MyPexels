@@ -13,10 +13,10 @@ class PhotoViewCell: UICollectionViewCell {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        image.backgroundColor = .green
+        image.backgroundColor = .systemGray
         image.layer.cornerRadius = 8
         return image
-    } ()
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

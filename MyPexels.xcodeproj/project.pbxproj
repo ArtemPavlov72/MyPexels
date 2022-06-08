@@ -17,6 +17,7 @@
 		84525EC7283DC15A005E5E6A /* Pexels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84525EC6283DC15A005E5E6A /* Pexels.swift */; };
 		84525ECA283F6245005E5E6A /* PhotoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84525EC9283F6245005E5E6A /* PhotoViewCell.swift */; };
 		84525ECD2841EBFA005E5E6A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84525ECC2841EBFA005E5E6A /* NetworkManager.swift */; };
+		84D14026284FB8FE00374A45 /* PhotoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D14025284FB8FE00374A45 /* PhotoDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		84525EC6283DC15A005E5E6A /* Pexels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pexels.swift; sourceTree = "<group>"; };
 		84525EC9283F6245005E5E6A /* PhotoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewCell.swift; sourceTree = "<group>"; };
 		84525ECC2841EBFA005E5E6A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		84D14025284FB8FE00374A45 /* PhotoDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 			children = (
 				84525EB9283A9D6C005E5E6A /* TabBarStartViewController.swift */,
 				84525EBB283A9E2D005E5E6A /* PhotoCollectionViewController.swift */,
+				84D14025284FB8FE00374A45 /* PhotoDetailsViewController.swift */,
 				84525EBD283AA292005E5E6A /* FavouriteCollectionViewController.swift */,
 				84525EA9283A9857005E5E6A /* UserViewController.swift */,
 			);
@@ -202,6 +205,7 @@
 				84525EBA283A9D6C005E5E6A /* TabBarStartViewController.swift in Sources */,
 				84525EC7283DC15A005E5E6A /* Pexels.swift in Sources */,
 				84525ECD2841EBFA005E5E6A /* NetworkManager.swift in Sources */,
+				84D14026284FB8FE00374A45 /* PhotoDetailsViewController.swift in Sources */,
 				84525EBC283A9E2D005E5E6A /* PhotoCollectionViewController.swift in Sources */,
 				84525EAA283A9857005E5E6A /* UserViewController.swift in Sources */,
 				84525EA6283A9857005E5E6A /* AppDelegate.swift in Sources */,

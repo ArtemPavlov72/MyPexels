@@ -37,10 +37,10 @@ class PhotoCollectionViewController: UICollectionViewController {
             }
         }
     }
-        
+    
     // MARK: UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        photos?.count ?? 2
+        photos?.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -66,6 +66,13 @@ class PhotoCollectionViewController: UICollectionViewController {
                 }
             }
         }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let photo = photos?[indexPath.item]
+        let photoDetailVC = PhotoDetailsViewController()
+        photoDetailVC.photo = photo
+        show(photoDetailVC, sender: nil)
     }
 }
 
