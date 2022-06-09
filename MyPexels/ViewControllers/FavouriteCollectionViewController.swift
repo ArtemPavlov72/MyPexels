@@ -9,17 +9,19 @@ import UIKit
 
 class FavouriteCollectionViewController: UICollectionViewController {
 
+    //MARK: - Private Properties
     private let itemsPerRow: CGFloat = 1
     private let sectionInserts = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     private let favouritePhotos: [String] = []
     private let cellID = "cell"
     
+    //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView!.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
     }
 
-    // MARK: UICollectionViewDataSource
+    // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return favouritePhotos.count
     }
@@ -33,6 +35,7 @@ class FavouriteCollectionViewController: UICollectionViewController {
     }
 }
 
+//MARK: - UICollectionViewDelegateFlowLayout
 extension FavouriteCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let paddingWidth = sectionInserts.left * (itemsPerRow + 1)

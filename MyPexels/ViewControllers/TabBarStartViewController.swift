@@ -9,6 +9,7 @@ import UIKit
 
 class TabBarStartViewController: UITabBarController {
     
+    //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()
@@ -19,10 +20,12 @@ class TabBarStartViewController: UITabBarController {
         setupNavigationBar()
     }
         
+    //MARK: - TabBar Setup
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         navigationItem.title = item.title
     }
     
+    //MARK: - Private Methods
     private func setupTabBar() {
         let photosVC = PhotoCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
         let favouriteVC = FavouriteCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())

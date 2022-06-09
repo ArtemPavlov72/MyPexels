@@ -9,21 +9,24 @@ import UIKit
 
 class PhotoCollectionViewController: UICollectionViewController {
     
+    //MARK: - Private Properties
     private let itemsPerRow: CGFloat = 2
     private let sectionInserts = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     
     private var pexelsData: Pexels?
     private let cellID = "cell"
-    private var numberOfPhotosOnPage = 10
+    private var numberOfPhotosOnPage = 20
     private var numberOfPage = 1
     private var photos: [Photo]?
     
+    //MARK: - Lify Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView!.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
         loadPexelsData()
     }
     
+    //MARK: - Private Methods
     private func loadPexelsData() {
         NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { result in
             switch result {
@@ -38,7 +41,7 @@ class PhotoCollectionViewController: UICollectionViewController {
         }
     }
     
-    // MARK: UICollectionViewDataSource
+    // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         photos?.count ?? 0
     }
@@ -51,6 +54,7 @@ class PhotoCollectionViewController: UICollectionViewController {
         return cell
     }
     
+    // MARK: - UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == collectionView.numberOfItems(inSection: indexPath.section) - 1 {
             
@@ -76,6 +80,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     }
 }
 
+//MARK: - UICollectionViewDelegateFlowLayout
 extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let paddingWidth = sectionInserts.left * (itemsPerRow + 1)
