@@ -15,6 +15,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     
     private var pexelsData: Pexels?
     private let cellID = "cell"
+    private var activityIndicator: UIActivityIndicatorView?
     private var numberOfPhotosOnPage = 20
     private var numberOfPage = 1
     private var photos: [Photo]?
@@ -28,10 +29,13 @@ class PhotoCollectionViewController: UICollectionViewController {
     
     //MARK: - Private Methods
     private func loadPexelsData() {
+        activityIndicator = showSpinner(in: view)
+        
         NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { result in
             switch result {
             case .success(let pexelsData):
                 self.pexelsData = pexelsData
+                self.activityIndicator?.stopAnimating()
                 self.photos = pexelsData.photos
                 self.numberOfPage += 1
                 self.collectionView.reloadData()

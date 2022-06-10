@@ -13,9 +13,14 @@ class PhotoDetailsViewController: UIViewController {
     private lazy var pexelsImage: UIImageView = {
         let photo = UIImageView()
         photo.layer.cornerRadius = 3
-        photo.backgroundColor = .black
+        photo.contentMode = .scaleAspectFit
+        photo.layer.cornerRadius = 15
+        photo.layer.masksToBounds = true
         return photo
     }()
+    
+    private lazy var imageWidthConstraint = pexelsImage.widthAnchor.constraint(equalToConstant: 0)
+    private lazy var imageHeightConstraint = pexelsImage.heightAnchor.constraint(equalToConstant: 0)
     
     private var activityIndicator: UIActivityIndicatorView?
     
@@ -33,33 +38,52 @@ class PhotoDetailsViewController: UIViewController {
     
     //MARK: - Private Methods
     private func loadImage(from url: String) {
-        activityIndicator = showSpinner(in: pexelsImage)
+        activityIndicator = showSpinner(in: view)
         
         DispatchQueue.global().async {
             guard let imageData = ImageManager.shared.fetchImage(from: url) else { return }
             
             DispatchQueue.main.async {
                 self.pexelsImage.image = UIImage(data: imageData)
+                self.updateImageViewConstraint()
                 self.activityIndicator?.stopAnimating()
             }
         }
-    }
-    
-    private func showSpinner(in view: UIView) -> UIActivityIndicatorView {
-        let activityIndicator = UIActivityIndicatorView(frame: view.bounds)
-        activityIndicator.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        activityIndicator.startAnimating()
-        activityIndicator.hidesWhenStopped = true
-        view.addSubview(activityIndicator)
-        return activityIndicator
     }
     
     private func setupConstraints() {
         pexelsImage.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            pexelsImage.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            pexelsImage.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            pexelsImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pexelsImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageWidthConstraint,
+            imageHeightConstraint
         ])
     }
+    
+    private func updateImageViewConstraint(_ size: CGSize? = nil) {
+        guard let image = pexelsImage.image else {
+            imageHeightConstraint.constant = 0
+            imageWidthConstraint.constant = 0
+            return
+        }
+        
+        let size = size ?? view.bounds.size
+        let maxSize = CGSize(width: size.width - 32, height: size.height - 150)
+        let imageSize = findBestImageSize(img: image, maxSize: maxSize)
+        
+        imageHeightConstraint.constant = imageSize.height
+        imageWidthConstraint.constant = imageSize.width
+    }
+    
+    private func findBestImageSize(img: UIImage, maxSize: CGSize) -> CGSize {
+                let width = img.width(height: maxSize.height)
+                let checkedWidth = min(width, maxSize.width)
+                let height = img.height(width: checkedWidth)
+                return CGSize(width: checkedWidth, height: height)
+
+        }
 }
+
+

@@ -17,7 +17,7 @@ class PhotoViewCell: UICollectionViewCell {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        image.layer.cornerRadius = 8
+        image.layer.cornerRadius = 15
         return image
     }()
     
@@ -49,15 +49,6 @@ class PhotoViewCell: UICollectionViewCell {
     private func setupItem() {
         addSubview(imageView)
         imageView.constraintsFill(to: self)
-    }
-    
-    private func showSpinner(in view: UIView) -> UIActivityIndicatorView {
-        let activityIndicator = UIActivityIndicatorView(frame: view.bounds)
-        activityIndicator.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        activityIndicator.startAnimating()
-        activityIndicator.hidesWhenStopped = true
-        view.addSubview(activityIndicator)
-        return activityIndicator
     }
 }
 
