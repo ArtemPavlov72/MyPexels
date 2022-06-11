@@ -9,12 +9,9 @@ import UIKit
 
 class PhotoViewCell: UICollectionViewCell {
     
-    //MARK: - Private Properties
-    private var spinnerView: UIActivityIndicatorView?
-    
     //MARK: - Public Properties
-    let imageView: UIImageView = {
-        let image = UIImageView()
+    let imageView: PexelsImageView = {
+        let image = PexelsImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         image.layer.cornerRadius = 15
@@ -33,16 +30,7 @@ class PhotoViewCell: UICollectionViewCell {
     
     //MARK: - Public Methods
     func configureCell(with photo: Photo) {
-        spinnerView = showSpinner(in: imageView)
-
-        DispatchQueue.global().async {
-            guard let imageData = ImageManager.shared.fetchImage(from: photo.src?.medium ?? "") else { return }
-            
-            DispatchQueue.main.async {
-                self.imageView.image = UIImage(data: imageData)
-                self.spinnerView?.stopAnimating()
-            }
-        }
+        imageView.fetchImage(from: photo.src?.medium ?? "")
     }
     
     //MARK: - Private Methods

@@ -3,7 +3,7 @@
 //  MyPexels
 //
 //  Created by Artem Pavlov on 28.05.2022.
-// "https://api.pexels.com/v1/curated?per_page=20&page=1"
+// 
 
 import Foundation
 
@@ -51,5 +51,18 @@ class ImageManager {
     func fetchImage(from url: String) -> Data? {
         guard let imageUrl = URL(string: url) else { return nil }
         return try? Data(contentsOf: imageUrl)
+    }
+    
+    func fetchImageWithCatch(from url: URL, completion: @escaping(Data, URLResponse) -> Void) {
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, let response = response else {
+                print(NetworkError.noData)
+                return
+            }
+            guard url == response.url else { return }
+            DispatchQueue.main.async {
+                completion(data, response)
+            }
+        } .resume()
     }
 }
