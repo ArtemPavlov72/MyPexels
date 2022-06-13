@@ -12,15 +12,28 @@ class PhotoDetailsViewController: UIViewController {
     //MARK: - Private Properties
     private lazy var pexelsImage: UIImageView = {
         let photo = UIImageView()
-        photo.layer.cornerRadius = 3
-        photo.contentMode = .scaleAspectFit
         photo.layer.cornerRadius = 15
+        photo.contentMode = .scaleAspectFill
         photo.layer.masksToBounds = true
         return photo
     }()
     
-    private lazy var imageWidthConstraint = pexelsImage.widthAnchor.constraint(equalToConstant: 0)
-    private lazy var imageHeightConstraint = pexelsImage.heightAnchor.constraint(equalToConstant: 0)
+    private lazy var photogtapherNameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 30)
+       // label.textColor = .black
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }()
+    
+    private lazy var descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 15)
+      //  label.textColor = .black
+        label.numberOfLines = 0
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }()
     
     private var activityIndicator: UIActivityIndicatorView?
     
@@ -31,8 +44,13 @@ class PhotoDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        self.navigationItem.largeTitleDisplayMode = .never
         loadImage(from: photo?.src?.large ?? "")
+        photogtapherNameLabel.text = photo?.photographer?.capitalized
+        descriptionLabel.text = photo?.alt?.capitalized
         view.addSubview(pexelsImage)
+        view.addSubview(photogtapherNameLabel)
+        view.addSubview(descriptionLabel)
         setupConstraints()
     }
     
@@ -45,45 +63,37 @@ class PhotoDetailsViewController: UIViewController {
             
             DispatchQueue.main.async {
                 self.pexelsImage.image = UIImage(data: imageData)
-                self.updateImageViewConstraint()
+                //  self.updateImageViewConstraint()
                 self.activityIndicator?.stopAnimating()
             }
         }
     }
     
     private func setupConstraints() {
-        pexelsImage.translatesAutoresizingMaskIntoConstraints = false
+        let offsetLineView = view.bounds.height * 0.7
         
+        pexelsImage.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            pexelsImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pexelsImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            imageWidthConstraint,
-            imageHeightConstraint
+            pexelsImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            pexelsImage.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: offsetLineView),
+            pexelsImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            pexelsImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+        
+        photogtapherNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            photogtapherNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: offsetLineView + 10),
+            photogtapherNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            photogtapherNameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+        
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            descriptionLabel.topAnchor.constraint(equalTo: photogtapherNameLabel.bottomAnchor, constant: 2),
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
     }
-    
-    private func updateImageViewConstraint(_ size: CGSize? = nil) {
-        guard let image = pexelsImage.image else {
-            imageHeightConstraint.constant = 0
-            imageWidthConstraint.constant = 0
-            return
-        }
-        
-        let size = size ?? view.bounds.size
-        let maxSize = CGSize(width: size.width - 32, height: size.height - 150)
-        let imageSize = findBestImageSize(img: image, maxSize: maxSize)
-        
-        imageHeightConstraint.constant = imageSize.height
-        imageWidthConstraint.constant = imageSize.width
-    }
-    
-    private func findBestImageSize(img: UIImage, maxSize: CGSize) -> CGSize {
-                let width = img.width(height: maxSize.height)
-                let checkedWidth = min(width, maxSize.width)
-                let height = img.height(width: checkedWidth)
-                return CGSize(width: checkedWidth, height: height)
-
-        }
 }
 
 
