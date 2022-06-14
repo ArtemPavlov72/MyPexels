@@ -7,3 +7,6 @@ MyPexels app staсk:
 - Using URLSession for fetching data from Pexels API;
 - No storyboard;
 - Using catch.
+- MVC pattern
+
+!!! Pexels Api did not work in Russian. If you live in Russia, use vpn.
