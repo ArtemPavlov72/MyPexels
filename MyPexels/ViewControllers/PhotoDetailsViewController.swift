@@ -15,13 +15,17 @@ class PhotoDetailsViewController: UIViewController {
         photo.layer.cornerRadius = 15
         photo.contentMode = .scaleAspectFill
         photo.layer.masksToBounds = true
+        
+        let action = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
+        photo.addGestureRecognizer(action)
+        photo.isUserInteractionEnabled = true
+        
         return photo
     }()
     
     private lazy var photogtapherNameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 30)
-       // label.textColor = .black
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -29,7 +33,6 @@ class PhotoDetailsViewController: UIViewController {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15)
-      //  label.textColor = .black
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -63,12 +66,20 @@ class PhotoDetailsViewController: UIViewController {
             
             DispatchQueue.main.async {
                 self.pexelsImage.image = UIImage(data: imageData)
-                //  self.updateImageViewConstraint()
                 self.activityIndicator?.stopAnimating()
             }
         }
     }
     
+    @objc func imageTapped(gesture: UIGestureRecognizer) {
+        if (gesture.view as? UIImageView) != nil {
+            let photoVC = PhotoViewController()
+            photoVC.photo = photo
+            show(photoVC, sender: nil)
+        }
+    }
+    
+    //MARK: - Setup Constraints
     private func setupConstraints() {
         let offsetLineView = view.bounds.height * 0.7
         

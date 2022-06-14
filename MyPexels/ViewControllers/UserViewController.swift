@@ -16,4 +16,3 @@ class UserViewController: UIViewController {
         view.backgroundColor = .white
     } 
 }
-
