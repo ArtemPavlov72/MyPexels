@@ -30,8 +30,8 @@ class PhotoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        loadImage(from: photo?.src?.original ?? "")
-        view.addSubview(pexelsPhoto)
+        getInfo()
+        setupSubViews(pexelsPhoto)
         setupConstraints()
         setupNavigationBar()
     }
@@ -51,6 +51,16 @@ class PhotoViewController: UIViewController {
         }
     }
     
+    private func getInfo() {
+        loadImage(from: photo?.src?.original ?? "")
+    }
+    
+    private func setupSubViews(_ subViews: UIView...) {
+        subViews.forEach { subview in
+            view.addSubview(subview)
+        }
+    }
+    
     private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .save,
@@ -60,7 +70,16 @@ class PhotoViewController: UIViewController {
     }
     
     @objc private func saveAction() {
-        //save picture
+        guard let image = pexelsPhoto.image else { return }
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(imageWillSave(_:_:_:)), nil)
+    }
+    
+    @objc func imageWillSave(_ image: UIImage, _ error: Error?, _ contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            showAlert(with: "Save error", and: error.localizedDescription)
+        } else {
+            showAlert(with: "Saved!", and: "Image has been saved to your photo library.")
+        }
     }
     
     //MARK: - Setup Constraints
@@ -98,4 +117,13 @@ class PhotoViewController: UIViewController {
     }
 }
 
+//MARK: - Alert Controller
+extension PhotoViewController {
+    func showAlert(with title: String, and massage: String) {
+        let alert = UIAlertController(title: title, message: massage, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(okAction)
+        present(alert, animated: true)
+    }
+}
 

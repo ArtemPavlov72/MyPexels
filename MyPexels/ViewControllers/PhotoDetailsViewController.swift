@@ -48,12 +48,8 @@ class PhotoDetailsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         self.navigationItem.largeTitleDisplayMode = .never
-        loadImage(from: photo?.src?.large ?? "")
-        photogtapherNameLabel.text = photo?.photographer?.capitalized
-        descriptionLabel.text = photo?.alt?.capitalized
-        view.addSubview(pexelsImage)
-        view.addSubview(photogtapherNameLabel)
-        view.addSubview(descriptionLabel)
+        getInfo()
+        setupSubViews(pexelsImage, photogtapherNameLabel, descriptionLabel)
         setupConstraints()
     }
     
@@ -68,6 +64,18 @@ class PhotoDetailsViewController: UIViewController {
                 self.pexelsImage.image = UIImage(data: imageData)
                 self.activityIndicator?.stopAnimating()
             }
+        }
+    }
+    
+    private func getInfo() {
+        loadImage(from: photo?.src?.large ?? "")
+        photogtapherNameLabel.text = photo?.photographer?.capitalized
+        descriptionLabel.text = photo?.alt?.capitalized
+    }
+    
+    private func setupSubViews(_ subViews: UIView...) {
+        subViews.forEach { subview in
+            view.addSubview(subview)
         }
     }
     
