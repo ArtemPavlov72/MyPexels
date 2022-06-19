@@ -22,6 +22,7 @@ class PhotoViewController: UIViewController {
     private lazy var imageHeightConstraint = pexelsPhoto.heightAnchor.constraint(equalToConstant: 0)
     
     private var activityIndicator: UIActivityIndicatorView?
+    private var imageIsLoaded = false
     
     //MARK: - Public Properties
     var photo: Photo?
@@ -30,10 +31,10 @@ class PhotoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        setupNavigationBar(imageIsLoaded)
         getInfo()
         setupSubViews(pexelsPhoto)
         setupConstraints()
-        setupNavigationBar()
     }
     
     //MARK: - Private Methods
@@ -47,6 +48,8 @@ class PhotoViewController: UIViewController {
                 self.pexelsPhoto.image = UIImage(data: imageData)
                 self.updateImageViewConstraint()
                 self.activityIndicator?.stopAnimating()
+                self.imageIsLoaded.toggle()
+                self.navigationItem.rightBarButtonItem?.isEnabled = self.imageIsLoaded
             }
         }
     }
@@ -61,12 +64,13 @@ class PhotoViewController: UIViewController {
         }
     }
     
-    private func setupNavigationBar() {
+    private func setupNavigationBar(_ imageIsLoaded: Bool) {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .save,
             target: self,
             action: #selector(saveAction)
         )
+        navigationItem.rightBarButtonItem?.isEnabled = imageIsLoaded
     }
     
     @objc private func saveAction() {
