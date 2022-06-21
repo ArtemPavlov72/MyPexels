@@ -23,7 +23,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     //MARK: - Lify Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionView!.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
+        self.collectionView?.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
         loadPexelsData()
     }
     
@@ -53,7 +53,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoViewCell
         if let photo = photos?[indexPath.item] {
-            cell.configureCell(with: photo)
+            cell.configureCell(with: photo.src?.medium ?? "")
         }
         return cell
     }

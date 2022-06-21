@@ -21,6 +21,8 @@
 		84525ECA283F6245005E5E6A /* PhotoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84525EC9283F6245005E5E6A /* PhotoViewCell.swift */; };
 		84525ECD2841EBFA005E5E6A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84525ECC2841EBFA005E5E6A /* NetworkManager.swift */; };
 		84A6078B2858BEFD003311A4 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A6078A2858BEFD003311A4 /* PhotoViewController.swift */; };
+		84A6078E2860D92F003311A4 /* Pexels.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84A6078C2860D92F003311A4 /* Pexels.xcdatamodeld */; };
+		84A607902861F823003311A4 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A6078F2861F823003311A4 /* StorageManager.swift */; };
 		84D14026284FB8FE00374A45 /* PhotoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D14025284FB8FE00374A45 /* PhotoDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +43,8 @@
 		84525EC9283F6245005E5E6A /* PhotoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewCell.swift; sourceTree = "<group>"; };
 		84525ECC2841EBFA005E5E6A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		84A6078A2858BEFD003311A4 /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
+		84A6078D2860D92F003311A4 /* Pexels.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Pexels.xcdatamodel; sourceTree = "<group>"; };
+		84A6078F2861F823003311A4 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		84D14025284FB8FE00374A45 /* PhotoDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -121,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				84525EAE283A9859005E5E6A /* Assets.xcassets */,
+				84A6078C2860D92F003311A4 /* Pexels.xcdatamodeld */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -146,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				84525ECC2841EBFA005E5E6A /* NetworkManager.swift */,
+				84A6078F2861F823003311A4 /* StorageManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -228,9 +234,11 @@
 				84525EBA283A9D6C005E5E6A /* TabBarStartViewController.swift in Sources */,
 				84525EC7283DC15A005E5E6A /* Pexels.swift in Sources */,
 				84525ECD2841EBFA005E5E6A /* NetworkManager.swift in Sources */,
+				84A6078E2860D92F003311A4 /* Pexels.xcdatamodeld in Sources */,
 				84D14026284FB8FE00374A45 /* PhotoDetailsViewController.swift in Sources */,
 				84525EBC283A9E2D005E5E6A /* PhotoCollectionViewController.swift in Sources */,
 				84525EAA283A9857005E5E6A /* UserViewController.swift in Sources */,
+				84A607902861F823003311A4 /* StorageManager.swift in Sources */,
 				84525EA6283A9857005E5E6A /* AppDelegate.swift in Sources */,
 				84A6078B2858BEFD003311A4 /* PhotoViewController.swift in Sources */,
 			);
@@ -442,6 +450,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		84A6078C2860D92F003311A4 /* Pexels.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				84A6078D2860D92F003311A4 /* Pexels.xcdatamodel */,
+			);
+			currentVersion = 84A6078D2860D92F003311A4 /* Pexels.xcdatamodel */;
+			path = Pexels.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 84525E9A283A9857005E5E6A /* Project object */;
 }

@@ -6,19 +6,40 @@
 //
 
 import UIKit
+import CoreData
 
 class FavouriteCollectionViewController: UICollectionViewController {
 
     //MARK: - Private Properties
-    private let itemsPerRow: CGFloat = 1
+    private let itemsPerRow: CGFloat = 2
     private let sectionInserts = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-    private let favouritePhotos: [String] = []
+    
+    private var favouritePhotos: [PexelsPhoto] = []
     private let cellID = "cell"
     
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionView!.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
+        self.collectionView?.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
+        loadFavouritePhotos()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        loadFavouritePhotos()
+    }
+    
+    //MARK: - Private Methods
+    private func loadFavouritePhotos() {
+        StorageManager.shared.fetchFavouritePhotos { result in
+            switch result{
+            case .success(let photos):
+                self.favouritePhotos = photos
+                self.collectionView.reloadData()
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 
     // MARK: - UICollectionViewDataSource
@@ -28,9 +49,8 @@ class FavouriteCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoViewCell
-        let imageName = favouritePhotos[indexPath.item]
-        let image = UIImage(named: imageName)
-        cell.imageView.image = image
+        let photo = favouritePhotos[indexPath.item]
+        cell.configureCell(with: photo.mediumSizeOfPhoto ?? "")
         return cell
     }
 }

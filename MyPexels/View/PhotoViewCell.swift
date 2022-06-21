@@ -29,8 +29,8 @@ class PhotoViewCell: UICollectionViewCell {
     }
     
     //MARK: - Public Methods
-    func configureCell(with photo: Photo) {
-        imageView.fetchImage(from: photo.src?.medium ?? "")
+    func configureCell(with photo: String) {
+        imageView.fetchImage(from: photo)
     }
     
     //MARK: - Private Methods

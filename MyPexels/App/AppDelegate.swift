@@ -18,6 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = UINavigationController(rootViewController: TabBarStartViewController())
         return true
     }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        StorageManager.shared.saveContext()
+    }
 }
 
 

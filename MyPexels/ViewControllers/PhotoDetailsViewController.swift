@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class PhotoDetailsViewController: UIViewController {
     
@@ -39,6 +40,7 @@ class PhotoDetailsViewController: UIViewController {
     }()
     
     private var activityIndicator: UIActivityIndicatorView?
+    private var liked = false
     
     //MARK: - Public Properties
     var photo: Photo?
@@ -49,6 +51,7 @@ class PhotoDetailsViewController: UIViewController {
         view.backgroundColor = .white
         self.navigationItem.largeTitleDisplayMode = .never
         getInfo()
+        setupNavigationBar()
         setupSubViews(pexelsImage, photogtapherNameLabel, descriptionLabel)
         setupConstraints()
     }
@@ -67,6 +70,30 @@ class PhotoDetailsViewController: UIViewController {
         }
     }
     
+    private func setupNavigationBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem (
+            image: UIImage(systemName: setButtonImage()), style: .plain,
+            target: self,
+            action: #selector(addToFavourite)
+        )
+    }
+    
+    @objc private func addToFavourite() {
+        liked.toggle()
+        navigationItem.rightBarButtonItem?.image = UIImage(systemName: setButtonImage())
+        StorageManager.shared.savePhoto(pexelsPhoto: photo!)
+    }
+    
+    private func setButtonImage() -> String {
+        var image = ""
+        if liked {
+            image = "heart.fill"
+        } else {
+            image = "heart"
+        }
+        return image
+    }
+
     private func getInfo() {
         loadImage(from: photo?.src?.large ?? "")
         photogtapherNameLabel.text = photo?.photographer?.capitalized
