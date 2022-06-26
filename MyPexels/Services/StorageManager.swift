@@ -2,7 +2,7 @@
 //  StorageManager.swift
 //  MyPexels
 //
-//  Created by Artem Pavlov  on 21.06.2022.
+//  Created by Artem Pavlov on 21.06.2022.
 //
 
 import CoreData
@@ -29,7 +29,6 @@ class StorageManager {
     
     func fetchFavouritePhotos(completion: (Result<[PexelsPhoto], Error>) -> Void) {
         let fetchRequest = PexelsPhoto.fetchRequest()
-        
         do {
             let photos = try viewContext.fetch(fetchRequest)
             completion(.success(photos))
@@ -39,11 +38,19 @@ class StorageManager {
     }
     
     //MARK: - Private Methods of Photos
-    func savePhoto(pexelsPhoto: Photo) {
+    func savePhoto(pexelsPhoto: Photo?) {
         let photo = PexelsPhoto(context: viewContext)
-        photo.id = Int64(pexelsPhoto.id ?? 0)
-        photo.mediumSizeOfPhoto = pexelsPhoto.src?.medium
-        photo.descriptionOfPhoto = pexelsPhoto.alt
+        photo.id = Int64(pexelsPhoto?.id ?? 0)
+        photo.photographer = pexelsPhoto?.photographer
+        photo.descriptionOfPhoto = pexelsPhoto?.alt
+        photo.mediumSizeOfPhoto = pexelsPhoto?.src?.medium
+        photo.largeSizeOfPhoto = pexelsPhoto?.src?.large
+        photo.originalSizeOfPhoto = pexelsPhoto?.src?.original
+        saveContext()
+    }
+    
+    func deletePhoto(photo: PexelsPhoto) {
+        viewContext.delete(photo)
         saveContext()
     }
     

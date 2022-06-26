@@ -41,22 +41,50 @@ class PhotoDetailsViewController: UIViewController {
     
     private var activityIndicator: UIActivityIndicatorView?
     private var liked = false
+    private var photoId: Int?
     
     //MARK: - Public Properties
     var photo: Photo?
+    var favouritePhoto: PexelsPhoto?
+    var favouritePhotos: [PexelsPhoto] = []
     
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         self.navigationItem.largeTitleDisplayMode = .never
-        getInfo()
+        setupPhotoInfo()
         setupNavigationBar()
         setupSubViews(pexelsImage, photogtapherNameLabel, descriptionLabel)
         setupConstraints()
     }
     
     //MARK: - Private Methods
+    private func setupPhotoInfo() {
+        if favouritePhoto != nil {
+            getDetailsWith(
+                photoUrl: favouritePhoto?.largeSizeOfPhoto ?? "",
+                photographerName: favouritePhoto?.photographer ?? "",
+                descriptionOfPhoto: favouritePhoto?.descriptionOfPhoto ?? ""
+            )
+            photoId = Int(favouritePhoto?.id ?? 0)
+            liked = true
+        } else {
+            getDetailsWith(
+                photoUrl: photo?.src?.large ?? "",
+                photographerName: photo?.photographer ?? "",
+                descriptionOfPhoto: photo?.alt ?? ""
+            )
+            isLiked()
+        }
+    }
+    
+    private func getDetailsWith(photoUrl: String, photographerName: String, descriptionOfPhoto: String) {
+        loadImage(from: photoUrl)
+        photogtapherNameLabel.text = photographerName.capitalized
+        descriptionLabel.text = descriptionOfPhoto.capitalized
+    }
+    
     private func loadImage(from url: String) {
         activityIndicator = showSpinner(in: view)
         
@@ -70,34 +98,60 @@ class PhotoDetailsViewController: UIViewController {
         }
     }
     
+    private func isLiked() {
+        loadFavouritePhotos()
+        guard let pexelsPhotoId = photo?.id else { return }
+        for favorPhoto in favouritePhotos {
+            if pexelsPhotoId == Int(favorPhoto.id) {
+                favouritePhoto = favorPhoto
+                liked = true
+            }
+        }
+    }
+    
+    private func loadFavouritePhotos() {
+        StorageManager.shared.fetchFavouritePhotos { result in
+            switch result {
+            case .success(let photos):
+                self.favouritePhotos = photos
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem (
-            image: UIImage(systemName: setButtonImage()), style: .plain,
+            image: UIImage(systemName: "heart"), style: .plain,
             target: self,
             action: #selector(addToFavourite)
         )
     }
     
     @objc private func addToFavourite() {
-        liked.toggle()
-        navigationItem.rightBarButtonItem?.image = UIImage(systemName: setButtonImage())
-        StorageManager.shared.savePhoto(pexelsPhoto: photo!)
-    }
-    
-    private func setButtonImage() -> String {
-        var image = ""
+        navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
         if liked {
-            image = "heart.fill"
+            StorageManager.shared.deletePhoto(photo: favouritePhoto ?? PexelsPhoto())
+            liked = false
         } else {
-            image = "heart"
+            if photo == nil {
+                NetworkManager.shared.fetchData(from: Link.getPexelsPhotoById.rawValue, usingId: photoId ?? 0) { result in
+                    switch result {
+                    case .success(let photo):
+                        //self.photo = photo
+                        StorageManager.shared.savePhoto(pexelsPhoto: photo)
+                        self.liked = true
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
+            } else {
+            StorageManager.shared.savePhoto(pexelsPhoto: photo)
+                loadFavouritePhotos()
+                isLiked()
+            liked = true
         }
-        return image
-    }
-
-    private func getInfo() {
-        loadImage(from: photo?.src?.large ?? "")
-        photogtapherNameLabel.text = photo?.photographer?.capitalized
-        descriptionLabel.text = photo?.alt?.capitalized
+        }
     }
     
     private func setupSubViews(_ subViews: UIView...) {
@@ -109,7 +163,11 @@ class PhotoDetailsViewController: UIViewController {
     @objc func imageTapped(gesture: UIGestureRecognizer) {
         if (gesture.view as? UIImageView) != nil {
             let photoVC = PhotoViewController()
-            photoVC.photo = photo
+            if favouritePhoto != nil {
+                photoVC.photo = favouritePhoto?.originalSizeOfPhoto
+            } else {
+                photoVC.photo = photo?.src?.original
+            }
             show(photoVC, sender: nil)
         }
     }

@@ -3,11 +3,12 @@
     <entity name="PexelsPhoto" representedClassName="PexelsPhoto" syncable="YES" codeGenerationType="class">
         <attribute name="descriptionOfPhoto" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="liked" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="largeSizeOfPhoto" optional="YES" attributeType="String"/>
         <attribute name="mediumSizeOfPhoto" optional="YES" attributeType="String"/>
+        <attribute name="originalSizeOfPhoto" optional="YES" attributeType="String"/>
         <attribute name="photographer" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="PexelsPhoto" positionX="-63" positionY="-18" width="128" height="104"/>
+        <element name="PexelsPhoto" positionX="-63" positionY="-18" width="128" height="119"/>
     </elements>
 </model>

@@ -21,7 +21,6 @@ class FavouriteCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView?.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
-        loadFavouritePhotos()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -32,7 +31,7 @@ class FavouriteCollectionViewController: UICollectionViewController {
     //MARK: - Private Methods
     private func loadFavouritePhotos() {
         StorageManager.shared.fetchFavouritePhotos { result in
-            switch result{
+            switch result {
             case .success(let photos):
                 self.favouritePhotos = photos
                 self.collectionView.reloadData()
@@ -41,7 +40,7 @@ class FavouriteCollectionViewController: UICollectionViewController {
             }
         }
     }
-
+    
     // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return favouritePhotos.count
@@ -52,6 +51,14 @@ class FavouriteCollectionViewController: UICollectionViewController {
         let photo = favouritePhotos[indexPath.item]
         cell.configureCell(with: photo.mediumSizeOfPhoto ?? "")
         return cell
+    }
+    
+    // MARK: - UICollectionViewDelegate
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let favouritePhoto = favouritePhotos[indexPath.item]
+        let photoDetailVC = PhotoDetailsViewController()
+        photoDetailVC.favouritePhoto = favouritePhoto
+        show(photoDetailVC, sender: nil)
     }
 }
 

@@ -25,7 +25,7 @@ class PhotoViewController: UIViewController {
     private var imageIsLoaded = false
     
     //MARK: - Public Properties
-    var photo: Photo?
+    var photo: String?
     
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
@@ -55,7 +55,7 @@ class PhotoViewController: UIViewController {
     }
     
     private func getInfo() {
-        loadImage(from: photo?.src?.original ?? "")
+        loadImage(from: photo ?? "")
     }
     
     private func setupSubViews(_ subViews: UIView...) {

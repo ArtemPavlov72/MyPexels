@@ -63,6 +63,7 @@ struct Src: Codable {
 enum Link: String {
     case pexelsBaseURL = "https://api.pexels.com/v1"
     case pexelsCuratedPhotos = "https://api.pexels.com/v1/curated"
+    case getPexelsPhotoById = "https://api.pexels.com/v1/photos/"
 }
 
 enum ApiKey: String {

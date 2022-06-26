@@ -42,6 +42,32 @@ class NetworkManager {
             }
         } .resume()
     }
+    
+    func fetchData(from url: String, usingId id: Int, completion: @escaping(Result<Photo, NetworkError>) -> Void) {
+        guard let url = URL(string: "\(url)\(id)") else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.addValue(ApiKey.pexelsKey.rawValue, forHTTPHeaderField: ApiKey.keyForHeader.rawValue)
+        
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data else {
+                completion(.failure(.noData))
+                return
+            }
+            
+            do {
+                let photo = try JSONDecoder().decode(Photo.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(photo))
+                }
+            } catch {
+                completion(.failure(.decodingError))
+            }
+        } .resume()
+    }
 }
 
 class ImageManager {
