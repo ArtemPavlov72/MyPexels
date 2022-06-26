@@ -6,7 +6,8 @@ This app using [Pexels](https://www.pexels.com/ru-ru/) API and written in Swift 
 MyPexels app staсk:
 - Using URLSession for fetching data from Pexels API;
 - No storyboard;
-- Using catch.
-- MVC pattern
+- Using catch;
+- MVC pattern;
+- CoreData.
 
 !!! Pexels Api did not work in Russian. If you live in Russia, use vpn.
