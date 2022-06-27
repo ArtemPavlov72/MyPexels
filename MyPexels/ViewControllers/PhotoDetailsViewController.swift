@@ -16,14 +16,49 @@ class PhotoDetailsViewController: UIViewController {
         photo.layer.cornerRadius = 15
         photo.contentMode = .scaleAspectFill
         photo.layer.masksToBounds = true
-        
-        let action = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
-        photo.addGestureRecognizer(action)
-        photo.isUserInteractionEnabled = true
-        
         return photo
     }()
     
+    private lazy var originSizeButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 15
+        button.setTitle("Original size", for: .normal)
+        button.backgroundColor = .systemGray2
+        button.setTitleColor(UIColor.systemGray6, for: .normal)
+        button.setTitleColor(UIColor.systemGray, for: .highlighted)
+        button.addTarget(self, action: #selector(originSizeButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var sendButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 15
+        button.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
+        button.tintColor = .systemGray6
+        button.backgroundColor = .systemGray2
+        return button
+    }()
+    
+    private lazy var likeButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 15
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.tintColor = .systemGray6
+        button.backgroundColor = .systemGray2
+        button.addTarget(self, action: #selector(addToFavourite), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var horizontalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = NSLayoutConstraint.Axis.horizontal
+        stackView.spacing = 10.0
+        stackView.addArrangedSubview(originSizeButton)
+        stackView.addArrangedSubview(sendButton)
+        stackView.addArrangedSubview(likeButton)
+        return stackView
+    }()
+        
     private lazy var photogtapherNameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 30)
@@ -51,11 +86,10 @@ class PhotoDetailsViewController: UIViewController {
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         self.navigationItem.largeTitleDisplayMode = .never
         setupPhotoInfo()
-        setupNavigationBar()
-        setupSubViews(pexelsImage, photogtapherNameLabel, descriptionLabel)
+        setupSubViews(pexelsImage, horizontalStackView, photogtapherNameLabel, descriptionLabel)
         setupConstraints()
     }
     
@@ -69,6 +103,8 @@ class PhotoDetailsViewController: UIViewController {
             )
             photoId = Int(favouritePhoto?.id ?? 0)
             liked = true
+            likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            likeButton.tintColor = .systemRed.withAlphaComponent(0.6)
         } else {
             getDetailsWith(
                 photoUrl: photo?.src?.large ?? "",
@@ -105,6 +141,8 @@ class PhotoDetailsViewController: UIViewController {
             if pexelsPhotoId == Int(favorPhoto.id) {
                 favouritePhoto = favorPhoto
                 liked = true
+                likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                likeButton.tintColor = .systemRed.withAlphaComponent(0.6)
             }
         }
     }
@@ -119,38 +157,34 @@ class PhotoDetailsViewController: UIViewController {
             }
         }
     }
-    
-    private func setupNavigationBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem (
-            image: UIImage(systemName: "heart"), style: .plain,
-            target: self,
-            action: #selector(addToFavourite)
-        )
-    }
-    
+        
     @objc private func addToFavourite() {
-        navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
         if liked {
             StorageManager.shared.deletePhoto(photo: favouritePhoto ?? PexelsPhoto())
             liked = false
+            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            likeButton.tintColor = .systemGray6
         } else {
             if photo == nil {
                 NetworkManager.shared.fetchData(from: Link.getPexelsPhotoById.rawValue, usingId: photoId ?? 0) { result in
                     switch result {
                     case .success(let photo):
-                        //self.photo = photo
                         StorageManager.shared.savePhoto(pexelsPhoto: photo)
                         self.liked = true
+                        self.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                        self.likeButton.tintColor = .systemRed.withAlphaComponent(0.6)
                     case .failure(let error):
                         print(error.localizedDescription)
                     }
                 }
             } else {
-            StorageManager.shared.savePhoto(pexelsPhoto: photo)
+                StorageManager.shared.savePhoto(pexelsPhoto: photo)
                 loadFavouritePhotos()
                 isLiked()
-            liked = true
-        }
+                liked = true
+                likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                likeButton.tintColor = .systemRed.withAlphaComponent(0.6)
+            }
         }
     }
     
@@ -160,21 +194,19 @@ class PhotoDetailsViewController: UIViewController {
         }
     }
     
-    @objc func imageTapped(gesture: UIGestureRecognizer) {
-        if (gesture.view as? UIImageView) != nil {
-            let photoVC = PhotoViewController()
-            if favouritePhoto != nil {
-                photoVC.photo = favouritePhoto?.originalSizeOfPhoto
-            } else {
-                photoVC.photo = photo?.src?.original
-            }
-            show(photoVC, sender: nil)
+    @objc func originSizeButtonTapped() {
+        let photoVC = PhotoViewController()
+        if favouritePhoto != nil {
+            photoVC.photo = favouritePhoto?.originalSizeOfPhoto
+        } else {
+            photoVC.photo = photo?.src?.original
         }
+        show(photoVC, sender: nil)
     }
     
     //MARK: - Setup Constraints
     private func setupConstraints() {
-        let offsetLineView = view.bounds.height * 0.7
+        let offsetLineView = view.bounds.height * 0.65
         
         pexelsImage.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -184,9 +216,18 @@ class PhotoDetailsViewController: UIViewController {
             pexelsImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
         
+        horizontalStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            horizontalStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: offsetLineView + 10),
+            horizontalStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            horizontalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            sendButton.widthAnchor.constraint(equalToConstant: 35),
+            likeButton.widthAnchor.constraint(equalToConstant: 35)
+        ])
+        
         photogtapherNameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            photogtapherNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: offsetLineView + 10),
+            photogtapherNameLabel.topAnchor.constraint(equalTo: originSizeButton.bottomAnchor, constant: 5),
             photogtapherNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             photogtapherNameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
@@ -199,5 +240,6 @@ class PhotoDetailsViewController: UIViewController {
         ])
     }
 }
+
 
 

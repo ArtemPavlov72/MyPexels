@@ -30,7 +30,7 @@ class PhotoViewController: UIViewController {
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         setupNavigationBar(imageIsLoaded)
         getInfo()
         setupSubViews(pexelsPhoto)
