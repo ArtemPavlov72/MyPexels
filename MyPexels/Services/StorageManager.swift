@@ -46,9 +46,10 @@ class StorageManager {
         photo.mediumSizeOfPhoto = pexelsPhoto?.src?.medium
         photo.largeSizeOfPhoto = pexelsPhoto?.src?.large
         photo.originalSizeOfPhoto = pexelsPhoto?.src?.original
+        photo.pexelsUrl = pexelsPhoto?.url
         saveContext()
     }
-    
+        
     func deletePhoto(photo: PexelsPhoto) {
         viewContext.delete(photo)
         saveContext()

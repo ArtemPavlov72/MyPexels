@@ -36,6 +36,7 @@ class PhotoDetailsViewController: UIViewController {
         button.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
         button.tintColor = .systemGray6
         button.backgroundColor = .systemGray2
+        button.addTarget(self, action: #selector(shareData), for: .touchUpInside)
         return button
     }()
     
@@ -185,6 +186,16 @@ class PhotoDetailsViewController: UIViewController {
                 likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
                 likeButton.tintColor = .systemRed.withAlphaComponent(0.6)
             }
+        }
+    }
+    
+    @objc private func shareData() {
+        if let link = NSURL(string: photo == nil ? favouritePhoto?.pexelsUrl ?? ""  : photo?.url ?? "") {
+            let activityViewController: UIActivityViewController = UIActivityViewController(
+                activityItems: [link],
+                applicationActivities: nil
+            )
+            self.present(activityViewController, animated: true, completion: nil)
         }
     }
     

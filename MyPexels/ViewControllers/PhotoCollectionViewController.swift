@@ -44,7 +44,7 @@ class PhotoCollectionViewController: UICollectionViewController {
             }
         }
     }
-    
+        
     // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         photos?.count ?? 0
@@ -105,4 +105,3 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
         sectionInserts.left
     }
 }
-
