@@ -93,7 +93,7 @@ class PhotoDetailsViewController: UIViewController {
         setupSubViews(pexelsImage, horizontalStackView, photogtapherNameLabel, descriptionLabel)
         setupConstraints()
     }
-    
+
     //MARK: - Private Methods
     private func setupPhotoInfo() {
         if favouritePhoto != nil {
@@ -104,6 +104,7 @@ class PhotoDetailsViewController: UIViewController {
             )
             photoId = Int(favouritePhoto?.id ?? 0)
             liked = true
+            loadPexelsDataFromFavourite()
             likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
             likeButton.tintColor = .systemRed.withAlphaComponent(0.6)
         } else {
@@ -113,6 +114,20 @@ class PhotoDetailsViewController: UIViewController {
                 descriptionOfPhoto: photo?.alt ?? ""
             )
             isLiked()
+        }
+    }
+    
+    private func loadPexelsDataFromFavourite() {
+        if favouritePhoto != nil {
+            let id = Int(favouritePhoto?.id ?? 0)
+            NetworkManager.shared.fetchData(from: Link.getPexelsPhotoById.rawValue, usingId: id) { result in
+                switch result {
+                case .success(let fetchedPhoto):
+                    self.photo = fetchedPhoto
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
         }
     }
     
@@ -166,26 +181,12 @@ class PhotoDetailsViewController: UIViewController {
             likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
             likeButton.tintColor = .systemGray6
         } else {
-            if photo == nil {
-                NetworkManager.shared.fetchData(from: Link.getPexelsPhotoById.rawValue, usingId: photoId ?? 0) { result in
-                    switch result {
-                    case .success(let photo):
-                        StorageManager.shared.savePhoto(pexelsPhoto: photo)
-                        self.liked = true
-                        self.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-                        self.likeButton.tintColor = .systemRed.withAlphaComponent(0.6)
-                    case .failure(let error):
-                        print(error.localizedDescription)
-                    }
-                }
-            } else {
-                StorageManager.shared.savePhoto(pexelsPhoto: photo)
-                loadFavouritePhotos()
-                isLiked()
-                liked = true
-                likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-                likeButton.tintColor = .systemRed.withAlphaComponent(0.6)
-            }
+            StorageManager.shared.savePhoto(pexelsPhoto: photo)
+            loadFavouritePhotos()
+            isLiked()
+            liked = true
+            likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            likeButton.tintColor = .systemRed.withAlphaComponent(0.6)
         }
     }
     

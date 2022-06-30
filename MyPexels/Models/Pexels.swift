@@ -28,9 +28,6 @@ struct Photo: Codable {
     let id: Int?
     let url: String?
     let photographer: String?
-    let photographerUrl: String?
-    let photographerId: Int?
-    let liked: Bool
     let src: Src?
     let alt: String?
     
@@ -38,9 +35,6 @@ struct Photo: Codable {
         case id
         case url
         case photographer
-        case photographerUrl = "photographer_url"
-        case photographerId = "photographer_id"
-        case liked
         case src
         case alt
     }
