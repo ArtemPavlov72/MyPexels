@@ -28,13 +28,13 @@ class TabBarStartViewController: UITabBarController {
     //MARK: - Private Methods
     private func setupTabBar() {
         let photosVC = PhotoCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        let favouriteVC = FavouriteCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        let favoriteVC = FavoriteCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
         let userVC = UserViewController()
         
         photosVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 1)
-        favouriteVC.tabBarItem = UITabBarItem(title: "Favourite", image: UIImage(systemName: "heart"), tag: 2)
+        favoriteVC.tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "heart"), tag: 2)
         userVC.tabBarItem = UITabBarItem(title: "User", image: UIImage(systemName: "person"), tag: 3)
-        viewControllers = [photosVC, favouriteVC, userVC]
+        viewControllers = [photosVC, favoriteVC, userVC]
     }
     
     private func setupNavigationBar() {

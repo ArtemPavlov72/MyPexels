@@ -27,7 +27,7 @@ class StorageManager {
         viewContext = persistentContainer.viewContext
     }
     
-    func fetchFavouritePhotos(completion: (Result<[PexelsPhoto], Error>) -> Void) {
+    func fetchFavoritePhotos(completion: (Result<[PexelsPhoto], Error>) -> Void) {
         let fetchRequest = PexelsPhoto.fetchRequest()
         do {
             let photos = try viewContext.fetch(fetchRequest)

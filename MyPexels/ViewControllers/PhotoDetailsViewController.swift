@@ -46,7 +46,7 @@ class PhotoDetailsViewController: UIViewController {
         button.setImage(UIImage(systemName: "heart"), for: .normal)
         button.tintColor = .systemGray6
         button.backgroundColor = .systemGray2
-        button.addTarget(self, action: #selector(addToFavourite), for: .touchUpInside)
+        button.addTarget(self, action: #selector(addToFavorite), for: .touchUpInside)
         return button
     }()
     
@@ -77,18 +77,17 @@ class PhotoDetailsViewController: UIViewController {
     
     private var activityIndicator: UIActivityIndicatorView?
     private var liked = false
-    private var photoId: Int?
     
     //MARK: - Public Properties
     var photo: Photo?
-    var favouritePhoto: PexelsPhoto?
-    var favouritePhotos: [PexelsPhoto] = []
+    var favoritePhoto: PexelsPhoto?
+    var favoritePhotos: [PexelsPhoto] = [] //может загружать в таббаре? а потом обновлять его 
     
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        self.navigationItem.largeTitleDisplayMode = .never
+        navigationItem.largeTitleDisplayMode = .never
         setupPhotoInfo()
         setupSubViews(pexelsImage, horizontalStackView, photogtapherNameLabel, descriptionLabel)
         setupConstraints()
@@ -96,17 +95,14 @@ class PhotoDetailsViewController: UIViewController {
 
     //MARK: - Private Methods
     private func setupPhotoInfo() {
-        if favouritePhoto != nil {
+        if favoritePhoto != nil {
             getDetailsWith(
-                photoUrl: favouritePhoto?.largeSizeOfPhoto ?? "",
-                photographerName: favouritePhoto?.photographer ?? "",
-                descriptionOfPhoto: favouritePhoto?.descriptionOfPhoto ?? ""
+                photoUrl: favoritePhoto?.largeSizeOfPhoto ?? "",
+                photographerName: favoritePhoto?.photographer ?? "",
+                descriptionOfPhoto: favoritePhoto?.descriptionOfPhoto ?? ""
             )
-            photoId = Int(favouritePhoto?.id ?? 0)
-            liked = true
             loadPexelsDataFromFavourite()
-            likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-            likeButton.tintColor = .systemRed.withAlphaComponent(0.6)
+            setLike()
         } else {
             getDetailsWith(
                 photoUrl: photo?.src?.large ?? "",
@@ -114,20 +110,6 @@ class PhotoDetailsViewController: UIViewController {
                 descriptionOfPhoto: photo?.alt ?? ""
             )
             isLiked()
-        }
-    }
-    
-    private func loadPexelsDataFromFavourite() {
-        if favouritePhoto != nil {
-            let id = Int(favouritePhoto?.id ?? 0)
-            NetworkManager.shared.fetchData(from: Link.getPexelsPhotoById.rawValue, usingId: id) { result in
-                switch result {
-                case .success(let fetchedPhoto):
-                    self.photo = fetchedPhoto
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
         }
     }
     
@@ -139,7 +121,6 @@ class PhotoDetailsViewController: UIViewController {
     
     private func loadImage(from url: String) {
         activityIndicator = showSpinner(in: view)
-        
         DispatchQueue.global().async {
             guard let imageData = ImageManager.shared.fetchImage(from: url) else { return }
             
@@ -150,54 +131,66 @@ class PhotoDetailsViewController: UIViewController {
         }
     }
     
+    private func loadPexelsDataFromFavourite() {
+        let id = Int(favoritePhoto?.id ?? 0)
+        NetworkManager.shared.fetchData(from: Link.getPexelsPhotoById.rawValue, usingId: id) { result in
+            switch result {
+            case .success(let fetchedPhoto):
+                self.photo = fetchedPhoto
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+     
     private func isLiked() {
         loadFavouritePhotos()
         guard let pexelsPhotoId = photo?.id else { return }
-        for favorPhoto in favouritePhotos {
+        for favorPhoto in favoritePhotos {
             if pexelsPhotoId == Int(favorPhoto.id) {
-                favouritePhoto = favorPhoto
-                liked = true
-                likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-                likeButton.tintColor = .systemRed.withAlphaComponent(0.6)
+                favoritePhoto = favorPhoto
+                setLike()
             }
         }
     }
     
+    private func setLike() {
+        liked = true
+        likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        likeButton.tintColor = .systemYellow
+    }
+    
     private func loadFavouritePhotos() {
-        StorageManager.shared.fetchFavouritePhotos { result in
+        StorageManager.shared.fetchFavoritePhotos { result in
             switch result {
             case .success(let photos):
-                self.favouritePhotos = photos
+                self.favoritePhotos = photos
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
         
-    @objc private func addToFavourite() {
+    @objc private func addToFavorite() {
         if liked {
-            StorageManager.shared.deletePhoto(photo: favouritePhoto ?? PexelsPhoto())
+            StorageManager.shared.deletePhoto(photo: favoritePhoto ?? PexelsPhoto())
             liked = false
             likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
             likeButton.tintColor = .systemGray6
         } else {
             StorageManager.shared.savePhoto(pexelsPhoto: photo)
-            loadFavouritePhotos()
             isLiked()
-            liked = true
-            likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-            likeButton.tintColor = .systemRed.withAlphaComponent(0.6)
         }
     }
     
     @objc private func shareData() {
-        if let link = NSURL(string: photo == nil ? favouritePhoto?.pexelsUrl ?? ""  : photo?.url ?? "") {
-            let activityViewController: UIActivityViewController = UIActivityViewController(
-                activityItems: [link],
-                applicationActivities: nil
-            )
-            self.present(activityViewController, animated: true, completion: nil)
-        }
+        guard let link = photo?.url else { return }
+        guard let photoLink = NSURL(string: link) else { return }
+        let activityViewController: UIActivityViewController = UIActivityViewController(
+            activityItems: [photoLink],
+            applicationActivities: nil
+        )
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
     private func setupSubViews(_ subViews: UIView...) {
@@ -208,11 +201,7 @@ class PhotoDetailsViewController: UIViewController {
     
     @objc func originSizeButtonTapped() {
         let photoVC = PhotoViewController()
-        if favouritePhoto != nil {
-            photoVC.photo = favouritePhoto?.originalSizeOfPhoto
-        } else {
-            photoVC.photo = photo?.src?.original
-        }
+        photoVC.photo = photo?.src?.original
         show(photoVC, sender: nil)
     }
     
