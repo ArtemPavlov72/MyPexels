@@ -59,7 +59,7 @@ class PhotoDetailsViewController: UIViewController {
         stackView.addArrangedSubview(likeButton)
         return stackView
     }()
-        
+    
     private lazy var photogtapherNameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 30)
@@ -81,18 +81,18 @@ class PhotoDetailsViewController: UIViewController {
     //MARK: - Public Properties
     var photo: Photo?
     var favoritePhoto: PexelsPhoto?
-    var favoritePhotos: [PexelsPhoto] = [] //может загружать в таббаре? а потом обновлять его 
+    var favoritePhotos: [PexelsPhoto] = [] 
     
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        navigationItem.largeTitleDisplayMode = .never
+        setupNavigationBar()
         setupPhotoInfo()
         setupSubViews(pexelsImage, horizontalStackView, photogtapherNameLabel, descriptionLabel)
         setupConstraints()
     }
-
+    
     //MARK: - Private Methods
     private func setupPhotoInfo() {
         if favoritePhoto != nil {
@@ -142,7 +142,7 @@ class PhotoDetailsViewController: UIViewController {
             }
         }
     }
-     
+    
     private func isLiked() {
         loadFavouritePhotos()
         guard let pexelsPhotoId = photo?.id else { return }
@@ -160,6 +160,12 @@ class PhotoDetailsViewController: UIViewController {
         likeButton.tintColor = .systemYellow
     }
     
+    private func removeLike() {
+        liked = false
+        likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        likeButton.tintColor = .systemGray6
+    }
+    
     private func loadFavouritePhotos() {
         StorageManager.shared.fetchFavoritePhotos { result in
             switch result {
@@ -170,13 +176,11 @@ class PhotoDetailsViewController: UIViewController {
             }
         }
     }
-        
+    
     @objc private func addToFavorite() {
         if liked {
             StorageManager.shared.deletePhoto(photo: favoritePhoto ?? PexelsPhoto())
-            liked = false
-            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-            likeButton.tintColor = .systemGray6
+            removeLike()
         } else {
             StorageManager.shared.savePhoto(pexelsPhoto: photo)
             isLiked()
@@ -197,6 +201,10 @@ class PhotoDetailsViewController: UIViewController {
         subViews.forEach { subview in
             view.addSubview(subview)
         }
+    }
+    
+    private func setupNavigationBar() {
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     @objc func originSizeButtonTapped() {
