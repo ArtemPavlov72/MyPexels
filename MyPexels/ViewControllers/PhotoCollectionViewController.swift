@@ -20,6 +20,11 @@ class PhotoCollectionViewController: UICollectionViewController {
     private var numberOfPage = 1
     private var photos: [Photo]?
     
+    //MARK: - Public Properties
+    var favoritePhotos: [PexelsPhoto] = []
+    var delegateTabBarVC: TabBarStartViewControllerDelegate?
+    var delegateFavoriteVC: FavoriteCollectionViewControllerDelegate?
+    
     //MARK: - Lify Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,6 +85,9 @@ class PhotoCollectionViewController: UICollectionViewController {
         let photo = photos?[indexPath.item]
         let photoDetailVC = PhotoDetailsViewController()
         photoDetailVC.photo = photo
+        photoDetailVC.delegateTabBarVC = delegateTabBarVC
+        photoDetailVC.delegateFavoriteVC = delegateFavoriteVC
+        photoDetailVC.favoritePhotos = favoritePhotos
         show(photoDetailVC, sender: nil)
     }
 }
@@ -105,3 +113,4 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
         sectionInserts.left
     }
 }
+

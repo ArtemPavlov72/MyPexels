@@ -81,7 +81,9 @@ class PhotoDetailsViewController: UIViewController {
     //MARK: - Public Properties
     var photo: Photo?
     var favoritePhoto: PexelsPhoto?
-    var favoritePhotos: [PexelsPhoto] = [] 
+    var favoritePhotos: [PexelsPhoto] = []
+    var delegateTabBarVC: TabBarStartViewControllerDelegate?
+    var delegateFavoriteVC: FavoriteCollectionViewControllerDelegate?
     
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
@@ -179,12 +181,16 @@ class PhotoDetailsViewController: UIViewController {
     
     @objc private func addToFavorite() {
         if liked {
-            StorageManager.shared.deletePhoto(photo: favoritePhoto ?? PexelsPhoto())
             removeLike()
+            StorageManager.shared.deletePhoto(photo: favoritePhoto ?? PexelsPhoto())
+            delegateTabBarVC?.reloadFavoriteData() //переместить в setLike
         } else {
             StorageManager.shared.savePhoto(pexelsPhoto: photo)
+            delegateTabBarVC?.reloadFavoriteData() //переместить в setLike
+            setLike()
             isLiked()
         }
+        delegateFavoriteVC?.reloadData()
     }
     
     @objc private func shareData() {

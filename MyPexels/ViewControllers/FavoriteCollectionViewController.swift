@@ -8,14 +8,20 @@
 import UIKit
 import CoreData
 
-class FavoriteCollectionViewController: UICollectionViewController {
+protocol FavoriteCollectionViewControllerDelegate {
+    func reloadData()
+}
 
+class FavoriteCollectionViewController: UICollectionViewController {
+    
     //MARK: - Private Properties
     private let itemsPerRow: CGFloat = 2
     private let sectionInserts = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-    
-    private var favoritePhotos: [PexelsPhoto] = []
     private let cellID = "cell"
+    
+    //MARK: - Public Properties
+    var favoritePhotos: [PexelsPhoto] = []
+    var delegateTabBarVC: TabBarStartViewControllerDelegate?
     
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
@@ -23,29 +29,11 @@ class FavoriteCollectionViewController: UICollectionViewController {
         self.collectionView?.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        loadFavoritePhotos()
-    }
-    
-    //MARK: - Private Methods
-    private func loadFavoritePhotos() {
-        StorageManager.shared.fetchFavoritePhotos { result in
-            switch result {
-            case .success(let photos):
-                self.favoritePhotos = photos
-                self.collectionView.reloadData()
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
     // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return favoritePhotos.count
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoViewCell
         let photo = favoritePhotos[indexPath.item]
@@ -58,6 +46,8 @@ class FavoriteCollectionViewController: UICollectionViewController {
         let favouritePhoto = favoritePhotos[indexPath.item]
         let photoDetailVC = PhotoDetailsViewController()
         photoDetailVC.favoritePhoto = favouritePhoto
+        photoDetailVC.delegateTabBarVC = delegateTabBarVC
+        photoDetailVC.delegateFavoriteVC = self
         show(photoDetailVC, sender: nil)
     }
 }
@@ -81,5 +71,11 @@ extension FavoriteCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         sectionInserts.left
+    }
+}
+
+extension FavoriteCollectionViewController: FavoriteCollectionViewControllerDelegate {
+    func reloadData() {
+        collectionView.reloadData()
     }
 }

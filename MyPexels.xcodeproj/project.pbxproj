@@ -103,9 +103,9 @@
 			children = (
 				84525EB9283A9D6C005E5E6A /* TabBarStartViewController.swift */,
 				84525EBB283A9E2D005E5E6A /* PhotoCollectionViewController.swift */,
+				84525EBD283AA292005E5E6A /* FavoriteCollectionViewController.swift */,
 				84D14025284FB8FE00374A45 /* PhotoDetailsViewController.swift */,
 				84A6078A2858BEFD003311A4 /* PhotoViewController.swift */,
-				84525EBD283AA292005E5E6A /* FavoriteCollectionViewController.swift */,
 				84525EA9283A9857005E5E6A /* UserViewController.swift */,
 			);
 			path = ViewControllers;
