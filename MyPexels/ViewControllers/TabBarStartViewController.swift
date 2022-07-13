@@ -10,7 +10,7 @@ import UIKit
 protocol TabBarStartViewControllerDelegate {
     func reloadFavoriteData()
 }
-
+                            
 class TabBarStartViewController: UITabBarController {
     
     //MARK: - Private Properties
@@ -46,15 +46,15 @@ class TabBarStartViewController: UITabBarController {
         viewControllers = [photosVC, favoriteVC, userVC]
     }
     
-    private func updateFavotiteData(for viewController: FavoriteCollectionViewController) {
-        viewController.favoritePhotos = favoritePhotos
-        viewController.delegateTabBarVC = self
+    private func updateFavotiteData(for favoriteViewController: FavoriteCollectionViewController) {
+        favoriteViewController.favoritePhotos = favoritePhotos
+        favoriteViewController.delegateTabBarVC = self
     }
     
-    private func updateFavotiteData(for viewController: PhotoCollectionViewController) {
-        viewController.favoritePhotos = favoritePhotos
-        viewController.delegateFavoriteVC = favoriteVC
-        viewController.delegateTabBarVC = self
+    private func updateFavotiteData(for photoViewController: PhotoCollectionViewController) {
+        photoViewController.favoritePhotos = favoritePhotos
+        photoViewController.delegateFavoriteVC = favoriteVC
+        photoViewController.delegateTabBarVC = self
     }
     
     private func setupNavigationBar() {
@@ -79,7 +79,7 @@ extension TabBarStartViewController: TabBarStartViewControllerDelegate {
     func reloadFavoriteData() {
         loadFavouritePhotos()
         updateFavotiteData(for: favoriteVC)
-        updateFavotiteData(for: photosVC) //разбить на отдельные методы
+        updateFavotiteData(for: photosVC)
     }
 }
 
