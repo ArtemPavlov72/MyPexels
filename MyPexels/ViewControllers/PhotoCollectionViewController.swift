@@ -10,9 +10,6 @@ import UIKit
 class PhotoCollectionViewController: UICollectionViewController {
     
     //MARK: - Private Properties
-    private let itemsPerRow: CGFloat = 2
-    private let sectionInserts = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-    
     private var pexelsData: Pexels?
     private let cellID = "cell"
     private var activityIndicator: UIActivityIndicatorView?
@@ -89,28 +86,6 @@ class PhotoCollectionViewController: UICollectionViewController {
         photoDetailVC.delegateFavoriteVC = delegateFavoriteVC
         photoDetailVC.favoritePhotos = favoritePhotos
         show(photoDetailVC, sender: nil)
-    }
-}
-
-//MARK: - UICollectionViewDelegateFlowLayout
-extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let paddingWidth = sectionInserts.left * (itemsPerRow + 1)
-        let avaibleWidth = collectionView.frame.width - paddingWidth
-        let widthPerItem = avaibleWidth / itemsPerRow
-        return CGSize(width: widthPerItem, height: widthPerItem)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        sectionInserts
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        sectionInserts.left
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        sectionInserts.left
     }
 }
 

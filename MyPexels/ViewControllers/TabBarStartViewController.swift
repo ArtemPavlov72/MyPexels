@@ -74,7 +74,7 @@ class TabBarStartViewController: UITabBarController {
     }
 }
 
-//MARK: - DelegateNewContact
+//MARK: - TabBarStartViewControllerDelegate
 extension TabBarStartViewController: TabBarStartViewControllerDelegate {
     func reloadFavoriteData() {
         loadFavouritePhotos()
