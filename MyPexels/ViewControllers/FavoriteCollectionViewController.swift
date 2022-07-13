@@ -46,6 +46,7 @@ class FavoriteCollectionViewController: UICollectionViewController {
         let favouritePhoto = favoritePhotos[indexPath.item]
         let photoDetailVC = PhotoDetailsViewController()
         photoDetailVC.favoritePhoto = favouritePhoto
+        photoDetailVC.favoritePhotos = favoritePhotos
         photoDetailVC.delegateTabBarVC = delegateTabBarVC
         photoDetailVC.delegateFavoriteVC = self
         show(photoDetailVC, sender: nil)

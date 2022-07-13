@@ -95,6 +95,12 @@ class PhotoDetailsViewController: UIViewController {
         setupConstraints()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        delegateFavoriteVC?.reloadData()
+        updateFavotitePhotos()
+    }
+    
     //MARK: - Private Methods
     private func setupPhotoInfo() {
         if favoritePhoto != nil {
@@ -145,8 +151,29 @@ class PhotoDetailsViewController: UIViewController {
         }
     }
     
+    func updateFavotitePhotos() {
+        if liked {
+            if let pexelsPhotoId = photo?.id {
+                for favorPhoto in favoritePhotos {
+                    if pexelsPhotoId == Int(favorPhoto.id) {
+                        return
+                    }
+                }
+            }
+            StorageManager.shared.savePhoto(pexelsPhoto: photo)
+            delegateTabBarVC?.reloadFavoriteData()
+        } else {
+            guard let pexelsPhotoId = photo?.id else { return }
+            for favorPhoto in favoritePhotos {
+                if pexelsPhotoId == Int(favorPhoto.id) {
+                    StorageManager.shared.deletePhoto(photo: favoritePhoto ?? PexelsPhoto())
+                    delegateTabBarVC?.reloadFavoriteData()
+                }
+            }
+        }
+    }
+    
     private func isLiked() {
-        loadFavouritePhotos()
         guard let pexelsPhotoId = photo?.id else { return }
         for favorPhoto in favoritePhotos {
             if pexelsPhotoId == Int(favorPhoto.id) {
@@ -168,29 +195,8 @@ class PhotoDetailsViewController: UIViewController {
         likeButton.tintColor = .systemGray6
     }
     
-    private func loadFavouritePhotos() {
-        StorageManager.shared.fetchFavoritePhotos { result in
-            switch result {
-            case .success(let photos):
-                self.favoritePhotos = photos
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
     @objc private func addToFavorite() {
-        if liked {
-            removeLike()
-            StorageManager.shared.deletePhoto(photo: favoritePhoto ?? PexelsPhoto())
-            delegateTabBarVC?.reloadFavoriteData() //переместить в setLike
-        } else {
-            StorageManager.shared.savePhoto(pexelsPhoto: photo)
-            delegateTabBarVC?.reloadFavoriteData() //переместить в setLike
-            setLike()
-            isLiked()
-        }
-        delegateFavoriteVC?.reloadData()
+        liked ? removeLike() : setLike()
     }
     
     @objc private func shareData() {
