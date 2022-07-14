@@ -37,6 +37,16 @@ class StorageManager {
         }
     }
     
+    func deleteFavoritePhotos() {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = PexelsPhoto.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        do {
+            try viewContext.execute(deleteRequest)
+        } catch let error {
+            print(error)
+        }
+    }
+    
     //MARK: - Private Methods of Photos
     func savePhoto(pexelsPhoto: Photo?) {
         let photo = PexelsPhoto(context: viewContext)

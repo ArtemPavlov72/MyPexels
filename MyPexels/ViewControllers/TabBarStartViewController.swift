@@ -26,6 +26,7 @@ class TabBarStartViewController: UITabBarController {
         loadFavouritePhotos()
         updateFavotiteData(for: photosVC)
         updateFavotiteData(for: favoriteVC)
+        updateFavotiteData(for: userVC)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,7 +41,7 @@ class TabBarStartViewController: UITabBarController {
     
     //MARK: - Private Methods
     private func setupTabBar() {
-        photosVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 1)
+        photosVC.tabBarItem = UITabBarItem(title: "Pexels", image: UIImage(systemName: "house"), tag: 1)
         favoriteVC.tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "heart"), tag: 2)
         userVC.tabBarItem = UITabBarItem(title: "User", image: UIImage(systemName: "person"), tag: 3)
         viewControllers = [photosVC, favoriteVC, userVC]
@@ -55,6 +56,11 @@ class TabBarStartViewController: UITabBarController {
         photoViewController.favoritePhotos = favoritePhotos
         photoViewController.delegateFavoriteVC = favoriteVC
         photoViewController.delegateTabBarVC = self
+    }
+    
+    private func updateFavotiteData(for userViewController: UserViewController) {
+        userViewController.delegateTabBarVC = self
+        userViewController.delegateFavoriteVC = favoriteVC
     }
     
     private func setupNavigationBar() {
