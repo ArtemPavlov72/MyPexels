@@ -151,7 +151,7 @@ class PhotoDetailsViewController: UIViewController {
         }
     }
     
-    func updateFavotitePhotos() {
+    private func updateFavotitePhotos() {
         if liked {
             if let pexelsPhotoId = photo?.id {
                 for favorPhoto in favoritePhotos {
@@ -219,7 +219,7 @@ class PhotoDetailsViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
     }
     
-    @objc func originSizeButtonTapped() {
+    @objc private func originSizeButtonTapped() {
         let photoVC = PhotoViewController()
         photoVC.photo = photo?.src?.original
         show(photoVC, sender: nil)

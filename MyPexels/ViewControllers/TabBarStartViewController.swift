@@ -61,6 +61,7 @@ class TabBarStartViewController: UITabBarController {
     private func updateFavotiteData(for userViewController: UserViewController) {
         userViewController.delegateTabBarVC = self
         userViewController.delegateFavoriteVC = favoriteVC
+        userViewController.delegatePhotoCollectionVC = photosVC
     }
     
     private func setupNavigationBar() {

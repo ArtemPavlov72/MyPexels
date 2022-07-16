@@ -23,7 +23,6 @@
 		84A6078B2858BEFD003311A4 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A6078A2858BEFD003311A4 /* PhotoViewController.swift */; };
 		84A6078E2860D92F003311A4 /* Pexels.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84A6078C2860D92F003311A4 /* Pexels.xcdatamodeld */; };
 		84A607902861F823003311A4 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A6078F2861F823003311A4 /* StorageManager.swift */; };
-		84A60794287F2CB9003311A4 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A60793287F2CB9003311A4 /* CollectionView.swift */; };
 		84D14026284FB8FE00374A45 /* PhotoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D14025284FB8FE00374A45 /* PhotoDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,7 +45,6 @@
 		84A6078A2858BEFD003311A4 /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		84A6078D2860D92F003311A4 /* Pexels.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Pexels.xcdatamodel; sourceTree = "<group>"; };
 		84A6078F2861F823003311A4 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
-		84A60793287F2CB9003311A4 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		84D14025284FB8FE00374A45 /* PhotoDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -145,7 +143,6 @@
 			children = (
 				84525EC9283F6245005E5E6A /* PhotoViewCell.swift */,
 				842C1C2E28531F430056130B /* PexelsImageView.swift */,
-				84A60793287F2CB9003311A4 /* CollectionView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -234,7 +231,6 @@
 				842C1C2D28530B120056130B /* UIView.swift in Sources */,
 				842C1C2F28531F430056130B /* PexelsImageView.swift in Sources */,
 				84525ECA283F6245005E5E6A /* PhotoViewCell.swift in Sources */,
-				84A60794287F2CB9003311A4 /* CollectionView.swift in Sources */,
 				84525EBA283A9D6C005E5E6A /* TabBarStartViewController.swift in Sources */,
 				84525EC7283DC15A005E5E6A /* Pexels.swift in Sources */,
 				84525ECD2841EBFA005E5E6A /* NetworkManager.swift in Sources */,

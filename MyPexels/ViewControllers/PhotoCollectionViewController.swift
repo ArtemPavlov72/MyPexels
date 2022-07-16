@@ -7,15 +7,20 @@
 
 import UIKit
 
+protocol PhotoCollectionViewControllerDelegate {
+    func changeNumberOfItemsPerRow(_ number: CGFloat)
+}
+
 class PhotoCollectionViewController: UICollectionViewController {
     
     //MARK: - Private Properties
     private var pexelsData: Pexels?
     private let cellID = "cell"
     private var activityIndicator: UIActivityIndicatorView?
-    private var numberOfPhotosOnPage = 20
+    private let numberOfPhotosOnPage = 20
     private var numberOfPage = 1
     private var photos: [Photo]?
+    private var numberOfUtemsPerRow: CGFloat = 2
     
     //MARK: - Public Properties
     var favoritePhotos: [PexelsPhoto] = []
@@ -46,7 +51,7 @@ class PhotoCollectionViewController: UICollectionViewController {
             }
         }
     }
-        
+            
     // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         photos?.count ?? 0
@@ -86,6 +91,37 @@ class PhotoCollectionViewController: UICollectionViewController {
         photoDetailVC.delegateFavoriteVC = delegateFavoriteVC
         photoDetailVC.favoritePhotos = favoritePhotos
         show(photoDetailVC, sender: nil)
+    }
+}
+
+//MARK: - UICollectionViewDelegateFlowLayout
+extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let itemsPerRow = numberOfUtemsPerRow
+        let paddingWidth = 20 * (itemsPerRow + 1)
+        let avaibleWidth = collectionView.frame.width - paddingWidth
+        let widthPerItem = avaibleWidth / itemsPerRow
+        return CGSize(width: widthPerItem, height: widthPerItem)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        20
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        20
+    }
+}
+
+extension PhotoCollectionViewController: PhotoCollectionViewControllerDelegate {
+    func changeNumberOfItemsPerRow(_ number: CGFloat) {
+        numberOfUtemsPerRow = number
+        collectionView.reloadData()
     }
 }
 
