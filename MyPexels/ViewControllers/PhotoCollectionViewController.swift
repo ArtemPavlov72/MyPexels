@@ -51,7 +51,7 @@ class PhotoCollectionViewController: UICollectionViewController {
             }
         }
     }
-            
+    
     // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         photos?.count ?? 0
@@ -96,7 +96,7 @@ class PhotoCollectionViewController: UICollectionViewController {
 
 //MARK: - UICollectionViewDelegateFlowLayout
 extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let itemsPerRow = numberOfUtemsPerRow
         let paddingWidth = 20 * (itemsPerRow + 1)

@@ -140,7 +140,8 @@ class PhotoDetailsViewController: UIViewController {
     }
     
     private func loadPexelsDataFromFavourite() {
-        let id = Int(favoritePhoto?.id ?? 0)
+        guard let favoritePhotoId = favoritePhoto?.id else { return }
+        let id = Int(favoritePhotoId)
         NetworkManager.shared.fetchData(from: Link.getPexelsPhotoById.rawValue, usingId: id) { result in
             switch result {
             case .success(let fetchedPhoto):

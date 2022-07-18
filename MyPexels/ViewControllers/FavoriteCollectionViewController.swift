@@ -9,6 +9,7 @@ import UIKit
 import CoreData
 
 protocol FavoriteCollectionViewControllerDelegate {
+    func changeNumberOfItemsPerRow(_ number: CGFloat)
     func reloadData()
 }
 
@@ -78,6 +79,10 @@ extension FavoriteCollectionViewController: UICollectionViewDelegateFlowLayout {
 
 //MARK: - FavoriteCollectionViewControllerDelegate
 extension FavoriteCollectionViewController: FavoriteCollectionViewControllerDelegate {
+    func changeNumberOfItemsPerRow(_ number: CGFloat) {
+        numberOfUtemsPerRow = number
+    }
+    
     func reloadData() {
         collectionView.reloadData()
     }
