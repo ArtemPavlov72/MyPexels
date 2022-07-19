@@ -8,7 +8,7 @@
 import UIKit
 
 protocol PhotoCollectionViewControllerDelegate {
-    func changeNumberOfItemsPerRow(_ number: CGFloat)
+    func changeNumberOfItemsPerRow(_ number: CGFloat, size: SizeOfPhoto)
 }
 
 class PhotoCollectionViewController: UICollectionViewController {
@@ -20,6 +20,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     private let numberOfPhotosOnPage = 20
     private var numberOfPage = 1
     private var photos: [Photo]?
+    private var sizeOfPhoto = SizeOfPhoto.medium
     private var numberOfUtemsPerRow: CGFloat = 2
     
     //MARK: - Public Properties
@@ -60,7 +61,14 @@ class PhotoCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoViewCell
         if let photo = photos?[indexPath.item] {
-            cell.configureCell(with: photo.src?.medium ?? "")
+            switch sizeOfPhoto {
+            case .small:
+                cell.configureCell(with: photo.src?.small ?? "")
+            case .medium:
+                cell.configureCell(with: photo.src?.medium ?? "")
+            case .large:
+                cell.configureCell(with: photo.src?.large ?? "")
+            }
         }
         return cell
     }
@@ -118,10 +126,14 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+//MARK: - PhotoCollectionViewControllerDelegate
 extension PhotoCollectionViewController: PhotoCollectionViewControllerDelegate {
-    func changeNumberOfItemsPerRow(_ number: CGFloat) {
+    func changeNumberOfItemsPerRow(_ number: CGFloat, size: SizeOfPhoto) {
         numberOfUtemsPerRow = number
+        sizeOfPhoto = size
         collectionView.reloadData()
     }
 }
+
+
 

@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 
 protocol FavoriteCollectionViewControllerDelegate {
-    func changeNumberOfItemsPerRow(_ number: CGFloat)
+    func changeNumberOfItemsPerRow(_ number: CGFloat, size: SizeOfPhoto)
     func reloadData()
 }
 
@@ -18,6 +18,7 @@ class FavoriteCollectionViewController: UICollectionViewController {
     //MARK: - Private Properties
     private let cellID = "cell"
     private var numberOfUtemsPerRow: CGFloat = 2
+    private var sizeOfPhoto = SizeOfPhoto.medium
     
     //MARK: - Public Properties
     var favoritePhotos: [PexelsPhoto] = []
@@ -37,7 +38,14 @@ class FavoriteCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoViewCell
         let photo = favoritePhotos[indexPath.item]
-        cell.configureCell(with: photo.mediumSizeOfPhoto ?? "")
+        switch sizeOfPhoto {
+        case .small:
+            cell.configureCell(with: photo.smallSizeOfPhoto ?? "")
+        case .medium:
+            cell.configureCell(with: photo.mediumSizeOfPhoto ?? "")
+        case .large:
+            cell.configureCell(with: photo.largeSizeOfPhoto ?? "")
+        }
         return cell
     }
     
@@ -79,8 +87,10 @@ extension FavoriteCollectionViewController: UICollectionViewDelegateFlowLayout {
 
 //MARK: - FavoriteCollectionViewControllerDelegate
 extension FavoriteCollectionViewController: FavoriteCollectionViewControllerDelegate {
-    func changeNumberOfItemsPerRow(_ number: CGFloat) {
+    func changeNumberOfItemsPerRow(_ number: CGFloat, size: SizeOfPhoto) {
         numberOfUtemsPerRow = number
+        sizeOfPhoto = size
+        reloadData()
     }
     
     func reloadData() {

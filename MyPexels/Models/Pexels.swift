@@ -54,6 +54,10 @@ struct Src: Codable {
     }
 }
 
+enum SizeOfPhoto {
+    case small, medium, large
+}
+
 enum Link: String {
     case pexelsBaseURL = "https://api.pexels.com/v1"
     case pexelsCuratedPhotos = "https://api.pexels.com/v1/curated"

@@ -53,6 +53,7 @@ class StorageManager {
         photo.id = Int64(pexelsPhoto?.id ?? 0)
         photo.photographer = pexelsPhoto?.photographer
         photo.descriptionOfPhoto = pexelsPhoto?.alt
+        photo.smallSizeOfPhoto = pexelsPhoto?.src?.small
         photo.mediumSizeOfPhoto = pexelsPhoto?.src?.medium
         photo.largeSizeOfPhoto = pexelsPhoto?.src?.large
         photo.originalSizeOfPhoto = pexelsPhoto?.src?.original
