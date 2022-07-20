@@ -43,7 +43,7 @@ class UserViewController: UIViewController {
         return button
     }()
     
-    private lazy var itemsText: UILabel = {
+    private lazy var itemsTextLabel: UILabel = {
         let label = UILabel()
         label.text = "Set number of items on one row:"
         return label
@@ -59,6 +59,17 @@ class UserViewController: UIViewController {
         let label = UILabel()
         label.text = "Favorite collection:"
         return label
+    }()
+    
+    private lazy var verticalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = NSLayoutConstraint.Axis.vertical
+        stackView.spacing = 10.0
+        stackView.addArrangedSubview(itemsTextLabel)
+        stackView.addArrangedSubview(horizontalPhotoStackView)
+        stackView.addArrangedSubview(horizontalFavoriteStackView)
+        stackView.distribution = .fillEqually
+        return stackView
     }()
     
     private lazy var horizontalPhotoStackView: UIStackView = {
@@ -93,7 +104,7 @@ class UserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        setupSubViews(clearFavoriteDataButton, itemsText, horizontalPhotoStackView, horizontalFavoriteStackView)
+        setupSubViews(clearFavoriteDataButton, verticalStackView)
         setupConstraints()
     }
     
@@ -148,30 +159,16 @@ class UserViewController: UIViewController {
     //MARK: - Setup Constraints
     private func setupConstraints() {
 
-        itemsText.translatesAutoresizingMaskIntoConstraints = false
+        verticalStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            itemsText.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
-            itemsText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            itemsText.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            verticalStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            verticalStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            verticalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
-        
-        horizontalPhotoStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            horizontalPhotoStackView.topAnchor.constraint(equalTo: itemsText.bottomAnchor, constant: 10),
-            horizontalPhotoStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            horizontalPhotoStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
-        
-        horizontalFavoriteStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            horizontalFavoriteStackView.topAnchor.constraint(equalTo: horizontalPhotoStackView.bottomAnchor, constant: 10),
-            horizontalFavoriteStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            horizontalFavoriteStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
-        
+                
         clearFavoriteDataButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            clearFavoriteDataButton.topAnchor.constraint(equalTo: horizontalFavoriteStackView.bottomAnchor, constant: 50),
+            clearFavoriteDataButton.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 50),
             clearFavoriteDataButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             clearFavoriteDataButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
@@ -183,7 +180,9 @@ extension UserViewController {
     func showAlert(with title: String, and massage: String) {
         let alert = UIAlertController(title: title, message: massage, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(okAction)
+        alert.addAction(cancelAction)
         present(alert, animated: true)
     }
 }
