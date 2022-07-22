@@ -113,10 +113,11 @@ class UserViewController: UIViewController {
     }
     
     @objc private func clearFavoriteButtonTapped() {
-        showAlert(with: "Are you sure?", and: "Press OK to delete all favorite photos.")
-        StorageManager.shared.deleteFavoritePhotos()
-        delegateTabBarVC?.reloadFavoriteData()
-        delegateFavoriteVC?.reloadData()
+        showAlert(with: "Are you sure?", and: "Press OK to delete all favorite photos.") {
+            StorageManager.shared.deleteFavoritePhotos()
+            self.delegateTabBarVC?.reloadFavoriteData()
+            self.delegateFavoriteVC?.reloadData()
+        }
     }
     
     @objc private func changeItemsOnPhotoVCTapped() {
@@ -184,9 +185,12 @@ class UserViewController: UIViewController {
 
 //MARK: - Alert Controller
 extension UserViewController {
-    func showAlert(with title: String, and massage: String) {
+    func showAlert(with title: String, and massage: String, completion: (() -> Void)?) {
         let alert = UIAlertController(title: title, message: massage, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default)
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            guard let completion = completion else { return }
+            completion()
+        }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(okAction)
         alert.addAction(cancelAction)
