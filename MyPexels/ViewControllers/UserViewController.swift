@@ -68,7 +68,6 @@ class UserViewController: UIViewController {
         stackView.addArrangedSubview(itemsTextLabel)
         stackView.addArrangedSubview(horizontalPhotoStackView)
         stackView.addArrangedSubview(horizontalFavoriteStackView)
-        stackView.distribution = .fillEqually
         return stackView
     }()
     
@@ -78,7 +77,6 @@ class UserViewController: UIViewController {
         stackView.spacing = 10.0
         stackView.addArrangedSubview(pexelsLabel)
         stackView.addArrangedSubview(changeNumberOfItemsOnPVCButton)
-        stackView.distribution = .fillEqually
         return stackView
     }()
     
@@ -88,7 +86,6 @@ class UserViewController: UIViewController {
         stackView.spacing = 10.0
         stackView.addArrangedSubview(favoriteLabel)
         stackView.addArrangedSubview(changeNumberOfItemsOnFVCButton)
-        stackView.distribution = .fillEqually
         return stackView
     }()
     
@@ -116,10 +113,10 @@ class UserViewController: UIViewController {
     }
     
     @objc private func clearFavoriteButtonTapped() {
+        showAlert(with: "Are you sure?", and: "Press OK to delete all favorite photos.")
         StorageManager.shared.deleteFavoritePhotos()
         delegateTabBarVC?.reloadFavoriteData()
         delegateFavoriteVC?.reloadData()
-        showAlert(with: "Complete!", and: "Your favorite photos deleted.")
     }
     
     @objc private func changeItemsOnPhotoVCTapped() {
@@ -171,6 +168,16 @@ class UserViewController: UIViewController {
             clearFavoriteDataButton.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 50),
             clearFavoriteDataButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             clearFavoriteDataButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+        
+        changeNumberOfItemsOnPVCButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            changeNumberOfItemsOnPVCButton.widthAnchor.constraint(equalToConstant: 110),
+        ])
+        
+        changeNumberOfItemsOnFVCButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            changeNumberOfItemsOnFVCButton.widthAnchor.constraint(equalToConstant: 110),
         ])
     }
 }
