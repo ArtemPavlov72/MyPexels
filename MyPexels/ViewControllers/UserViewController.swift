@@ -21,6 +21,17 @@ class UserViewController: UIViewController {
         return button
     }()
     
+    private lazy var logOutButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 15
+        button.setTitle("Log Out", for: .normal)
+        button.backgroundColor = .systemRed.withAlphaComponent(0.6)
+        button.setTitleColor(UIColor.systemGray6, for: .normal)
+        button.setTitleColor(UIColor.systemGray, for: .highlighted)
+        button.addTarget(self, action: #selector(quitButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var changeNumberOfItemsOnPVCButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 15
@@ -68,6 +79,7 @@ class UserViewController: UIViewController {
         stackView.addArrangedSubview(itemsTextLabel)
         stackView.addArrangedSubview(horizontalPhotoStackView)
         stackView.addArrangedSubview(horizontalFavoriteStackView)
+        stackView.addArrangedSubview(logOutButton)
         return stackView
     }()
     
@@ -118,6 +130,11 @@ class UserViewController: UIViewController {
             self.delegateTabBarVC?.reloadFavoriteData()
             self.delegateFavoriteVC?.reloadData()
         }
+    }
+    
+    @objc private func quitButtonTapped() {
+        UserDefaults.standard.set(false, forKey: "done")
+        navigationController?.popToRootViewController(animated: true)
     }
     
     @objc private func changeItemsOnPhotoVCTapped() {
@@ -185,7 +202,7 @@ class UserViewController: UIViewController {
 
 //MARK: - Alert Controller
 extension UserViewController {
-    func showAlert(with title: String, and massage: String, completion: (() -> Void)?) {
+    private func showAlert(with title: String, and massage: String, completion: (() -> Void)?) {
         let alert = UIAlertController(title: title, message: massage, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
             guard let completion = completion else { return }

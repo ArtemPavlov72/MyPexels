@@ -25,6 +25,7 @@
 		84A607902861F823003311A4 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A6078F2861F823003311A4 /* StorageManager.swift */; };
 		84D14026284FB8FE00374A45 /* PhotoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D14025284FB8FE00374A45 /* PhotoDetailsViewController.swift */; };
 		84D2BC8F288859640007F4B8 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2BC8E288859640007F4B8 /* CollectionView.swift */; };
+		84D2BC91288B17B60007F4B8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2BC90288B17B60007F4B8 /* LoginViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		84A6078F2861F823003311A4 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		84D14025284FB8FE00374A45 /* PhotoDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewController.swift; sourceTree = "<group>"; };
 		84D2BC8E288859640007F4B8 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
+		84D2BC90288B17B60007F4B8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 		84525EC3283D0DE9005E5E6A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				84D2BC90288B17B60007F4B8 /* LoginViewController.swift */,
 				84525EB9283A9D6C005E5E6A /* TabBarStartViewController.swift */,
 				84525EBB283A9E2D005E5E6A /* PhotoCollectionViewController.swift */,
 				84525EBD283AA292005E5E6A /* FavoriteCollectionViewController.swift */,
@@ -242,6 +245,7 @@
 				84D14026284FB8FE00374A45 /* PhotoDetailsViewController.swift in Sources */,
 				84525EBC283A9E2D005E5E6A /* PhotoCollectionViewController.swift in Sources */,
 				84525EAA283A9857005E5E6A /* UserViewController.swift in Sources */,
+				84D2BC91288B17B60007F4B8 /* LoginViewController.swift in Sources */,
 				84A607902861F823003311A4 /* StorageManager.swift in Sources */,
 				84525EA6283A9857005E5E6A /* AppDelegate.swift in Sources */,
 				84A6078B2858BEFD003311A4 /* PhotoViewController.swift in Sources */,
