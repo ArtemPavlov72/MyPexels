@@ -26,6 +26,7 @@
 		84D14026284FB8FE00374A45 /* PhotoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D14025284FB8FE00374A45 /* PhotoDetailsViewController.swift */; };
 		84D2BC8F288859640007F4B8 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2BC8E288859640007F4B8 /* CollectionView.swift */; };
 		84D2BC91288B17B60007F4B8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2BC90288B17B60007F4B8 /* LoginViewController.swift */; };
+		84D2BC93288EFDF80007F4B8 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2BC92288EFDF80007F4B8 /* RootViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		84D14025284FB8FE00374A45 /* PhotoDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewController.swift; sourceTree = "<group>"; };
 		84D2BC8E288859640007F4B8 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		84D2BC90288B17B60007F4B8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		84D2BC92288EFDF80007F4B8 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 		84525EC3283D0DE9005E5E6A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				84D2BC92288EFDF80007F4B8 /* RootViewController.swift */,
 				84D2BC90288B17B60007F4B8 /* LoginViewController.swift */,
 				84525EB9283A9D6C005E5E6A /* TabBarStartViewController.swift */,
 				84525EBB283A9E2D005E5E6A /* PhotoCollectionViewController.swift */,
@@ -234,6 +237,7 @@
 			files = (
 				842C1C2A285303530056130B /* UIImage.swift in Sources */,
 				84525EBE283AA292005E5E6A /* FavoriteCollectionViewController.swift in Sources */,
+				84D2BC93288EFDF80007F4B8 /* RootViewController.swift in Sources */,
 				842C1C2D28530B120056130B /* UIView.swift in Sources */,
 				842C1C2F28531F430056130B /* PexelsImageView.swift in Sources */,
 				84525ECA283F6245005E5E6A /* PhotoViewCell.swift in Sources */,

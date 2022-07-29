@@ -66,7 +66,7 @@ class LoginViewController: UIViewController {
         let tabBarStartVC = TabBarStartViewController()
         tabBarStartVC.navigationItem.hidesBackButton = true
         UserDefaults.standard.set(true, forKey: "done")
-        show(tabBarStartVC, sender: nil)
+        AppDelegate.shared.rootViewController.switchToMainScreen()
     }
 }
 
@@ -82,3 +82,4 @@ extension LoginViewController: UITextFieldDelegate {
         return true
     }
 }
+

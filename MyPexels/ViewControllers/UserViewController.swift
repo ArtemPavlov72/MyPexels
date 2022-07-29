@@ -79,6 +79,7 @@ class UserViewController: UIViewController {
         stackView.addArrangedSubview(itemsTextLabel)
         stackView.addArrangedSubview(horizontalPhotoStackView)
         stackView.addArrangedSubview(horizontalFavoriteStackView)
+        stackView.addArrangedSubview(clearFavoriteDataButton)
         stackView.addArrangedSubview(logOutButton)
         return stackView
     }()
@@ -113,7 +114,7 @@ class UserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        setupSubViews(clearFavoriteDataButton, verticalStackView)
+        setupSubViews(verticalStackView)
         setupConstraints()
     }
     
@@ -134,7 +135,7 @@ class UserViewController: UIViewController {
     
     @objc private func quitButtonTapped() {
         UserDefaults.standard.set(false, forKey: "done")
-        navigationController?.popToRootViewController(animated: true)
+        AppDelegate.shared.rootViewController.switchToLogout()
     }
     
     @objc private func changeItemsOnPhotoVCTapped() {
@@ -181,13 +182,6 @@ class UserViewController: UIViewController {
             verticalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
                 
-        clearFavoriteDataButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            clearFavoriteDataButton.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 50),
-            clearFavoriteDataButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            clearFavoriteDataButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
-        
         changeNumberOfItemsOnPVCButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             changeNumberOfItemsOnPVCButton.widthAnchor.constraint(equalToConstant: 110),
