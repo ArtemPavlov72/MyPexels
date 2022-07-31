@@ -16,19 +16,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         window?.rootViewController = RootViewController()
-        if !UserDefaults.standard.bool(forKey: "done") {
-            AppDelegate.shared.rootViewController.showLoginScreen()
-        } else {
-            AppDelegate.shared.rootViewController.switchToMainScreen()
-        }
+        switchRootViewController()
         return true
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
         StorageManager.shared.saveContext()
     }
+    
+    //MARK: - Switch ViewControllers Methods
+    private func switchRootViewController() {
+        if !UserDefaults.standard.bool(forKey: "done") {
+            AppDelegate.shared.rootViewController.showLoginScreen()
+        } else {
+            AppDelegate.shared.rootViewController.switchToMainScreen()
+        }
+    }
 }
 
+//MARK: - AppDelegate User Flow 
 extension AppDelegate {
     static var shared: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate

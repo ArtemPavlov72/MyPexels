@@ -14,7 +14,7 @@ class UserViewController: UIViewController {
         let button = UIButton()
         button.layer.cornerRadius = 15
         button.setTitle("Clear Favorite Photos", for: .normal)
-        button.backgroundColor = .systemRed.withAlphaComponent(0.6)
+        button.backgroundColor = .systemOrange.withAlphaComponent(0.7)
         button.setTitleColor(UIColor.systemGray6, for: .normal)
         button.setTitleColor(UIColor.systemGray, for: .highlighted)
         button.addTarget(self, action: #selector(clearFavoriteButtonTapped), for: .touchUpInside)
@@ -28,7 +28,7 @@ class UserViewController: UIViewController {
         button.backgroundColor = .systemRed.withAlphaComponent(0.6)
         button.setTitleColor(UIColor.systemGray6, for: .normal)
         button.setTitleColor(UIColor.systemGray, for: .highlighted)
-        button.addTarget(self, action: #selector(quitButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -72,13 +72,22 @@ class UserViewController: UIViewController {
         return label
     }()
     
-    private lazy var verticalStackView: UIStackView = {
+    private lazy var itemsVStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = NSLayoutConstraint.Axis.vertical
         stackView.spacing = 10.0
         stackView.addArrangedSubview(itemsTextLabel)
         stackView.addArrangedSubview(horizontalPhotoStackView)
         stackView.addArrangedSubview(horizontalFavoriteStackView)
+        stackView.addArrangedSubview(clearFavoriteDataButton)
+        stackView.addArrangedSubview(logOutButton)
+        return stackView
+    }()
+    
+    private lazy var dataVStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = NSLayoutConstraint.Axis.vertical
+        stackView.spacing = 10.0
         stackView.addArrangedSubview(clearFavoriteDataButton)
         stackView.addArrangedSubview(logOutButton)
         return stackView
@@ -114,7 +123,7 @@ class UserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        setupSubViews(verticalStackView)
+        setupSubViews(itemsVStackView, dataVStackView)
         setupConstraints()
     }
     
@@ -126,16 +135,19 @@ class UserViewController: UIViewController {
     }
     
     @objc private func clearFavoriteButtonTapped() {
-        showAlert(with: "Are you sure?", and: "Press OK to delete all favorite photos.") {
+        showAlert(with: "All favorite photos will be deleted.", and: "Do you want to continue?") {
             StorageManager.shared.deleteFavoritePhotos()
             self.delegateTabBarVC?.reloadFavoriteData()
             self.delegateFavoriteVC?.reloadData()
         }
     }
     
-    @objc private func quitButtonTapped() {
-        UserDefaults.standard.set(false, forKey: "done")
-        AppDelegate.shared.rootViewController.switchToLogout()
+    @objc private func logoutButtonTapped() {
+        showAlert(with: "All saved data will be deleted.", and: "Do you want to continue?") {
+            UserDefaults.standard.set(false, forKey: "done")
+            AppDelegate.shared.rootViewController.switchToLogout()
+            StorageManager.shared.deleteFavoritePhotos()
+        }
     }
     
     @objc private func changeItemsOnPhotoVCTapped() {
@@ -174,14 +186,21 @@ class UserViewController: UIViewController {
     
     //MARK: - Setup Constraints
     private func setupConstraints() {
-
-        verticalStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        itemsVStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            verticalStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
-            verticalStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            verticalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            itemsVStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70),
+            itemsVStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            itemsVStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
-                
+        
+        dataVStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            dataVStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -120),
+            dataVStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            dataVStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+        
         changeNumberOfItemsOnPVCButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             changeNumberOfItemsOnPVCButton.widthAnchor.constraint(equalToConstant: 110),
