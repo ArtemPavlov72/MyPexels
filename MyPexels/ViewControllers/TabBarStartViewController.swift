@@ -2,7 +2,7 @@
 //  TabBarViewController.swift
 //  MyPexels
 //
-//  Created by Artem Pavlov on 22.05.2022.
+//  Created by Artem Pavlov on 22.05.2022
 //
 
 import UIKit
@@ -10,7 +10,7 @@ import UIKit
 protocol TabBarStartViewControllerDelegate {
     func reloadFavoriteData()
 }
-                            
+
 class TabBarStartViewController: UITabBarController {
     
     //MARK: - Private Properties
