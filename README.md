@@ -8,6 +8,7 @@ MyPexels app staсk:
 - No storyboard;
 - Using catch;
 - MVC pattern;
-- CoreData.
+- CoreData;
+- UserDefaults.
 
 !!! Pexels Api did not work in Russian. If you live in Russia, use vpn.
