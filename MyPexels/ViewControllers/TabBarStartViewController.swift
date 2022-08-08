@@ -16,7 +16,7 @@ class TabBarStartViewController: UITabBarController {
     //MARK: - Private Properties
     private let photosVC = PhotoCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
     private let favoriteVC = FavoriteCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
-    private let userVC = UserViewController()
+    private let settingsVC = SettingsViewController()
     private var favoritePhotos: [PexelsPhoto] = []
     
     //MARK: - Life Cycles Methods
@@ -26,7 +26,7 @@ class TabBarStartViewController: UITabBarController {
         loadFavouritePhotos()
         updateFavotiteData(for: photosVC)
         updateFavotiteData(for: favoriteVC)
-        updateFavotiteData(for: userVC)
+        updateFavotiteData(for: settingsVC)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,8 +44,8 @@ class TabBarStartViewController: UITabBarController {
     private func setupTabBar() {
         photosVC.tabBarItem = UITabBarItem(title: "Pexels", image: UIImage(systemName: "house"), tag: 1)
         favoriteVC.tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "heart"), tag: 2)
-        userVC.tabBarItem = UITabBarItem(title: "User", image: UIImage(systemName: "person"), tag: 3)
-        viewControllers = [photosVC, favoriteVC, userVC]
+        settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "slider.vertical.3"), tag: 3)
+        viewControllers = [photosVC, favoriteVC, settingsVC]
     }
     
     private func updateFavotiteData(for favoriteViewController: FavoriteCollectionViewController) {
@@ -59,7 +59,7 @@ class TabBarStartViewController: UITabBarController {
         photoViewController.delegateTabBarVC = self
     }
     
-    private func updateFavotiteData(for userViewController: UserViewController) {
+    private func updateFavotiteData(for userViewController: SettingsViewController) {
         userViewController.delegateTabBarVC = self
         userViewController.delegateFavoriteVC = favoriteVC
         userViewController.delegatePhotoCollectionVC = photosVC

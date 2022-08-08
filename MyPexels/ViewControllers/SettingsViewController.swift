@@ -7,7 +7,7 @@
 
 import UIKit
 
-class UserViewController: UIViewController {
+class SettingsViewController: UIViewController {
     
     //MARK: - Private Properties
     private lazy var clearFavoriteDataButton: UIButton = {
@@ -214,7 +214,7 @@ class UserViewController: UIViewController {
 }
 
 //MARK: - Alert Controller
-extension UserViewController {
+extension SettingsViewController {
     private func showAlert(with title: String, and massage: String, completion: (() -> Void)?) {
         let alert = UIAlertController(title: title, message: massage, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
@@ -229,7 +229,7 @@ extension UserViewController {
 }
 
 //MARK: - Number Of Photos On Row
-extension UserViewController {
+extension SettingsViewController {
     enum ItemsOfRow {
         case one, two, three
     }
