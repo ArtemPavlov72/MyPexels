@@ -2,7 +2,7 @@
 //  TabBarViewController.swift
 //  MyPexels
 //
-//  Created by Artem Pavlov on 22.05.2022
+//  Created by Artem Pavlov on 22.05.2022.
 //
 
 import UIKit
@@ -10,7 +10,7 @@ import UIKit
 protocol TabBarStartViewControllerDelegate {
     func reloadFavoriteData()
 }
-
+                            
 class TabBarStartViewController: UITabBarController {
     
     //MARK: - Private Properties
@@ -44,7 +44,7 @@ class TabBarStartViewController: UITabBarController {
     private func setupTabBar() {
         photosVC.tabBarItem = UITabBarItem(title: "Pexels", image: UIImage(systemName: "house"), tag: 1)
         favoriteVC.tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "heart"), tag: 2)
-        settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "slider.vertical.3"), tag: 3)
+        settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "slider.vertical.3"), tag: 3) 
         viewControllers = [photosVC, favoriteVC, settingsVC]
     }
     

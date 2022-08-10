@@ -21,7 +21,18 @@ class PhotoCollectionViewController: UICollectionViewController {
     private var numberOfPage = 1
     private var photos: [Photo]?
     private var sizeOfPhoto = SizeOfPhoto.medium
-    private var numberOfUtemsPerRow: CGFloat = 2
+    private var numberOfUtemsPerRow: CGFloat = {
+        var items: CGFloat = 1
+        if UserDefaults.standard.value(forKey: "itemsPhotoVC") as? CGFloat == 1 {
+            items = 1
+        } else if UserDefaults.standard.value(forKey: "itemsPhotoVC") as? CGFloat == 2 {
+            items = 2
+        } else {
+            items = 3
+        }
+        return items
+    }()
+    
     
     //MARK: - Public Properties
     var favoritePhotos: [PexelsPhoto] = []

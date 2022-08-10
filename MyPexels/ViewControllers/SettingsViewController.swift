@@ -111,8 +111,29 @@ class SettingsViewController: UIViewController {
         return stackView
     }()
     
-    private var numberOfItemsOnPhotoVC = ItemsOfRow.two
-    private var numberOfItemsOnFavoriteVC = ItemsOfRow.two
+    private var numberOfItemsOnPhotoVC: ItemsOfRow = {
+        var items = ItemsOfRow.one
+        if UserDefaults.standard.value(forKey: "itemsPhotoVC") as? Int == 1 {
+            items = ItemsOfRow.one
+        } else if UserDefaults.standard.value(forKey: "itemsPhotoVC") as? Int == 2 {
+            items = ItemsOfRow.two
+        } else {
+            items = ItemsOfRow.three
+        }
+        return items
+    }()
+    
+    private var numberOfItemsOnFavoriteVC: ItemsOfRow = {
+        var items = ItemsOfRow.one
+        if UserDefaults.standard.value(forKey: "itemsFavoriteVC") as? Int == 1 {
+            items = ItemsOfRow.one
+        } else if UserDefaults.standard.value(forKey: "itemsFavoriteVC") as? Int == 2 {
+            items = ItemsOfRow.two
+        } else {
+            items = ItemsOfRow.three
+        }
+        return items
+    }()
     
     //MARK: - Public Properties
     var delegateTabBarVC: TabBarStartViewControllerDelegate?
@@ -145,6 +166,8 @@ class SettingsViewController: UIViewController {
     @objc private func logoutButtonTapped() {
         showAlert(with: "All saved data will be deleted.", and: "Do you want to continue?") {
             UserDefaults.standard.set(false, forKey: "done")
+            UserDefaults.standard.set(2, forKey: "itemsPhotoVC")
+            UserDefaults.standard.set(2, forKey: "itemsFavoriteVC")
             AppDelegate.shared.rootViewController.switchToLogout()
             StorageManager.shared.deleteFavoritePhotos()
         }
@@ -156,14 +179,17 @@ class SettingsViewController: UIViewController {
             numberOfItemsOnPhotoVC = ItemsOfRow.two
             delegatePhotoCollectionVC?.changeNumberOfItemsPerRow(2, size: .medium)
             changeNumberOfItemsOnPVCButton.setTitle(" \(numberOfItemsOnPhotoVC) ", for: .normal)
+            UserDefaults.standard.set(2, forKey: "itemsPhotoVC")
         case .two:
             numberOfItemsOnPhotoVC = ItemsOfRow.three
             delegatePhotoCollectionVC?.changeNumberOfItemsPerRow(3, size: .small)
             changeNumberOfItemsOnPVCButton.setTitle(" \(numberOfItemsOnPhotoVC) ", for: .normal)
+            UserDefaults.standard.set(3, forKey: "itemsPhotoVC")
         case .three:
             numberOfItemsOnPhotoVC = ItemsOfRow.one
             delegatePhotoCollectionVC?.changeNumberOfItemsPerRow(1, size: .large)
             changeNumberOfItemsOnPVCButton.setTitle(" \(numberOfItemsOnPhotoVC) ", for: .normal)
+            UserDefaults.standard.set(1, forKey: "itemsPhotoVC")
         }
     }
     
@@ -173,14 +199,17 @@ class SettingsViewController: UIViewController {
             numberOfItemsOnFavoriteVC = ItemsOfRow.two
             delegateFavoriteVC?.changeNumberOfItemsPerRow(2, size: .medium)
             changeNumberOfItemsOnFVCButton.setTitle(" \(numberOfItemsOnFavoriteVC) ", for: .normal)
+            UserDefaults.standard.set(2, forKey: "itemsFavoriteVC")
         case .two:
             numberOfItemsOnFavoriteVC = ItemsOfRow.three
             delegateFavoriteVC?.changeNumberOfItemsPerRow(3, size: .small)
             changeNumberOfItemsOnFVCButton.setTitle(" \(numberOfItemsOnFavoriteVC) ", for: .normal)
+            UserDefaults.standard.set(3, forKey: "itemsFavoriteVC")
         case .three:
             numberOfItemsOnFavoriteVC = ItemsOfRow.one
             delegateFavoriteVC?.changeNumberOfItemsPerRow(1, size: .large)
             changeNumberOfItemsOnFVCButton.setTitle(" \(numberOfItemsOnFavoriteVC) ", for: .normal)
+            UserDefaults.standard.set(1, forKey: "itemsFavoriteVC")
         }
     }
     

@@ -17,8 +17,19 @@ class FavoriteCollectionViewController: UICollectionViewController {
     
     //MARK: - Private Properties
     private let cellID = "cell"
-    private var numberOfUtemsPerRow: CGFloat = 2
     private var sizeOfPhoto = SizeOfPhoto.medium
+    private var numberOfUtemsPerRow: CGFloat = {
+        var items: CGFloat = 1
+        if UserDefaults.standard.value(forKey: "itemsFavoriteVC") as? CGFloat == 1 {
+            items = 1
+        } else if UserDefaults.standard.value(forKey: "itemsFavoriteVC") as? CGFloat == 2 {
+            items = 2
+        } else {
+            items = 3
+        }
+        return items
+    }()
+    
     
     //MARK: - Public Properties
     var favoritePhotos: [PexelsPhoto] = []
