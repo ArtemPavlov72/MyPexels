@@ -27,6 +27,8 @@
 		84D2BC8F288859640007F4B8 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2BC8E288859640007F4B8 /* CollectionView.swift */; };
 		84D2BC91288B17B60007F4B8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2BC90288B17B60007F4B8 /* LoginViewController.swift */; };
 		84D2BC93288EFDF80007F4B8 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2BC92288EFDF80007F4B8 /* RootViewController.swift */; };
+		ACAF447C28A978BF0053E5DC /* UserSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACAF447B28A978BF0053E5DC /* UserSettingsManager.swift */; };
+		ACC73BA128A6DEDE00E0C699 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC73BA028A6DEDE00E0C699 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +54,8 @@
 		84D2BC8E288859640007F4B8 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		84D2BC90288B17B60007F4B8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		84D2BC92288EFDF80007F4B8 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		ACAF447B28A978BF0053E5DC /* UserSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsManager.swift; sourceTree = "<group>"; };
+		ACC73BA028A6DEDE00E0C699 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				84525EC6283DC15A005E5E6A /* Pexels.swift */,
+				ACC73BA028A6DEDE00E0C699 /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -161,6 +166,7 @@
 			children = (
 				84525ECC2841EBFA005E5E6A /* NetworkManager.swift */,
 				84A6078F2861F823003311A4 /* StorageManager.swift */,
+				ACAF447B28A978BF0053E5DC /* UserSettingsManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -248,11 +254,13 @@
 				84A6078E2860D92F003311A4 /* Pexels.xcdatamodeld in Sources */,
 				84D14026284FB8FE00374A45 /* PhotoDetailsViewController.swift in Sources */,
 				84525EBC283A9E2D005E5E6A /* PhotoCollectionViewController.swift in Sources */,
+				ACAF447C28A978BF0053E5DC /* UserSettingsManager.swift in Sources */,
 				84525EAA283A9857005E5E6A /* SettingsViewController.swift in Sources */,
 				84D2BC91288B17B60007F4B8 /* LoginViewController.swift in Sources */,
 				84A607902861F823003311A4 /* StorageManager.swift in Sources */,
 				84525EA6283A9857005E5E6A /* AppDelegate.swift in Sources */,
 				84A6078B2858BEFD003311A4 /* PhotoViewController.swift in Sources */,
+				ACC73BA128A6DEDE00E0C699 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

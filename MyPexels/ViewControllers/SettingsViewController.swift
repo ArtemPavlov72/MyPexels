@@ -113,9 +113,9 @@ class SettingsViewController: UIViewController {
     
     private var numberOfItemsOnPhotoVC: ItemsOfRow = {
         var items = ItemsOfRow.one
-        if UserDefaults.standard.value(forKey: "itemsPhotoVC") as? Int == 1 {
+        if UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: true) == 1 {
             items = ItemsOfRow.one
-        } else if UserDefaults.standard.value(forKey: "itemsPhotoVC") as? Int == 2 {
+        } else if UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: true) == 2 {
             items = ItemsOfRow.two
         } else {
             items = ItemsOfRow.three
@@ -125,9 +125,9 @@ class SettingsViewController: UIViewController {
     
     private var numberOfItemsOnFavoriteVC: ItemsOfRow = {
         var items = ItemsOfRow.one
-        if UserDefaults.standard.value(forKey: "itemsFavoriteVC") as? Int == 1 {
+        if UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: false) == 1 {
             items = ItemsOfRow.one
-        } else if UserDefaults.standard.value(forKey: "itemsFavoriteVC") as? Int == 2 {
+        } else if UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: false) == 2 {
             items = ItemsOfRow.two
         } else {
             items = ItemsOfRow.three
@@ -165,9 +165,7 @@ class SettingsViewController: UIViewController {
     
     @objc private func logoutButtonTapped() {
         showAlert(with: "All saved data will be deleted.", and: "Do you want to continue?") {
-            UserDefaults.standard.set(false, forKey: "done")
-            UserDefaults.standard.set(2, forKey: "itemsPhotoVC")
-            UserDefaults.standard.set(2, forKey: "itemsFavoriteVC")
+            UserSettingManager.shared.deleteUserData()
             AppDelegate.shared.rootViewController.switchToLogout()
             StorageManager.shared.deleteFavoritePhotos()
         }
@@ -179,17 +177,17 @@ class SettingsViewController: UIViewController {
             numberOfItemsOnPhotoVC = ItemsOfRow.two
             delegatePhotoCollectionVC?.changeNumberOfItemsPerRow(2, size: .medium)
             changeNumberOfItemsOnPVCButton.setTitle(" \(numberOfItemsOnPhotoVC) ", for: .normal)
-            UserDefaults.standard.set(2, forKey: "itemsPhotoVC")
+            UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: true, to: 2)
         case .two:
             numberOfItemsOnPhotoVC = ItemsOfRow.three
             delegatePhotoCollectionVC?.changeNumberOfItemsPerRow(3, size: .small)
             changeNumberOfItemsOnPVCButton.setTitle(" \(numberOfItemsOnPhotoVC) ", for: .normal)
-            UserDefaults.standard.set(3, forKey: "itemsPhotoVC")
+            UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: true, to: 3)
         case .three:
             numberOfItemsOnPhotoVC = ItemsOfRow.one
             delegatePhotoCollectionVC?.changeNumberOfItemsPerRow(1, size: .large)
             changeNumberOfItemsOnPVCButton.setTitle(" \(numberOfItemsOnPhotoVC) ", for: .normal)
-            UserDefaults.standard.set(1, forKey: "itemsPhotoVC")
+            UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: true, to: 1)
         }
     }
     
@@ -199,17 +197,17 @@ class SettingsViewController: UIViewController {
             numberOfItemsOnFavoriteVC = ItemsOfRow.two
             delegateFavoriteVC?.changeNumberOfItemsPerRow(2, size: .medium)
             changeNumberOfItemsOnFVCButton.setTitle(" \(numberOfItemsOnFavoriteVC) ", for: .normal)
-            UserDefaults.standard.set(2, forKey: "itemsFavoriteVC")
+            UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: false, to: 2)
         case .two:
             numberOfItemsOnFavoriteVC = ItemsOfRow.three
             delegateFavoriteVC?.changeNumberOfItemsPerRow(3, size: .small)
             changeNumberOfItemsOnFVCButton.setTitle(" \(numberOfItemsOnFavoriteVC) ", for: .normal)
-            UserDefaults.standard.set(3, forKey: "itemsFavoriteVC")
+            UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: false, to: 3)
         case .three:
             numberOfItemsOnFavoriteVC = ItemsOfRow.one
             delegateFavoriteVC?.changeNumberOfItemsPerRow(1, size: .large)
             changeNumberOfItemsOnFVCButton.setTitle(" \(numberOfItemsOnFavoriteVC) ", for: .normal)
-            UserDefaults.standard.set(1, forKey: "itemsFavoriteVC")
+            UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: false, to: 1)
         }
     }
     

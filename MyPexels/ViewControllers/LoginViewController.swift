@@ -63,9 +63,14 @@ class LoginViewController: UIViewController {
     
     @objc private func enterButtonTapped() {
         guard let inputText = nameTextField.text, !inputText.isEmpty else {return}
+        let nameTrimmingText = inputText.trimmingCharacters(in: .whitespaces)
+        
+        let user = User(name: nameTrimmingText, isRegistered: true, pexelsImageCountPerRow: 2, favoriteImageCountPerRow: 2)
+        UserSettingManager.shared.save(user: user)
+
         let tabBarStartVC = TabBarStartViewController()
         tabBarStartVC.navigationItem.hidesBackButton = true
-        UserDefaults.standard.set(true, forKey: "done")
+        
         AppDelegate.shared.rootViewController.switchToMainScreen()
     }
 }

@@ -21,16 +21,8 @@ class PhotoCollectionViewController: UICollectionViewController {
     private var numberOfPage = 1
     private var photos: [Photo]?
     private var sizeOfPhoto = SizeOfPhoto.medium
-    private var numberOfUtemsPerRow: CGFloat = {
-        var items: CGFloat = 1
-        if UserDefaults.standard.value(forKey: "itemsPhotoVC") as? CGFloat == 1 {
-            items = 1
-        } else if UserDefaults.standard.value(forKey: "itemsPhotoVC") as? CGFloat == 2 {
-            items = 2
-        } else {
-            items = 3
-        }
-        return items
+    private var numberOfItemsPerRow: CGFloat = {
+        return CGFloat(UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: true))
     }()
     
     
@@ -116,9 +108,9 @@ class PhotoCollectionViewController: UICollectionViewController {
 //MARK: - UICollectionViewDelegateFlowLayout
 extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let paddingWidth = 20 * (numberOfUtemsPerRow + 1)
+        let paddingWidth = 20 * (numberOfItemsPerRow + 1)
         let avaibleWidth = collectionView.frame.width - paddingWidth
-        let widthPerItem = avaibleWidth / numberOfUtemsPerRow
+        let widthPerItem = avaibleWidth / numberOfItemsPerRow
         return CGSize(width: widthPerItem, height: widthPerItem)
     }
 }
@@ -126,7 +118,7 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
 //MARK: - PhotoCollectionViewControllerDelegate
 extension PhotoCollectionViewController: PhotoCollectionViewControllerDelegate {
     func changeNumberOfItemsPerRow(_ number: CGFloat, size: SizeOfPhoto) {
-        numberOfUtemsPerRow = number
+        numberOfItemsPerRow = number
         sizeOfPhoto = size
         collectionView.reloadData()
     }

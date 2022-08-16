@@ -44,6 +44,7 @@ class RootViewController: UIViewController {
     }
     
     func switchToLogout() {
+        
         let loginVC = LoginViewController()
         let logoutScreen = UINavigationController(rootViewController: loginVC)
         animateDismissTransition(to: logoutScreen)

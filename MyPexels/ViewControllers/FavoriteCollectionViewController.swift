@@ -19,15 +19,7 @@ class FavoriteCollectionViewController: UICollectionViewController {
     private let cellID = "cell"
     private var sizeOfPhoto = SizeOfPhoto.medium
     private var numberOfUtemsPerRow: CGFloat = {
-        var items: CGFloat = 1
-        if UserDefaults.standard.value(forKey: "itemsFavoriteVC") as? CGFloat == 1 {
-            items = 1
-        } else if UserDefaults.standard.value(forKey: "itemsFavoriteVC") as? CGFloat == 2 {
-            items = 2
-        } else {
-            items = 3
-        }
-        return items
+        return CGFloat(UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: false))
     }()
     
     

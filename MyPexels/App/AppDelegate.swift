@@ -26,10 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     //MARK: - Switch ViewControllers Methods
     private func switchRootViewController() {
-        if !UserDefaults.standard.bool(forKey: "done") {
-            AppDelegate.shared.rootViewController.showLoginScreen()
-        } else {
+        if UserSettingManager.shared.isRegistered() {
             AppDelegate.shared.rootViewController.switchToMainScreen()
+        } else {
+            AppDelegate.shared.rootViewController.showLoginScreen()
         }
     }
 }
