@@ -42,14 +42,14 @@ class PhotoCollectionViewController: UICollectionViewController {
     private func loadPexelsData() {
         activityIndicator = showSpinner(in: view)
         
-        NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { result in
+        NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { [weak self] result in
             switch result {
             case .success(let pexelsData):
-                self.pexelsData = pexelsData
-                self.activityIndicator?.stopAnimating()
-                self.photos = pexelsData.photos
-                self.numberOfPage += 1
-                self.collectionView.reloadData()
+                self?.pexelsData = pexelsData
+                self?.activityIndicator?.stopAnimating()
+                self?.photos = pexelsData.photos
+                self?.numberOfPage += 1
+                self?.collectionView.reloadData()
             case .failure(let error):
                 print(error)
             }
@@ -66,7 +66,7 @@ class PhotoCollectionViewController: UICollectionViewController {
         if let photo = photos?[indexPath.item] {
             switch sizeOfPhoto {
             case .small:
-                cell.configureCell(with: photo.src?.small ?? "")
+                cell.configureCell(with: photo.src?.medium ?? "")
             case .medium:
                 cell.configureCell(with: photo.src?.medium ?? "")
             case .large:

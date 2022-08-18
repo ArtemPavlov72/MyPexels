@@ -43,7 +43,7 @@ class FavoriteCollectionViewController: UICollectionViewController {
         let photo = favoritePhotos[indexPath.item]
         switch sizeOfPhoto {
         case .small:
-            cell.configureCell(with: photo.smallSizeOfPhoto ?? "")
+            cell.configureCell(with: photo.mediumSizeOfPhoto ?? "")
         case .medium:
             cell.configureCell(with: photo.mediumSizeOfPhoto ?? "")
         case .large:

@@ -142,10 +142,10 @@ class PhotoDetailsViewController: UIViewController {
     private func loadPexelsDataFromFavourite() {
         guard let favoritePhotoId = favoritePhoto?.id else { return }
         let id = Int(favoritePhotoId)
-        NetworkManager.shared.fetchData(from: Link.getPexelsPhotoById.rawValue, usingId: id) { result in
+        NetworkManager.shared.fetchData(from: Link.getPexelsPhotoById.rawValue, usingId: id) { [weak self] result in
             switch result {
             case .success(let fetchedPhoto):
-                self.photo = fetchedPhoto
+                self?.photo = fetchedPhoto
             case .failure(let error):
                 print(error.localizedDescription)
             }
