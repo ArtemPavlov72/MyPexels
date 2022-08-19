@@ -6,6 +6,7 @@
 // 
 
 import Foundation
+import UIKit
 
 enum NetworkError: Error {
     case invalidURL
@@ -74,9 +75,22 @@ class ImageManager {
     static let shared = ImageManager()
     private init() {}
     
-    func fetchImage(from url: String) -> Data? {
-        guard let imageUrl = URL(string: url) else { return nil }
-        return try? Data(contentsOf: imageUrl)
+    func fetchImage(from url: String, completion: @escaping(Result<Data, NetworkError>) -> Void) {
+        guard let imageUrl = URL(string: url) else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        
+        DispatchQueue.global().async {
+            guard let data = try? Data(contentsOf: imageUrl) else {
+                completion(.failure(.noData))
+                return
+            }
+            
+            DispatchQueue.main.async {
+                return completion(.success(data))
+            }
+        }
     }
     
     func fetchImageWithCatch(from url: URL, completion: @escaping(Data, URLResponse) -> Void) {

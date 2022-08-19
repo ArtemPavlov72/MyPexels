@@ -41,17 +41,20 @@ class PhotoViewController: UIViewController {
     private func loadImage(from url: String) {
         activityIndicator = showSpinner(in: view)
         
-        DispatchQueue.global().async {
-            guard let imageData = ImageManager.shared.fetchImage(from: url) else { return }
+        ImageManager.shared.fetchImage(from: url, completion: { [weak self] result in
+            guard let self = self else { return }
             
-            DispatchQueue.main.async {
-                self.pexelsPhoto.image = UIImage(data: imageData)
+            switch result {
+            case .success(let photoData):
+                self.pexelsPhoto.image = UIImage(data: photoData)
                 self.updateImageViewConstraint()
                 self.activityIndicator?.stopAnimating()
                 self.imageIsLoaded.toggle()
                 self.navigationItem.rightBarButtonItem?.isEnabled = self.imageIsLoaded
+            case .failure(let error):
+                print(error.localizedDescription)
             }
-        }
+        })
     }
     
     private func getInfo() {

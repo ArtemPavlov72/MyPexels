@@ -80,13 +80,13 @@ class PhotoCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == collectionView.numberOfItems(inSection: indexPath.section) - 1 {
             
-            NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { result in
+            NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { [weak self] result in
                 switch result {
                 case .success(let pexelsData):
-                    self.pexelsData = pexelsData
-                    self.photos? += pexelsData.photos ?? []
-                    self.numberOfPage += 1
-                    self.collectionView.reloadData()
+                    self?.pexelsData = pexelsData
+                    self?.photos? += pexelsData.photos ?? []
+                    self?.numberOfPage += 1
+                    self?.collectionView.reloadData()
                 case .failure(let error):
                     print(error)
                 }

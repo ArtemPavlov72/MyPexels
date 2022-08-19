@@ -11,8 +11,8 @@ import CoreData
 class PhotoDetailsViewController: UIViewController {
     
     //MARK: - Private Properties
-    private lazy var pexelsImage: UIImageView = {
-        let photo = UIImageView()
+    private lazy var pexelsImage: PexelsImageView = {
+        let photo = PexelsImageView()
         photo.layer.cornerRadius = 15
         photo.contentMode = .scaleAspectFill
         photo.layer.masksToBounds = true
@@ -128,15 +128,7 @@ class PhotoDetailsViewController: UIViewController {
     }
     
     private func loadImage(from url: String) {
-        activityIndicator = showSpinner(in: view)
-        DispatchQueue.global().async {
-            guard let imageData = ImageManager.shared.fetchImage(from: url) else { return }
-            
-            DispatchQueue.main.async {
-                self.pexelsImage.image = UIImage(data: imageData)
-                self.activityIndicator?.stopAnimating()
-            }
-        }
+        pexelsImage.fetchImage(from: url)
     }
     
     private func loadPexelsDataFromFavourite() {
