@@ -148,6 +148,11 @@ class SettingsViewController: UIViewController {
         setupConstraints()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.topItem?.searchController = nil
+    }
+    
     //MARK: - Private Methods
     private func setupSubViews(_ subViews: UIView...) {
         subViews.forEach { subview in

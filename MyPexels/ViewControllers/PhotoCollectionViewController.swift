@@ -25,6 +25,16 @@ class PhotoCollectionViewController: UICollectionViewController {
         return CGFloat(UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: true))
     }()
     
+    private var filteredPhotos: [Photo]? = []
+    private let searchController = UISearchController(searchResultsController: nil)
+    private var searchBarIsEmpty: Bool {
+        guard let text = searchController.searchBar.text else {return false}
+        return text.isEmpty
+    }
+    private var isFiltering: Bool {
+        return searchController.isActive && !searchBarIsEmpty
+    }
+    
     
     //MARK: - Public Properties
     var favoritePhotos: [PexelsPhoto] = []
@@ -36,6 +46,17 @@ class PhotoCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
         self.collectionView?.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
         loadPexelsData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupSearchController()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.topItem?.searchController = nil
+        //navigationController?.navigationBar.topItem?.hidesSearchBarWhenScrolling = true
     }
     
     //MARK: - Private Methods
@@ -56,14 +77,24 @@ class PhotoCollectionViewController: UICollectionViewController {
         }
     }
     
+    private func setupSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search"
+        navigationController?.navigationBar.topItem?.searchController = searchController
+        navigationController?.navigationBar.topItem?.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = true
+    }
+    
     // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        photos?.count ?? 0
+       isFiltering ? filteredPhotos?.count ?? 0 : photos?.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoViewCell
-        if let photo = photos?[indexPath.item] {
+        
+        if let photo = isFiltering ? filteredPhotos?[indexPath.item] : photos?[indexPath.item] {
             switch sizeOfPhoto {
             case .small:
                 cell.configureCell(with: photo.src?.medium ?? "")
@@ -80,22 +111,42 @@ class PhotoCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == collectionView.numberOfItems(inSection: indexPath.section) - 1 {
             
-            NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { [weak self] result in
-                switch result {
-                case .success(let pexelsData):
-                    self?.pexelsData = pexelsData
-                    self?.photos? += pexelsData.photos ?? []
-                    self?.numberOfPage += 1
-                    self?.collectionView.reloadData()
-                case .failure(let error):
-                    print(error)
+            if isFiltering {
+                
+                NetworkManager.shared.fetchSearchingPhoto(searchController.searchBar.text!, from: Link.pexelsSearchingPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { [weak self] result in
+                    switch result {
+                    case .success(let pexelsData):
+                        self?.pexelsData = pexelsData
+                        self?.filteredPhotos? += pexelsData.photos ?? []
+                        self?.numberOfPage += 1
+                        self?.collectionView.reloadData()
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+                
+            } else {
+                
+                NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { [weak self] result in
+                    guard let self = self else { return }
+                    
+                    switch result {
+                    case .success(let pexelsData):
+                        self.pexelsData = pexelsData
+                        self.photos? += pexelsData.photos ?? []
+                        self.numberOfPage += 1
+                        self.collectionView.reloadData()
+                    case .failure(let error):
+                        print(error)
+                    }
                 }
             }
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let photo = photos?[indexPath.item]
+        //let photo = photos?[indexPath.item]
+        let photo = isFiltering ? filteredPhotos?[indexPath.item] : photos?[indexPath.item]
         let photoDetailVC = PhotoDetailsViewController()
         photoDetailVC.photo = photo
         photoDetailVC.delegateTabBarVC = delegateTabBarVC
@@ -121,6 +172,27 @@ extension PhotoCollectionViewController: PhotoCollectionViewControllerDelegate {
         numberOfItemsPerRow = number
         sizeOfPhoto = size
         collectionView.reloadData()
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+extension PhotoCollectionViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+    
+    private func filterContentForSearchText(_ searchText: String) {
+        NetworkManager.shared.fetchSearchingPhoto(searchText, from: Link.pexelsSearchingPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { [weak self] result in
+            switch result {
+            case .success(let pexelsData):
+                self?.pexelsData = pexelsData
+                self?.filteredPhotos = pexelsData.photos
+                self?.numberOfPage += 1
+                self?.collectionView.reloadData()
+            case .failure(let error):
+                print(error)
+            }
+        }      
     }
 }
 

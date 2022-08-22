@@ -32,7 +32,7 @@ class TabBarStartViewController: UITabBarController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
-        setupTabBar()
+        //setupTabBar()
     }
     
     //MARK: - TabBar Setup
@@ -90,4 +90,3 @@ extension TabBarStartViewController: TabBarStartViewControllerDelegate {
         updateFavotiteData(for: photosVC)
     }
 }
-

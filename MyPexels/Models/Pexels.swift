@@ -61,7 +61,8 @@ enum SizeOfPhoto {
 enum Link: String {
     case pexelsBaseURL = "https://api.pexels.com/v1"
     case pexelsCuratedPhotos = "https://api.pexels.com/v1/curated"
-    case getPexelsPhotoById = "https://api.pexels.com/v1/photos/"
+    case pexelsPhotoById = "https://api.pexels.com/v1/photos/"
+    case pexelsSearchingPhotos = "https://api.pexels.com/v1/search"
 }
 
 enum ApiKey: String {

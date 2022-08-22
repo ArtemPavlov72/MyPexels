@@ -33,6 +33,11 @@ class FavoriteCollectionViewController: UICollectionViewController {
         self.collectionView?.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.topItem?.searchController = nil
+    }
+    
     // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return favoritePhotos.count

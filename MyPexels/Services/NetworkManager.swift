@@ -69,6 +69,32 @@ class NetworkManager {
             }
         } .resume()
     }
+    
+    func fetchSearchingPhoto(_ photo: String, from url: String, withNumberOfPhotosOnPage: Int, numberOfPage: Int, completion: @escaping(Result<Pexels, NetworkError>) -> Void) {
+        guard let url = URL(string: "\(url)?query=\(photo)&per_page=\(withNumberOfPhotosOnPage)&page=\(numberOfPage)") else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.addValue(ApiKey.pexelsKey.rawValue, forHTTPHeaderField: ApiKey.keyForHeader.rawValue)
+        
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data else {
+                completion(.failure(.noData))
+                return
+            }
+            
+            do {
+                let pexelsData = try JSONDecoder().decode(Pexels.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(pexelsData))
+                }
+            } catch {
+                completion(.failure(.decodingError))
+            }
+        } .resume()
+    }
 }
 
 class ImageManager {
