@@ -4,6 +4,7 @@
 //
 //  Created by Artem Pavlov on 25.05.2022.
 //
+
 import Foundation
 
 struct Pexels: Codable {

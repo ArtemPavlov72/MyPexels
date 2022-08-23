@@ -55,7 +55,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.navigationBar.topItem?.searchController = nil
+        //navigationController?.navigationBar.topItem?.searchController = nil
         //navigationController?.navigationBar.topItem?.hidesSearchBarWhenScrolling = true
     }
     
@@ -113,13 +113,21 @@ class PhotoCollectionViewController: UICollectionViewController {
             
             if isFiltering {
                 
-                NetworkManager.shared.fetchSearchingPhoto(searchController.searchBar.text!, from: Link.pexelsSearchingPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { [weak self] result in
+                NetworkManager.shared.fetchSearchingPhoto(
+                    searchController.searchBar.text!,
+                    from: Link.pexelsSearchingPhotos.rawValue,
+                    withNumberOfPhotosOnPage: numberOfPhotosOnPage,
+                    numberOfPage: numberOfPage
+                ) { [weak self] result in
+                    
+                    guard let self = self else { return }
+                    
                     switch result {
                     case .success(let pexelsData):
-                        self?.pexelsData = pexelsData
-                        self?.filteredPhotos? += pexelsData.photos ?? []
-                        self?.numberOfPage += 1
-                        self?.collectionView.reloadData()
+                        self.pexelsData = pexelsData
+                        self.filteredPhotos? += pexelsData.photos ?? []
+                        self.numberOfPage += 1
+                        self.collectionView.reloadData()
                     case .failure(let error):
                         print(error)
                     }
@@ -127,7 +135,12 @@ class PhotoCollectionViewController: UICollectionViewController {
                 
             } else {
                 
-                NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { [weak self] result in
+                NetworkManager.shared.fetchData(
+                    from: Link.pexelsCuratedPhotos.rawValue,
+                    withNumberOfPhotosOnPage: numberOfPhotosOnPage,
+                    numberOfPage: numberOfPage
+                ) { [weak self] result in
+                    
                     guard let self = self else { return }
                     
                     switch result {
@@ -145,7 +158,6 @@ class PhotoCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //let photo = photos?[indexPath.item]
         let photo = isFiltering ? filteredPhotos?[indexPath.item] : photos?[indexPath.item]
         let photoDetailVC = PhotoDetailsViewController()
         photoDetailVC.photo = photo
