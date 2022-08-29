@@ -32,7 +32,6 @@ class TabBarStartViewController: UITabBarController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
-        //setupTabBar()
     }
     
     //MARK: - TabBar Setup

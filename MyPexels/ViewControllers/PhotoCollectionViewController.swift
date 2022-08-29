@@ -45,32 +45,48 @@ class PhotoCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView?.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
-        loadPexelsData()
+        loadPexelsData(
+            from: Link.pexelsCuratedPhotos.rawValue,
+            withNumberOfPhotosOnPage: numberOfPhotosOnPage,
+            numberOfPage: numberOfPage
+        ) {
+            self.photos = self.pexelsData?.photos
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupSearchController()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        //navigationController?.navigationBar.topItem?.searchController = nil
-        //navigationController?.navigationBar.topItem?.hidesSearchBarWhenScrolling = true
-    }
-    
+            
     //MARK: - Private Methods
-    private func loadPexelsData() {
+    private func loadPexelsData(
+        from url: String,
+        withNumberOfPhotosOnPage numberOfPhotos: Int,
+        numberOfPage: Int,
+        completion: (() -> Void)?
+    )
+    {
         activityIndicator = showSpinner(in: view)
         
-        NetworkManager.shared.fetchData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { [weak self] result in
+        NetworkManager.shared.fetchData(
+            from: url,
+            withNumberOfPhotosOnPage: numberOfPhotos,
+            numberOfPage: numberOfPage
+        )
+        {
+            [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let pexelsData):
-                self?.pexelsData = pexelsData
-                self?.activityIndicator?.stopAnimating()
-                self?.photos = pexelsData.photos
-                self?.numberOfPage += 1
-                self?.collectionView.reloadData()
+                self.pexelsData = pexelsData
+                self.activityIndicator?.stopAnimating()
+                if let completion = completion {
+                    completion()
+                }
+                self.collectionView.reloadData()
+                self.numberOfPage += 1
             case .failure(let error):
                 print(error)
             }
@@ -81,8 +97,8 @@ class PhotoCollectionViewController: UICollectionViewController {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search"
-        navigationController?.navigationBar.topItem?.searchController = searchController
         navigationController?.navigationBar.topItem?.hidesSearchBarWhenScrolling = false
+        navigationController?.navigationBar.topItem?.searchController = searchController
         definesPresentationContext = true
     }
     
@@ -109,49 +125,29 @@ class PhotoCollectionViewController: UICollectionViewController {
     
     // MARK: - UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == collectionView.numberOfItems(inSection: indexPath.section) - 1 {
+        
+        if indexPath.row == collectionView.numberOfItems(inSection: indexPath.section) - 9 {
             
             if isFiltering {
-                
-                NetworkManager.shared.fetchSearchingPhoto(
+                loadFilteredDataFromText(
                     searchController.searchBar.text!,
                     from: Link.pexelsSearchingPhotos.rawValue,
                     withNumberOfPhotosOnPage: numberOfPhotosOnPage,
                     numberOfPage: numberOfPage
-                ) { [weak self] result in
-                    
-                    guard let self = self else { return }
-                    
-                    switch result {
-                    case .success(let pexelsData):
-                        self.pexelsData = pexelsData
-                        self.filteredPhotos? += pexelsData.photos ?? []
-                        self.numberOfPage += 1
-                        self.collectionView.reloadData()
-                    case .failure(let error):
-                        print(error)
-                    }
+                )
+                {
+                    self.filteredPhotos? += self.pexelsData?.photos ?? []
                 }
                 
             } else {
                 
-                NetworkManager.shared.fetchData(
+                loadPexelsData(
                     from: Link.pexelsCuratedPhotos.rawValue,
                     withNumberOfPhotosOnPage: numberOfPhotosOnPage,
                     numberOfPage: numberOfPage
-                ) { [weak self] result in
-                    
-                    guard let self = self else { return }
-                    
-                    switch result {
-                    case .success(let pexelsData):
-                        self.pexelsData = pexelsData
-                        self.photos? += pexelsData.photos ?? []
-                        self.numberOfPage += 1
-                        self.collectionView.reloadData()
-                    case .failure(let error):
-                        print(error)
-                    }
+                )
+                {
+                    self.photos? += self.pexelsData?.photos ?? []
                 }
             }
         }
@@ -190,21 +186,47 @@ extension PhotoCollectionViewController: PhotoCollectionViewControllerDelegate {
 // MARK: - UISearchResultsUpdating
 extension PhotoCollectionViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchController.searchBar.text!)
+        loadFilteredDataFromText(
+            searchController.searchBar.text!,
+            from: Link.pexelsSearchingPhotos.rawValue,
+            withNumberOfPhotosOnPage: numberOfPhotosOnPage,
+            numberOfPage: numberOfPage
+        )
+        {
+            self.filteredPhotos? = self.pexelsData?.photos ?? []
+        }
     }
     
-    private func filterContentForSearchText(_ searchText: String) {
-        NetworkManager.shared.fetchSearchingPhoto(searchText, from: Link.pexelsSearchingPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { [weak self] result in
+    private func loadFilteredDataFromText(
+        _ searchText: String,
+        from url: String,
+        withNumberOfPhotosOnPage numberOfPhotos: Int,
+        numberOfPage: Int,
+        completion: (() -> Void)?
+    )
+    {
+        NetworkManager.shared.fetchSearchingPhoto(
+            searchText,
+            from: url,
+            withNumberOfPhotosOnPage: numberOfPhotos,
+            numberOfPage: numberOfPage
+        )
+        {
+            [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let pexelsData):
-                self?.pexelsData = pexelsData
-                self?.filteredPhotos = pexelsData.photos
-                self?.numberOfPage += 1
-                self?.collectionView.reloadData()
+                self.pexelsData = pexelsData
+                if let completion = completion {
+                    completion()
+                }
+                self.collectionView.reloadData()
+                self.numberOfPage += 1
             case .failure(let error):
                 print(error)
             }
-        }      
+        }
     }
 }
 

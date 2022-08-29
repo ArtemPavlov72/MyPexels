@@ -23,7 +23,8 @@ class PexelsImageView: UIImageView {
         
         spinnerView = showSpinner(in: self)
         
-        ImageManager.shared.fetchImageWithCatch(from: url) { data, response in
+        ImageManager.shared.fetchImageWithCatch(from: url) { [weak self] data, response in
+            guard let self = self else {return}
             self.image = UIImage(data: data)
             self.spinnerView?.stopAnimating()
             self.saveDataToCatch(with: data, and: response)
