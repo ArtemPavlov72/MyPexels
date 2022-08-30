@@ -11,7 +11,7 @@ class PexelsImageView: UIImageView {
     
     //MARK: - Private Properties
     private var spinnerView: UIActivityIndicatorView?
-    
+        
     //MARK: - Public Methods
     func fetchImage(from url: String) {
         guard let url = URL(string: url) else { return }
@@ -41,6 +41,7 @@ class PexelsImageView: UIImageView {
     
     private func getCatchedImage(from url: URL) -> UIImage? {
         let request = URLRequest(url: url)
+        
         if let cachedResponse = URLCache.shared.cachedResponse(for: request) {
             return UIImage(data: cachedResponse.data)
         }
