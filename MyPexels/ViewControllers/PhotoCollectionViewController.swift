@@ -35,7 +35,6 @@ class PhotoCollectionViewController: UICollectionViewController {
     private var isFiltering: Bool {
         return searchController.isActive && !searchBarIsEmpty
     }
-    private var searchingText = ""
     
     //MARK: - Public Properties
     var favoritePhotos: [PexelsPhoto] = []
@@ -126,9 +125,15 @@ class PhotoCollectionViewController: UICollectionViewController {
                 cell.configureCell(with: photo.src?.large ?? "")
             }
         }
-        
-        if indexPath.row == collectionView.numberOfItems(inSection: indexPath.section) - 10 {
-            if isFiltering {
+        return cell
+    }
+    
+    // MARK: - UICollectionViewDelegate
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+       
+        if isFiltering {
+            
+            if indexPath.row == filteredPhotos.count - 10 {
                 loadFilteredDataFromText(
                     searchController.searchBar.text!,
                     from: Link.pexelsSearchingPhotos.rawValue,
@@ -138,8 +143,10 @@ class PhotoCollectionViewController: UICollectionViewController {
                 {
                     self.filteredPhotos += self.pexelsData?.photos ?? []
                 }
-                
-            } else {
+            }
+            
+        } else {
+            if indexPath.row == (photos?.count ?? 0) - 10 {
                 loadPexelsData(
                     from: Link.pexelsCuratedPhotos.rawValue,
                     withNumberOfPhotosOnPage: numberOfPhotosOnPage,
@@ -150,7 +157,6 @@ class PhotoCollectionViewController: UICollectionViewController {
                 }
             }
         }
-        return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -186,12 +192,9 @@ extension PhotoCollectionViewController: PhotoCollectionViewControllerDelegate {
 // MARK: - UISearchResultsUpdating
 extension PhotoCollectionViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        if searchingText == searchController.searchBar.text! {
-            return
-        }
-        
+ 
         numberOfSearchingPage = 1
-        
+
         loadFilteredDataFromText(
             searchController.searchBar.text!,
             from: Link.pexelsSearchingPhotos.rawValue,
@@ -200,7 +203,6 @@ extension PhotoCollectionViewController: UISearchResultsUpdating {
         )
         {
             self.filteredPhotos = self.pexelsData?.photos ?? []
-            self.searchingText = searchController.searchBar.text!
         }
     }
     

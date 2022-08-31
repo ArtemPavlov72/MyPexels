@@ -84,7 +84,7 @@ class NetworkManager {
                 completion(.failure(.decodingError))
             }
         }
-    }
+    } 
 }
 
 class ImageManager {

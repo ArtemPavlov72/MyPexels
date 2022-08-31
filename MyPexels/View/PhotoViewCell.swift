@@ -30,6 +30,7 @@ class PhotoViewCell: UICollectionViewCell {
     
     //MARK: - Public Methods
     func configureCell(with photo: String) {
+        imageView.image = nil
         imageView.fetchImage(from: photo)
     }
     
