@@ -19,7 +19,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     private var activityIndicator: UIActivityIndicatorView?
     private let numberOfPhotosOnPage = 30
     private var numberOfPage = 1
-    private var photos: [Photo]?
+    private var photos: [Photo] = []
     private var sizeOfPhoto = SizeOfPhoto.medium
     private var numberOfItemsPerRow: CGFloat = {
         return CGFloat(UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: true))
@@ -62,17 +62,13 @@ class PhotoCollectionViewController: UICollectionViewController {
             withNumberOfPhotosOnPage: numberOfPhotosOnPage,
             numberOfPage: numberOfPage
         )
-        {
-            self.activityIndicator?.stopAnimating()
-            self.photos = self.pexelsData?.photos
-        }
+        self.activityIndicator?.stopAnimating()
     }
     
     private func loadPexelsData(
         from url: String,
         withNumberOfPhotosOnPage numberOfPhotos: Int,
-        numberOfPage: Int,
-        completion: (() -> Void)?
+        numberOfPage: Int
     )
     {
         NetworkManager.shared.fetchData(
@@ -87,11 +83,13 @@ class PhotoCollectionViewController: UICollectionViewController {
             switch result {
             case .success(let pexelsData):
                 self.pexelsData = pexelsData
-                if let completion = completion {
-                    completion()
+                if self.photos.isEmpty {
+                    self.photos = pexelsData.photos ?? []
+                } else {
+                    self.photos += pexelsData.photos ?? []
                 }
-                self.collectionView.reloadData()
                 self.numberOfPage += 1
+                self.collectionView.reloadData()
             case .failure(let error):
                 print(error)
             }
@@ -109,21 +107,20 @@ class PhotoCollectionViewController: UICollectionViewController {
     
     // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        isFiltering ? filteredPhotos.count : photos?.count ?? 0
+        isFiltering ? filteredPhotos.count : photos.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoViewCell
         
-        if let photo = isFiltering ? filteredPhotos[indexPath.item] : photos?[indexPath.item] {
-            switch sizeOfPhoto {
-            case .small:
-                cell.configureCell(with: photo.src?.medium ?? "")
-            case .medium:
-                cell.configureCell(with: photo.src?.medium ?? "")
-            case .large:
-                cell.configureCell(with: photo.src?.large ?? "")
-            }
+        let photo = isFiltering ? filteredPhotos[indexPath.item] : photos[indexPath.item]
+        switch sizeOfPhoto {
+        case .small:
+            cell.configureCell(with: photo.src?.medium ?? "")
+        case .medium:
+            cell.configureCell(with: photo.src?.medium ?? "")
+        case .large:
+            cell.configureCell(with: photo.src?.large ?? "")
         }
         return cell
     }
@@ -133,7 +130,7 @@ class PhotoCollectionViewController: UICollectionViewController {
        
         if isFiltering {
             
-            if indexPath.row == filteredPhotos.count - 10 {
+            if indexPath.item == filteredPhotos.count - 10 {
                 loadFilteredDataFromText(
                     searchController.searchBar.text!,
                     from: Link.pexelsSearchingPhotos.rawValue,
@@ -146,21 +143,18 @@ class PhotoCollectionViewController: UICollectionViewController {
             }
             
         } else {
-            if indexPath.row == (photos?.count ?? 0) - 10 {
+            if indexPath.item == (photos.count) - 10 {
                 loadPexelsData(
                     from: Link.pexelsCuratedPhotos.rawValue,
                     withNumberOfPhotosOnPage: numberOfPhotosOnPage,
                     numberOfPage: numberOfPage
                 )
-                {
-                    self.photos? += self.pexelsData?.photos ?? []
-                }
             }
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let photo = isFiltering ? filteredPhotos[indexPath.item] : photos?[indexPath.item]
+        let photo = isFiltering ? filteredPhotos[indexPath.item] : photos[indexPath.item]
         let photoDetailVC = PhotoDetailsViewController()
         photoDetailVC.photo = photo
         photoDetailVC.delegateTabBarVC = delegateTabBarVC
