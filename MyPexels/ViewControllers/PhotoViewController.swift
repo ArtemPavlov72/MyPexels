@@ -10,8 +10,8 @@ import UIKit
 class PhotoViewController: UIViewController {
     
     //MARK: - Private Properties
-    private lazy var pexelsPhoto: UIImageView = {
-        let photo = UIImageView()
+    private lazy var pexelsPhoto: PexelsImageView = {
+        let photo = PexelsImageView()
         photo.layer.cornerRadius = 15
         photo.contentMode = .scaleAspectFit
         photo.layer.masksToBounds = true
@@ -20,7 +20,6 @@ class PhotoViewController: UIViewController {
     
     private lazy var imageWidthConstraint = pexelsPhoto.widthAnchor.constraint(equalToConstant: 0)
     private lazy var imageHeightConstraint = pexelsPhoto.heightAnchor.constraint(equalToConstant: 0)
-    
     private var activityIndicator: UIActivityIndicatorView?
     private var imageIsLoaded = false
     
@@ -32,7 +31,7 @@ class PhotoViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupNavigationBar(imageIsLoaded)
-        getInfo()
+        loadImage(from: photo ?? "")
         setupSubViews(pexelsPhoto)
         setupConstraints()
     }
@@ -41,24 +40,12 @@ class PhotoViewController: UIViewController {
     private func loadImage(from url: String) {
         activityIndicator = showSpinner(in: view)
         
-        ImageManager.shared.fetchImage(from: url, completion: { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let photoData):
-                self.pexelsPhoto.image = UIImage(data: photoData)
-                self.updateImageViewConstraint()
-                self.activityIndicator?.stopAnimating()
-                self.imageIsLoaded.toggle()
-                self.navigationItem.rightBarButtonItem?.isEnabled = self.imageIsLoaded
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        })
-    }
-    
-    private func getInfo() {
-        loadImage(from: photo ?? "")
+        pexelsPhoto.fetchImage(from: url) {
+            self.updateImageViewConstraint()
+            self.imageIsLoaded.toggle()
+            self.activityIndicator?.stopAnimating()
+            self.navigationItem.rightBarButtonItem?.isEnabled = self.imageIsLoaded
+        }
     }
     
     private func setupSubViews(_ subViews: UIView...) {

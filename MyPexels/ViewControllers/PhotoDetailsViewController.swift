@@ -74,8 +74,7 @@ class PhotoDetailsViewController: UIViewController {
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
-    
-    private var activityIndicator: UIActivityIndicatorView?
+
     private var liked = false
     
     //MARK: - Public Properties
@@ -128,7 +127,7 @@ class PhotoDetailsViewController: UIViewController {
     }
     
     private func loadImage(from url: String) {
-        pexelsImage.fetchImage(from: url)
+        pexelsImage.fetchImage(from: url) { }
     }
     
     private func loadPexelsDataFromFavourite() {

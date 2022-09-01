@@ -30,8 +30,7 @@ class PhotoViewCell: UICollectionViewCell {
     
     //MARK: - Public Methods
     func configureCell(with photo: String) {
-        imageView.image = UIImage()
-        imageView.fetchImage(from: photo)
+        imageView.fetchImage(from: photo) { }
     }
     
     //MARK: - Private Methods

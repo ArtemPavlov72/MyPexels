@@ -62,7 +62,6 @@ class PhotoCollectionViewController: UICollectionViewController {
             withNumberOfPhotosOnPage: numberOfPhotosOnPage,
             numberOfPage: numberOfPage
         )
-        self.activityIndicator?.stopAnimating()
     }
     
     private func loadPexelsData(
@@ -85,6 +84,7 @@ class PhotoCollectionViewController: UICollectionViewController {
                 self.pexelsData = pexelsData
                 if self.photos.isEmpty {
                     self.photos = pexelsData.photos ?? []
+                    self.activityIndicator?.stopAnimating()
                 } else {
                     self.photos += pexelsData.photos ?? []
                 }
@@ -115,21 +115,13 @@ class PhotoCollectionViewController: UICollectionViewController {
         
         let photo = isFiltering ? filteredPhotos[indexPath.item] : photos[indexPath.item]
         switch sizeOfPhoto {
-        case .small:
-            cell.configureCell(with: photo.src?.medium ?? "")
-        case .medium:
+        case .small, .medium:
             cell.configureCell(with: photo.src?.medium ?? "")
         case .large:
             cell.configureCell(with: photo.src?.large ?? "")
         }
-        return cell
-    }
-    
-    // MARK: - UICollectionViewDelegate
-    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-       
+        
         if isFiltering {
-            
             if indexPath.item == filteredPhotos.count - 10 {
                 loadFilteredDataFromText(
                     searchController.searchBar.text!,
@@ -151,8 +143,10 @@ class PhotoCollectionViewController: UICollectionViewController {
                 )
             }
         }
+        return cell
     }
     
+    // MARK: - UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photo = isFiltering ? filteredPhotos[indexPath.item] : photos[indexPath.item]
         let photoDetailVC = PhotoDetailsViewController()
@@ -232,6 +226,3 @@ extension PhotoCollectionViewController: UISearchResultsUpdating {
         }
     }
 }
-
-
-
