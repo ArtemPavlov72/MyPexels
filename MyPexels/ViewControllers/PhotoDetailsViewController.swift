@@ -213,7 +213,7 @@ class PhotoDetailsViewController: UIViewController {
     
     @objc private func originSizeButtonTapped() {
         let photoVC = PhotoViewController()
-        photoVC.photo = photo?.src?.original
+        photoVC.photo = photo
         show(photoVC, sender: nil)
     }
     

@@ -27,6 +27,8 @@ struct Pexels: Codable {
 
 struct Photo: Codable {
     let id: Int?
+    let width: Int?
+    let height: Int?
     let url: String?
     let photographer: String?
     let src: Src?
@@ -34,6 +36,8 @@ struct Photo: Codable {
     
     enum CodingKeys: String, CodingKey {
         case id
+        case width
+        case height
         case url
         case photographer
         case src

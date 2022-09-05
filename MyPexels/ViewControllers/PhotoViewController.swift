@@ -20,30 +20,27 @@ class PhotoViewController: UIViewController {
     
     private lazy var imageWidthConstraint = pexelsPhoto.widthAnchor.constraint(equalToConstant: 0)
     private lazy var imageHeightConstraint = pexelsPhoto.heightAnchor.constraint(equalToConstant: 0)
-    private var activityIndicator: UIActivityIndicatorView?
+    
     private var imageIsLoaded = false
     
     //MARK: - Public Properties
-    var photo: String?
+    var photo: Photo?
     
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupNavigationBar(imageIsLoaded)
-        loadImage(from: photo ?? "")
+        updateImageViewConstraint(size: photo?.width, x: photo?.height)
+        loadImage(from: photo?.src?.original ?? "")
         setupSubViews(pexelsPhoto)
         setupConstraints()
     }
     
     //MARK: - Private Methods
     private func loadImage(from url: String) {
-        activityIndicator = showSpinner(in: view)
-        
         pexelsPhoto.fetchImage(from: url) {
-            self.updateImageViewConstraint()
             self.imageIsLoaded.toggle()
-            self.activityIndicator?.stopAnimating()
             self.navigationItem.rightBarButtonItem?.isEnabled = self.imageIsLoaded
         }
     }
@@ -87,27 +84,25 @@ class PhotoViewController: UIViewController {
         ])
     }
     
-    private func updateImageViewConstraint(_ size: CGSize? = nil) {
-        guard let image = pexelsPhoto.image else {
-            imageHeightConstraint.constant = 0
-            imageWidthConstraint.constant = 0
-            return
-        }
+    private func updateImageViewConstraint(size width: Int?,x height: Int?) {
+        let width = CGFloat(width ?? 0)
+        let height = CGFloat(height ?? 0)
         
         let size = view.bounds.size
         let offsetForPhotoHeight = view.bounds.height * 0.25
         let maxSize = CGSize(width: size.width - 32, height: size.height - offsetForPhotoHeight)
-        let imageSize = findBestImageSize(img: image, maxSize: maxSize)
+        let imageSize = findBestImageSize(width: width, height: height, maxSize: maxSize)
         
         imageHeightConstraint.constant = imageSize.height
         imageWidthConstraint.constant = imageSize.width
     }
     
-    private func findBestImageSize(img: UIImage, maxSize: CGSize) -> CGSize {
-        let width = img.width(height: maxSize.height)
-        let checkedWidth = min(width, maxSize.width)
-        let height = img.height(width: checkedWidth)
-        return CGSize(width: checkedWidth, height: height)
+    private func findBestImageSize(width: CGFloat, height: CGFloat, maxSize: CGSize) -> CGSize {
+        let cropRatio: CGFloat = width / height
+        let widthCroped = maxSize.height / cropRatio
+        let updatedWidth = min(widthCroped, maxSize.width)
+        let updatedCroped = updatedWidth / cropRatio
+        return CGSize(width: updatedWidth, height: updatedCroped)
     }
 }
 
@@ -120,4 +115,3 @@ extension PhotoViewController {
         present(alert, animated: true)
     }
 }
-
