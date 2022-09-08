@@ -1,6 +1,10 @@
 # MyPexels
 This app using [Pexels](https://www.pexels.com/ru-ru/) API and written in Swift with UIKit. [Here](https://www.pexels.com/ru-ru/api/documentation/) Pexels API documentation.
 
+For using MyPexels app, you need to install [SDWebImage](https://github.com/SDWebImage/SDWebImage) to project. 
+
+Please, use your own [API-key](https://www.pexels.com/api), then you using MyPexels App. 
+
 ---
 ### MyPexels app staсk:
 - Using URLSession for fetching data from Pexels API;
