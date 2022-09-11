@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class PhotoViewController: UIViewController {
     
@@ -18,8 +19,8 @@ class PhotoViewController: UIViewController {
         return photo
     }()
     
-    private lazy var imageWidthConstraint = pexelsPhoto.widthAnchor.constraint(equalToConstant: 0)
-    private lazy var imageHeightConstraint = pexelsPhoto.heightAnchor.constraint(equalToConstant: 0)
+    private lazy var imageWidthConstraint: CGFloat = 0
+    private lazy var imageHeightConstraint: CGFloat = 0
     
     private var imageIsLoaded = false
     
@@ -75,13 +76,11 @@ class PhotoViewController: UIViewController {
     
     //MARK: - Setup Constraints
     private func setupConstraints() {
-        pexelsPhoto.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            pexelsPhoto.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pexelsPhoto.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            imageWidthConstraint,
-            imageHeightConstraint
-        ])
+        pexelsPhoto.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.equalTo(imageWidthConstraint)
+            make.height.equalTo(imageHeightConstraint)
+        }
     }
     
     private func updateImageViewConstraint(size width: Int?,x height: Int?) {
@@ -93,8 +92,8 @@ class PhotoViewController: UIViewController {
         let maxSize = CGSize(width: size.width - 32, height: size.height - offsetForPhotoHeight)
         let imageSize = findBestImageSize(width: width, height: height, maxSize: maxSize)
         
-        imageHeightConstraint.constant = imageSize.height
-        imageWidthConstraint.constant = imageSize.width
+        imageWidthConstraint = imageSize.width
+        imageHeightConstraint = imageSize.height
     }
     
     private func findBestImageSize(width: CGFloat, height: CGFloat, maxSize: CGSize) -> CGSize {

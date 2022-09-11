@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class LoginViewController: UIViewController {
     
@@ -54,11 +55,9 @@ class LoginViewController: UIViewController {
     }
     
     private func setupConstraints() {
-        verticalStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            verticalStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            verticalStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
+        verticalStackView.snp.makeConstraints { make in
+            make.center.equalTo(view)
+        }
     }
     
     @objc private func enterButtonTapped() {

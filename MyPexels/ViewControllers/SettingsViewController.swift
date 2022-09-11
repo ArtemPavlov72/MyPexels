@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class SettingsViewController: UIViewController {
     
@@ -218,30 +219,23 @@ class SettingsViewController: UIViewController {
     
     //MARK: - Setup Constraints
     private func setupConstraints() {
+        itemsVStackView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
+            make.right.left.equalToSuperview().inset(16)
+        }
         
-        itemsVStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            itemsVStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70),
-            itemsVStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            itemsVStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
+        dataVStackView.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(35)
+            make.right.left.equalToSuperview().inset(16)
+        }
         
-        dataVStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            dataVStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -120),
-            dataVStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            dataVStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
+        changeNumberOfItemsOnPVCButton.snp.makeConstraints { make in
+            make.width.equalTo(110)
+        }
         
-        changeNumberOfItemsOnPVCButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            changeNumberOfItemsOnPVCButton.widthAnchor.constraint(equalToConstant: 110),
-        ])
-        
-        changeNumberOfItemsOnFVCButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            changeNumberOfItemsOnFVCButton.widthAnchor.constraint(equalToConstant: 110),
-        ])
+        changeNumberOfItemsOnFVCButton.snp.makeConstraints { make in
+            make.width.equalTo(110)
+        }
     }
 }
 

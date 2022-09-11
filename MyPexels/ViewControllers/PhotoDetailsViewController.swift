@@ -219,40 +219,33 @@ class PhotoDetailsViewController: UIViewController {
     
     //MARK: - Setup Constraints
     private func setupConstraints() {
-        let offsetLineView = view.bounds.height * 0.65
+        pexelsImage.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(view).multipliedBy(0.65)
+            make.left.right.equalToSuperview().inset(16)
+        }
         
-        pexelsImage.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            pexelsImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            pexelsImage.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: offsetLineView),
-            pexelsImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            pexelsImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
+        horizontalStackView.snp.makeConstraints { make in
+            make.top.equalTo(pexelsImage.snp.bottom).inset(-10)
+            make.left.right.equalToSuperview().inset(16)
+        }
         
-        horizontalStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            horizontalStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: offsetLineView + 10),
-            horizontalStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            horizontalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            sendButton.widthAnchor.constraint(equalToConstant: 35),
-            likeButton.widthAnchor.constraint(equalToConstant: 35)
-        ])
+        sendButton.snp.makeConstraints { make in
+            make.width.equalTo(35)
+        }
         
-        photogtapherNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            photogtapherNameLabel.topAnchor.constraint(equalTo: originSizeButton.bottomAnchor, constant: 5),
-            photogtapherNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            photogtapherNameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
+        likeButton.snp.makeConstraints { make in
+            make.width.equalTo(35)
+        }
         
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: photogtapherNameLabel.bottomAnchor, constant: 2),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
+        photogtapherNameLabel.snp.makeConstraints { make in
+            make.top.equalTo(horizontalStackView.snp.bottom).inset(-10)
+            make.left.right.equalToSuperview().inset(16)
+        }
+        
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(photogtapherNameLabel.snp.bottom).inset(-2)
+            make.left.right.equalToSuperview().inset(16)
+        }
     }
 }
-
-
-
