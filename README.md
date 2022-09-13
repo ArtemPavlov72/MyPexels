@@ -10,6 +10,7 @@ Please, use your own [API-key](https://www.pexels.com/api), then you using MyPex
 - Using URLSession for fetching data from Pexels API;
 - No storyboard;
 - SDWebImage framework;
+- SnapKit framework;
 - MVC pattern;
 - CoreData;
 - UserDefaults.
