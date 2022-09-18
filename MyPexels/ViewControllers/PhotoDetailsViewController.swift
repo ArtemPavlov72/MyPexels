@@ -127,7 +127,8 @@ class PhotoDetailsViewController: UIViewController {
     }
     
     private func loadImage(from url: String) {
-        pexelsImage.fetchImage(from: url) { }
+        pexelsImage.fetchImage(from: url) {
+        }
     }
     
     private func loadPexelsDataFromFavourite() {
@@ -194,7 +195,7 @@ class PhotoDetailsViewController: UIViewController {
     @objc private func shareData() {
         guard let link = photo?.url else { return }
         guard let photoLink = NSURL(string: link) else { return }
-        let activityViewController: UIActivityViewController = UIActivityViewController(
+        let activityViewController = UIActivityViewController(
             activityItems: [photoLink],
             applicationActivities: nil
         )
