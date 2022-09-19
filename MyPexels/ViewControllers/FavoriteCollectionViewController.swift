@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreData
 
 protocol FavoriteCollectionViewControllerDelegate {
     func changeNumberOfItemsPerRow(_ number: CGFloat, size: SizeOfPhoto)

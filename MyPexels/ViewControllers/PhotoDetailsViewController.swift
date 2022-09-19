@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreData
 
 class PhotoDetailsViewController: UIViewController {
     
@@ -146,23 +145,18 @@ class PhotoDetailsViewController: UIViewController {
     
     private func updateFavotitePhotos() {
         if liked {
-            if let pexelsPhotoId = photo?.id {
-                for favorPhoto in favoritePhotos {
-                    if pexelsPhotoId == Int(favorPhoto.id) {
-                        return
-                    }
+            guard let pexelsPhotoId = photo?.id else { return }
+            for favorPhoto in favoritePhotos {
+                if pexelsPhotoId == Int(favorPhoto.id) {
+                    return
                 }
             }
             StorageManager.shared.savePhoto(pexelsPhoto: photo)
             delegateTabBarVC?.reloadFavoriteData()
         } else {
-            guard let pexelsPhotoId = photo?.id else { return }
-            for favorPhoto in favoritePhotos {
-                if pexelsPhotoId == Int(favorPhoto.id) {
-                    StorageManager.shared.deletePhoto(photo: favoritePhoto ?? PexelsPhoto())
-                    delegateTabBarVC?.reloadFavoriteData()
-                }
-            }
+            guard favoritePhoto != nil else { return }
+            StorageManager.shared.deletePhoto(photo: favoritePhoto ?? PexelsPhoto())
+            delegateTabBarVC?.reloadFavoriteData()
         }
     }
     
