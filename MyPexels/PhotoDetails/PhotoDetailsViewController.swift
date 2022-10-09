@@ -73,11 +73,21 @@ class PhotoDetailsViewController: UIViewController {
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
-
+    
     private var liked = false
     
     //MARK: - Public Properties
+    var viewModel: PhotoDetailsViewModelProtocol! {
+        didSet {
+            photogtapherNameLabel.text = viewModel.photogtapherNameLabel?.capitalized
+            descriptionLabel.text = viewModel.descriptionLabel?.capitalized
+            guard let imageUrl = viewModel.pexelsImageURL else { return }
+            pexelsImage.fetchImage(from: imageUrl)
+        }
+    }
+    
     var photo: Photo?
+    
     var favoritePhoto: PexelsPhoto?
     var favoritePhotos: [PexelsPhoto] = []
     var delegateTabBarVC: TabBarStartViewControllerDelegate?
@@ -87,6 +97,9 @@ class PhotoDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        
+        viewModel = PhotoDetailsViewModel(photo: photo, favoritePhoto: favoritePhoto)
+        
         setupNavigationBar()
         setupPhotoInfo()
         setupSubViews(pexelsImage, horizontalStackView, photogtapherNameLabel, descriptionLabel)
@@ -102,31 +115,10 @@ class PhotoDetailsViewController: UIViewController {
     //MARK: - Private Methods
     private func setupPhotoInfo() {
         if favoritePhoto != nil {
-            getDetailsWith(
-                photoUrl: favoritePhoto?.largeSizeOfPhoto ?? "",
-                photographerName: favoritePhoto?.photographer ?? "",
-                descriptionOfPhoto: favoritePhoto?.descriptionOfPhoto ?? ""
-            )
             loadPexelsDataFromFavourite()
             setLike()
         } else {
-            getDetailsWith(
-                photoUrl: photo?.src?.large ?? "",
-                photographerName: photo?.photographer ?? "",
-                descriptionOfPhoto: photo?.alt ?? ""
-            )
             isLiked()
-        }
-    }
-    
-    private func getDetailsWith(photoUrl: String, photographerName: String, descriptionOfPhoto: String) {
-        loadImage(from: photoUrl)
-        photogtapherNameLabel.text = photographerName.capitalized
-        descriptionLabel.text = descriptionOfPhoto.capitalized
-    }
-    
-    private func loadImage(from url: String) {
-        pexelsImage.fetchImage(from: url) {
         }
     }
     
