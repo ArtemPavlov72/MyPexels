@@ -66,6 +66,24 @@ class StorageManager {
         saveContext()
     }
     
+    func deletePhoto2(photo: Photo?) {
+        var favoritePhotos: [PexelsPhoto] = []
+        fetchFavoritePhotos { result in
+            switch result {
+            case .success(let photos):
+                favoritePhotos = photos
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        guard let pexelsPhotoId = photo?.id else { return }
+        for favorPhoto in favoritePhotos {
+            if pexelsPhotoId == Int(favorPhoto.id) {
+                deletePhoto(photo: favorPhoto)
+            }
+        }
+    }
+    
     // MARK: - Core Data Saving support
     func saveContext() {
         if viewContext.hasChanges {

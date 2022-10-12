@@ -133,7 +133,6 @@ class PhotoCollectionViewController: UICollectionViewController {
                     self.filteredPhotos += self.pexelsData?.photos ?? []
                 }
             }
-            
         } else {
             if indexPath.item == (photos.count) - 10 {
                 loadPexelsData(
