@@ -58,6 +58,8 @@ class StorageManager {
         photo.largeSizeOfPhoto = pexelsPhoto?.src?.large
         photo.originalSizeOfPhoto = pexelsPhoto?.src?.original
         photo.pexelsUrl = pexelsPhoto?.url
+        photo.width = Int64(pexelsPhoto?.width ?? 0)
+        photo.height = Int64(pexelsPhoto?.height ?? 0)
         saveContext()
     }
         

@@ -156,8 +156,8 @@ class PhotoDetailsViewController: UIViewController {
     }
     
     @objc private func originSizeButtonTapped() {
-        let photoVC = PhotoViewController() // убрать
-        photoVC.photo = photo
+        let photoVC = PhotoViewController()
+        photoVC.viewModel = viewModel.photoViewModel()
         show(photoVC, sender: nil)
     }
     

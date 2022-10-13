@@ -16,10 +16,11 @@ protocol PhotoDetailsViewModelProtocol {
     var viewModelDidChange: ((PhotoDetailsViewModelProtocol) -> Void)? { get set }
     init(photo: Photo?, favoritePhoto: PexelsPhoto?, favoritePhotos: [PexelsPhoto])
     func favoriteButtonPressed()
+    func photoViewModel() -> PhotoViewModelProtocol
 }
 
 class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
-    
+
     //MARK: - Public Properties
     var photoLink: NSURL {
         if photo != nil {
@@ -114,6 +115,10 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
     //MARK: - Public Methods
     func favoriteButtonPressed() {
         isFavorte.toggle()
+    }
+    
+    func photoViewModel() -> PhotoViewModelProtocol {
+        return PhotoViewModel(photo: photo, favoritePhoto: favoritePhoto)
     }
     
     //MARK: - Private Methods

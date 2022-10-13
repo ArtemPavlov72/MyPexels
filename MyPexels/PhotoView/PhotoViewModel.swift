@@ -10,12 +10,30 @@ import Foundation
 protocol PhotoViewModelProtocol {
     var pexelsImageURL: String? { get }
     var imageIsLoaded: Bool { get }
+    var photoWidth: Int { get }
+    var photoHeight: Int { get }
     init(photo: Photo?, favoritePhoto: PexelsPhoto?)
     func loadingImage()
 }
 
 
 class PhotoViewModel: PhotoViewModelProtocol {
+  
+    var photoWidth: Int {
+        if photo != nil {
+            return photo?.width ?? 0
+        } else {
+            return Int(favoritePhoto?.width ?? 0)
+        }
+    }
+    
+    var photoHeight: Int {
+        if photo != nil {
+            return photo?.height ?? 0
+        } else {
+            return Int(favoritePhoto?.height ?? 0)
+        }
+    }
     
     var imageIsLoaded: Bool{
         get {

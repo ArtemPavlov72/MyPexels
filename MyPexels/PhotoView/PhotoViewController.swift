@@ -21,10 +21,7 @@ class PhotoViewController: UIViewController {
     private lazy var imageWidthConstraint: CGFloat = 0
     private lazy var imageHeightConstraint: CGFloat = 0
     
-    //MARK: - Public Properties
-    var photo: Photo?
-    var favoritePhoto: PexelsPhoto?
-    
+    //MARK: - Public Properties    
     var viewModel: PhotoViewModelProtocol! {
         didSet {
             guard let imageUrl = viewModel.pexelsImageURL else { return }
@@ -39,12 +36,8 @@ class PhotoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        viewModel = PhotoViewModel( // delete
-            photo: photo,
-            favoritePhoto: favoritePhoto
-        )
         setupNavigationBar()
-        updateImageViewConstraint(size: photo?.width, x: photo?.height)
+        updateImageViewConstraint(size: viewModel.photoWidth, x: viewModel.photoHeight)
         setupSubViews(pexelsPhoto)
         setupConstraints()
     }
