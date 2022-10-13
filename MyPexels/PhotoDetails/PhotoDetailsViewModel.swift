@@ -73,11 +73,9 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
                         liked.toggle()
                     }
                 }
-                print("like is \(liked)")
                 return liked
             }
         } set {
-            print("new value \(newValue)")
             if newValue == true {
                 guard let pexelsPhotoId = photo?.id else { return }
                 for favorPhoto in favoritePhotos {

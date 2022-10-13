@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 
 class PhotoViewController: UIViewController {
     
@@ -22,43 +21,48 @@ class PhotoViewController: UIViewController {
     private lazy var imageWidthConstraint: CGFloat = 0
     private lazy var imageHeightConstraint: CGFloat = 0
     
-    private var imageIsLoaded = false
-    
     //MARK: - Public Properties
     var photo: Photo?
+    var favoritePhoto: PexelsPhoto?
+    
+    var viewModel: PhotoViewModelProtocol! {
+        didSet {
+            guard let imageUrl = viewModel.pexelsImageURL else { return }
+            pexelsPhoto.fetchImage(from: imageUrl) {
+                self.viewModel.loadingImage()
+                self.navigationItem.rightBarButtonItem?.isEnabled = self.viewModel.imageIsLoaded
+            }
+        }
+    }
     
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        setupNavigationBar(imageIsLoaded)
+        viewModel = PhotoViewModel( // delete
+            photo: photo,
+            favoritePhoto: favoritePhoto
+        )
+        setupNavigationBar()
         updateImageViewConstraint(size: photo?.width, x: photo?.height)
-        loadImage(from: photo?.src?.original ?? "")
         setupSubViews(pexelsPhoto)
         setupConstraints()
     }
     
     //MARK: - Private Methods
-    private func loadImage(from url: String) {
-        pexelsPhoto.fetchImage(from: url) {
-            self.imageIsLoaded.toggle()
-            self.navigationItem.rightBarButtonItem?.isEnabled = self.imageIsLoaded
-        }
-    }
-    
     private func setupSubViews(_ subViews: UIView...) {
         subViews.forEach { subview in
             view.addSubview(subview)
         }
     }
     
-    private func setupNavigationBar(_ imageIsLoaded: Bool) {
+    private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .save,
             target: self,
             action: #selector(saveAction)
         )
-        navigationItem.rightBarButtonItem?.isEnabled = imageIsLoaded
+        navigationItem.rightBarButtonItem?.isEnabled = viewModel.imageIsLoaded
     }
     
     @objc private func saveAction() {
