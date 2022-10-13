@@ -10,6 +10,27 @@ import SnapKit
 
 class PhotoDetailsViewController: UIViewController {
     
+    //MARK: - Public Properties
+    var viewModel: PhotoDetailsViewModelProtocol! {
+        didSet {
+            viewModel.viewModelDidChange = { [weak self] viewModel in
+                self?.delegateTabBarVC?.reloadFavoriteData()
+                self?.delegateFavoriteVC?.reloadData()
+                self?.installLike()
+            }
+            photogtapherNameLabel.text = viewModel.photogtapherNameLabel?.capitalized
+            descriptionLabel.text = viewModel.descriptionLabel?.capitalized
+            guard let imageUrl = viewModel.pexelsImageURL else { return }
+            pexelsImage.fetchImage(from: imageUrl)
+        }
+    }
+    
+    var photo: Photo? //delete
+    var favoritePhoto: PexelsPhoto? //delete
+    var favoritePhotos: [PexelsPhoto] = [] //delete
+    var delegateTabBarVC: TabBarStartViewControllerDelegate? //delete
+    var delegateFavoriteVC: FavoriteCollectionViewControllerDelegate? //delete
+    
     //MARK: - Private Properties
     private lazy var pexelsImage: PexelsImageView = {
         let photo = PexelsImageView()
@@ -74,62 +95,33 @@ class PhotoDetailsViewController: UIViewController {
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
-    
-    //MARK: - Public Properties
-    var viewModel: PhotoDetailsViewModelProtocol! {
-        didSet {
-            viewModel.viewModelDidChange = { [weak self] viewModel in
-                self?.delegateTabBarVC?.reloadFavoriteData()
-                self?.delegateFavoriteVC?.reloadData()
-                self?.changeLike()
-            }
-            photogtapherNameLabel.text = viewModel.photogtapherNameLabel?.capitalized
-            descriptionLabel.text = viewModel.descriptionLabel?.capitalized
-            guard let imageUrl = viewModel.pexelsImageURL else { return }
-            pexelsImage.fetchImage(from: imageUrl)
-        }
-    }
-    
-    var photo: Photo?
-    var favoritePhoto: PexelsPhoto?
-    var favoritePhotos: [PexelsPhoto] = []
-    var delegateTabBarVC: TabBarStartViewControllerDelegate?
-    var delegateFavoriteVC: FavoriteCollectionViewControllerDelegate?
-    
+        
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        viewModel = PhotoDetailsViewModel(photo: photo, favoritePhoto: favoritePhoto, favoritePhotos: favoritePhotos)
+        viewModel = PhotoDetailsViewModel( // delete
+            photo: photo,
+            favoritePhoto: favoritePhoto,
+            favoritePhotos: favoritePhotos
+        )
         setupNavigationBar()
-        setupPhotoInfo()
-        setupSubViews(pexelsImage, horizontalStackView, photogtapherNameLabel, descriptionLabel)
+        installLike()
+        setupSubViews(
+            pexelsImage,
+            horizontalStackView,
+            photogtapherNameLabel,
+            descriptionLabel
+        )
         setupConstraints()
     }
     
     //MARK: - Private Methods
-    private func setupPhotoInfo() {
-        viewModel.isFavorte ? setLike() : removeLike()
+    private func installLike() {
+        viewModel.isFavorte ? addLike() : removeLike()
     }
     
-    private func loadPexelsDataFromFavourite() {
-        guard let favoritePhotoId = favoritePhoto?.id else { return }
-        let id = Int(favoritePhotoId)
-        NetworkManager.shared.fetchData(from: Link.pexelsPhotoById.rawValue, usingId: id) { [weak self] result in
-            switch result {
-            case .success(let fetchedPhoto):
-                self?.photo = fetchedPhoto
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    private func changeLike() {
-        viewModel.isFavorte ? setLike() : removeLike()
-    }
-    
-    private func setLike() {
+    private func addLike() {
         likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         likeButton.tintColor = .systemYellow
     }
@@ -144,10 +136,8 @@ class PhotoDetailsViewController: UIViewController {
     }
     
     @objc private func shareData() {
-        guard let link = photo?.url else { return }
-        guard let photoLink = NSURL(string: link) else { return }
         let activityViewController = UIActivityViewController(
-            activityItems: [photoLink],
+            activityItems: [viewModel.photoLink],
             applicationActivities: nil
         )
         self.present(activityViewController, animated: true, completion: nil)
@@ -164,7 +154,7 @@ class PhotoDetailsViewController: UIViewController {
     }
     
     @objc private func originSizeButtonTapped() {
-        let photoVC = PhotoViewController()
+        let photoVC = PhotoViewController() // убрать
         photoVC.photo = photo
         show(photoVC, sender: nil)
     }

@@ -12,12 +12,28 @@ protocol PhotoDetailsViewModelProtocol {
     var descriptionLabel: String? { get }
     var pexelsImageURL: String? { get }
     var isFavorte: Bool { get }
+    var photoLink: NSURL { get }
     var viewModelDidChange: ((PhotoDetailsViewModelProtocol) -> Void)? { get set }
     init(photo: Photo?, favoritePhoto: PexelsPhoto?, favoritePhotos: [PexelsPhoto])
     func favoriteButtonPressed()
 }
 
 class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
+    
+    //MARK: - Public Properties
+    var photoLink: NSURL {
+        if photo != nil {
+            guard let link = NSURL(string: photo?.url ?? "") else {
+                return NSURL(fileURLWithPath: "")
+            }
+            return link
+        } else {
+            guard let link = NSURL(string: favoritePhoto?.pexelsUrl ?? "") else {
+                return NSURL(fileURLWithPath: "")
+            }
+            return link
+        }
+    }
     
     var pexelsImageURL: String? {
         if photo != nil {
@@ -43,6 +59,7 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
         }
     }
     
+    // do better in future
     var isFavorte: Bool {
         get {
             if favoritePhoto != nil {
@@ -79,20 +96,29 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
     
     var viewModelDidChange: ((PhotoDetailsViewModelProtocol) -> Void)?
     
+    //MARK: - Private Properties
     private var photo: Photo?
     private var favoritePhoto: PexelsPhoto?
     private var favoritePhotos: [PexelsPhoto]
     
-    required init(photo: Photo?, favoritePhoto: PexelsPhoto?, favoritePhotos: [PexelsPhoto]) {
+    //MARK: - Init
+    required init(
+        photo: Photo?,
+        favoritePhoto: PexelsPhoto?,
+        favoritePhotos: [PexelsPhoto]
+    )
+    {
         self.photo = photo
         self.favoritePhoto = favoritePhoto
         self.favoritePhotos = favoritePhotos
     }
     
+    //MARK: - Public Methods
     func favoriteButtonPressed() {
         isFavorte.toggle()
     }
     
+    //MARK: - Private Methods
     private func loadFavoritePhotos() {
         StorageManager.shared.fetchFavoritePhotos { result in
             switch result {
