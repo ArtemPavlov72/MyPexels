@@ -30,6 +30,8 @@
 		ACA1DB9C28F7F5D2005DC078 /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA1DB9B28F7F5D2005DC078 /* PhotoViewModel.swift */; };
 		ACAF447C28A978BF0053E5DC /* UserSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACAF447B28A978BF0053E5DC /* UserSettingsManager.swift */; };
 		ACC73BA128A6DEDE00E0C699 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC73BA028A6DEDE00E0C699 /* User.swift */; };
+		ACCEEFB028FB3C4F0034FB29 /* PhotoCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCEEFAF28FB3C4F0034FB29 /* PhotoCollectionViewModel.swift */; };
+		ACCEEFB328FDD1A00034FB29 /* PhotoViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCEEFB228FDD1A00034FB29 /* PhotoViewCellModel.swift */; };
 		F052EAFE8DC31F196B239A58 /* Pods_MyPexels.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5514C95BCB175494A06E58CF /* Pods_MyPexels.framework */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +64,8 @@
 		ACA1DB9B28F7F5D2005DC078 /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
 		ACAF447B28A978BF0053E5DC /* UserSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsManager.swift; sourceTree = "<group>"; };
 		ACC73BA028A6DEDE00E0C699 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		ACCEEFAF28FB3C4F0034FB29 /* PhotoCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewModel.swift; sourceTree = "<group>"; };
+		ACCEEFB228FDD1A00034FB29 /* PhotoViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewCellModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,7 @@
 		84525EA4283A9857005E5E6A /* MyPexels */ = {
 			isa = PBXGroup;
 			children = (
+				ACCEEFAE28FB3C1B0034FB29 /* PhotoCollection */,
 				AC9E466728D7954400141393 /* PhotoDetails */,
 				ACA1DB9A28F7F598005DC078 /* PhotoView */,
 				84525EC3283D0DE9005E5E6A /* ViewControllers */,
@@ -132,7 +137,6 @@
 				84D2BC92288EFDF80007F4B8 /* RootViewController.swift */,
 				84D2BC90288B17B60007F4B8 /* LoginViewController.swift */,
 				84525EB9283A9D6C005E5E6A /* TabBarStartViewController.swift */,
-				84525EBB283A9E2D005E5E6A /* PhotoCollectionViewController.swift */,
 				84525EBD283AA292005E5E6A /* FavoriteCollectionViewController.swift */,
 				84525EA9283A9857005E5E6A /* SettingsViewController.swift */,
 			);
@@ -170,7 +174,6 @@
 		84525ECB283F624D005E5E6A /* View */ = {
 			isa = PBXGroup;
 			children = (
-				84525EC9283F6245005E5E6A /* PhotoViewCell.swift */,
 				842C1C2E28531F430056130B /* PexelsImageView.swift */,
 				84D2BC8E288859640007F4B8 /* CollectionView.swift */,
 			);
@@ -203,6 +206,25 @@
 				ACA1DB9B28F7F5D2005DC078 /* PhotoViewModel.swift */,
 			);
 			path = PhotoView;
+			sourceTree = "<group>";
+		};
+		ACCEEFAE28FB3C1B0034FB29 /* PhotoCollection */ = {
+			isa = PBXGroup;
+			children = (
+				ACCEEFB128FDD1620034FB29 /* PhotoCell */,
+				84525EBB283A9E2D005E5E6A /* PhotoCollectionViewController.swift */,
+				ACCEEFAF28FB3C4F0034FB29 /* PhotoCollectionViewModel.swift */,
+			);
+			path = PhotoCollection;
+			sourceTree = "<group>";
+		};
+		ACCEEFB128FDD1620034FB29 /* PhotoCell */ = {
+			isa = PBXGroup;
+			children = (
+				84525EC9283F6245005E5E6A /* PhotoViewCell.swift */,
+				ACCEEFB228FDD1A00034FB29 /* PhotoViewCellModel.swift */,
+			);
+			path = PhotoCell;
 			sourceTree = "<group>";
 		};
 		D608FDEE46D3540612D3BECE /* Pods */ = {
@@ -333,6 +355,7 @@
 				842C1C2D28530B120056130B /* UIView.swift in Sources */,
 				842C1C2F28531F430056130B /* PexelsImageView.swift in Sources */,
 				84525ECA283F6245005E5E6A /* PhotoViewCell.swift in Sources */,
+				ACCEEFB028FB3C4F0034FB29 /* PhotoCollectionViewModel.swift in Sources */,
 				84525EBA283A9D6C005E5E6A /* TabBarStartViewController.swift in Sources */,
 				AC9E466928D7955400141393 /* PhotoDetailsViewModel.swift in Sources */,
 				84D2BC8F288859640007F4B8 /* CollectionView.swift in Sources */,
@@ -346,6 +369,7 @@
 				84D2BC91288B17B60007F4B8 /* LoginViewController.swift in Sources */,
 				ACA1DB9C28F7F5D2005DC078 /* PhotoViewModel.swift in Sources */,
 				84A607902861F823003311A4 /* StorageManager.swift in Sources */,
+				ACCEEFB328FDD1A00034FB29 /* PhotoViewCellModel.swift in Sources */,
 				84525EA6283A9857005E5E6A /* AppDelegate.swift in Sources */,
 				84A6078B2858BEFD003311A4 /* PhotoViewController.swift in Sources */,
 				ACC73BA128A6DEDE00E0C699 /* User.swift in Sources */,

@@ -26,10 +26,7 @@ class PhotoDetailsViewController: UIViewController {
             // а перед этим активити индикатор крутит
         }
     }
-    
-    var photo: Photo? //delete
-    var favoritePhoto: PexelsPhoto? //delete
-    var favoritePhotos: [PexelsPhoto] = [] //delete
+
     var delegateTabBarVC: TabBarStartViewControllerDelegate? //delete
     var delegateFavoriteVC: FavoriteCollectionViewControllerDelegate? //delete
     
@@ -102,11 +99,6 @@ class PhotoDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        viewModel = PhotoDetailsViewModel( // delete
-            photo: photo,
-            favoritePhoto: favoritePhoto,
-            favoritePhotos: favoritePhotos
-        )
         setupNavigationBar()
         installLike()
         setupSubViews(

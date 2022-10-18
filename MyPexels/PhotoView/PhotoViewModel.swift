@@ -16,7 +16,6 @@ protocol PhotoViewModelProtocol {
     func loadingImage()
 }
 
-
 class PhotoViewModel: PhotoViewModelProtocol {
   
     var photoWidth: Int {

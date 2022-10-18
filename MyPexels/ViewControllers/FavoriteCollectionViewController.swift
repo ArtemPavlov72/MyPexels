@@ -60,8 +60,8 @@ class FavoriteCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let favouritePhoto = favoritePhotos[indexPath.item]
         let photoDetailVC = PhotoDetailsViewController()
-        photoDetailVC.favoritePhoto = favouritePhoto
-        photoDetailVC.favoritePhotos = favoritePhotos
+//        photoDetailVC.favoritePhoto = favouritePhoto
+//        photoDetailVC.favoritePhotos = favoritePhotos
         photoDetailVC.delegateTabBarVC = delegateTabBarVC
         photoDetailVC.delegateFavoriteVC = self
         show(photoDetailVC, sender: nil)

@@ -13,6 +13,17 @@ protocol PhotoCollectionViewControllerDelegate {
 
 class PhotoCollectionViewController: UICollectionViewController {
     
+    //MARK: - Public Properties
+    
+    var viewModel: PhotoCollectionViewModelProtocol! {
+        didSet {
+            viewModel.fetchPexelsData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) {
+                self.activityIndicator?.stopAnimating()
+                self.collectionView.reloadData()
+            }
+        }
+    }
+    
     //MARK: - Private Properties
     private var pexelsData: Pexels?
     private let cellID = "cell"
@@ -44,6 +55,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     //MARK: - Lify Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel = PhotoCollectionViewModel(favoritePhotos: favoritePhotos)
         collectionView.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
         loadFirstData()
     }
@@ -57,44 +69,45 @@ class PhotoCollectionViewController: UICollectionViewController {
     private func loadFirstData() {
         activityIndicator = showSpinner(in: view)
         
-        loadPexelsData(
-            from: Link.pexelsCuratedPhotos.rawValue,
-            withNumberOfPhotosOnPage: numberOfPhotosOnPage,
-            numberOfPage: numberOfPage
-        )
+        
+//        loadPexelsData(
+//            from: Link.pexelsCuratedPhotos.rawValue,
+//            withNumberOfPhotosOnPage: numberOfPhotosOnPage,
+//            numberOfPage: numberOfPage
+//        )
     }
     
-    private func loadPexelsData(
-        from url: String,
-        withNumberOfPhotosOnPage numberOfPhotos: Int,
-        numberOfPage: Int
-    )
-    {
-        NetworkManager.shared.fetchData(
-            from: url,
-            withNumberOfPhotosOnPage: numberOfPhotos,
-            numberOfPage: numberOfPage
-        )
-        {
-            [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let pexelsData):
-                self.pexelsData = pexelsData
-                if self.photos.isEmpty {
-                    self.photos = pexelsData.photos ?? []
-                    self.activityIndicator?.stopAnimating()
-                } else {
-                    self.photos += pexelsData.photos ?? []
-                }
-                self.numberOfPage += 1
-                self.collectionView.reloadData()
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
+//    private func loadPexelsData(
+//        from url: String,
+//        withNumberOfPhotosOnPage numberOfPhotos: Int,
+//        numberOfPage: Int
+//    )
+//    {
+//        NetworkManager.shared.fetchData(
+//            from: url,
+//            withNumberOfPhotosOnPage: numberOfPhotos,
+//            numberOfPage: numberOfPage
+//        )
+//        {
+//            [weak self] result in
+//            guard let self = self else { return }
+//
+//            switch result {
+//            case .success(let pexelsData):
+//                self.pexelsData = pexelsData
+//                if self.photos.isEmpty {
+//                    self.photos = pexelsData.photos ?? []
+//                    self.activityIndicator?.stopAnimating()
+//                } else {
+//                    self.photos += pexelsData.photos ?? []
+//                }
+//                self.numberOfPage += 1
+//                self.collectionView.reloadData()
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
+//    }
     
     private func setupSearchController() {
         searchController.searchResultsUpdater = self
@@ -107,19 +120,22 @@ class PhotoCollectionViewController: UICollectionViewController {
     
     // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        isFiltering ? filteredPhotos.count : photos.count
+        //isFiltering ? filteredPhotos.count : photos.count
+        isFiltering ? filteredPhotos.count : viewModel.numberOfRows()
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoViewCell
         
-        let photo = isFiltering ? filteredPhotos[indexPath.item] : photos[indexPath.item]
-        switch sizeOfPhoto {
-        case .small, .medium:
-            cell.configureCell(with: photo.src?.medium ?? "")
-        case .large:
-            cell.configureCell(with: photo.src?.large ?? "")
-        }
+//        let photo = isFiltering ? filteredPhotos[indexPath.item] : photos[indexPath.item]
+        cell.viewModel = viewModel.cellViewModel(at: indexPath)
+        
+//        switch sizeOfPhoto {
+//        case .small, .medium:
+//            cell.configureCell(with: photo.src?.medium ?? "")
+//        case .large:
+//            cell.configureCell(with: photo.src?.large ?? "")
+//        }
         
         if isFiltering {
             if indexPath.item == filteredPhotos.count - 10 {
@@ -135,11 +151,14 @@ class PhotoCollectionViewController: UICollectionViewController {
             }
         } else {
             if indexPath.item == (photos.count) - 10 {
-                loadPexelsData(
-                    from: Link.pexelsCuratedPhotos.rawValue,
-                    withNumberOfPhotosOnPage: numberOfPhotosOnPage,
-                    numberOfPage: numberOfPage
-                )
+                viewModel.fetchPexelsData(from: Link.pexelsCuratedPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) {
+                    self.collectionView.reloadData()
+                }
+//                loadPexelsData(
+//                    from: Link.pexelsCuratedPhotos.rawValue,
+//                    withNumberOfPhotosOnPage: numberOfPhotosOnPage,
+//                    numberOfPage: numberOfPage
+//                )
             }
         }
         return cell
@@ -147,12 +166,14 @@ class PhotoCollectionViewController: UICollectionViewController {
     
     // MARK: - UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let photo = isFiltering ? filteredPhotos[indexPath.item] : photos[indexPath.item]
+        //let photo = isFiltering ? filteredPhotos[indexPath.item] : photos[indexPath.item]
+        
         let photoDetailVC = PhotoDetailsViewController()
-        photoDetailVC.photo = photo
+        photoDetailVC.viewModel = viewModel.photoDetailsViewModel(at: indexPath)
+        //photoDetailVC.photo = photo
         photoDetailVC.delegateTabBarVC = delegateTabBarVC
         photoDetailVC.delegateFavoriteVC = delegateFavoriteVC
-        photoDetailVC.favoritePhotos = favoritePhotos
+       // photoDetailVC.favoritePhotos = favoritePhotos
         show(photoDetailVC, sender: nil)
     }
 }

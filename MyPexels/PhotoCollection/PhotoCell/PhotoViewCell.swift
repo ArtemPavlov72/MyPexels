@@ -18,6 +18,13 @@ class PhotoViewCell: UICollectionViewCell {
         return image
     }()
     
+    var viewModel: PhotoViewCellViewModelProtocol! {
+        didSet {
+            guard let imageUrl = viewModel.pexelPhotoURL else { return }
+            imageView.fetchImage(from: imageUrl)
+        }
+    }
+    
     //MARK: - Cell Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,7 +37,7 @@ class PhotoViewCell: UICollectionViewCell {
     
     //MARK: - Public Methods
     func configureCell(with photo: String) {
-        imageView.fetchImage(from: photo) { }
+        imageView.fetchImage(from: photo)
     }
     
     //MARK: - Private Methods
