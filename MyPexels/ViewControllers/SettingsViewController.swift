@@ -113,27 +113,25 @@ class SettingsViewController: UIViewController {
     }()
     
     private var numberOfItemsOnPhotoVC: ItemsOfRow = {
-        var items = ItemsOfRow.one
-        if UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: true) == 1 {
-            items = ItemsOfRow.one
-        } else if UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: true) == 2 {
-            items = ItemsOfRow.two
-        } else {
-            items = ItemsOfRow.three
+        switch UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: true) {
+        case 1:
+            return ItemsOfRow.one
+        case 2:
+            return ItemsOfRow.two
+        default:
+            return ItemsOfRow.three
         }
-        return items
     }()
     
     private var numberOfItemsOnFavoriteVC: ItemsOfRow = {
-        var items = ItemsOfRow.one
-        if UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: false) == 1 {
-            items = ItemsOfRow.one
-        } else if UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: false) == 2 {
-            items = ItemsOfRow.two
-        } else {
-            items = ItemsOfRow.three
+        switch UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: false) {
+        case 1:
+            return ItemsOfRow.one
+        case 2:
+            return ItemsOfRow.two
+        default:
+            return ItemsOfRow.three
         }
-        return items
     }()
     
     //MARK: - Public Properties
@@ -181,17 +179,17 @@ class SettingsViewController: UIViewController {
         switch numberOfItemsOnPhotoVC {
         case .one:
             numberOfItemsOnPhotoVC = ItemsOfRow.two
-            delegatePhotoCollectionVC?.changeNumberOfItemsPerRow(2, size: .medium)
+            delegatePhotoCollectionVC?.changeNumberOfItemsPerRow(numberOfItemsOnPhotoVC.rawValue, size: .medium)
             changeNumberOfItemsOnPVCButton.setTitle(" \(numberOfItemsOnPhotoVC) ", for: .normal)
             UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: true, to: 2)
         case .two:
             numberOfItemsOnPhotoVC = ItemsOfRow.three
-            delegatePhotoCollectionVC?.changeNumberOfItemsPerRow(3, size: .small)
+            delegatePhotoCollectionVC?.changeNumberOfItemsPerRow(numberOfItemsOnPhotoVC.rawValue, size: .small)
             changeNumberOfItemsOnPVCButton.setTitle(" \(numberOfItemsOnPhotoVC) ", for: .normal)
             UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: true, to: 3)
         case .three:
             numberOfItemsOnPhotoVC = ItemsOfRow.one
-            delegatePhotoCollectionVC?.changeNumberOfItemsPerRow(1, size: .large)
+            delegatePhotoCollectionVC?.changeNumberOfItemsPerRow(numberOfItemsOnPhotoVC.rawValue, size: .large)
             changeNumberOfItemsOnPVCButton.setTitle(" \(numberOfItemsOnPhotoVC) ", for: .normal)
             UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: true, to: 1)
         }
@@ -256,7 +254,9 @@ extension SettingsViewController {
 
 //MARK: - Number Of Photos On Row
 extension SettingsViewController {
-    enum ItemsOfRow {
-        case one, two, three
+    enum ItemsOfRow: CGFloat {
+        case one = 1
+        case two = 2
+        case three = 3
     }
 }

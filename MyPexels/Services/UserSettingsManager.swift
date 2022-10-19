@@ -50,7 +50,9 @@ class UserSettingManager {
     
     func getCountOfPhotosPerRowFor(photoCollectionView: Bool) -> Int {
         let user = fetchData()
-        return photoCollectionView ? user.pexelsImageCountPerRow : user.favoriteImageCountPerRow
+        return photoCollectionView
+        ? user.pexelsImageCountPerRow
+        : user.favoriteImageCountPerRow
     }
     
     func deleteUserData() {

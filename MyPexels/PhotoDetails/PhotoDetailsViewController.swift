@@ -13,6 +13,7 @@ class PhotoDetailsViewController: UIViewController {
     var viewModel: PhotoDetailsViewModelProtocol! {
         didSet {
             viewModel.viewModelDidChange = { [weak self] viewModel in
+                //логику делегатов перенести во viewmodel
                 self?.delegateTabBarVC?.reloadFavoriteData()
                 self?.delegateFavoriteVC?.reloadData()
                 self?.installLike()
@@ -22,7 +23,7 @@ class PhotoDetailsViewController: UIViewController {
             guard let imageUrl = viewModel.pexelsImageURL else { return }
             pexelsImage.fetchImage(from: imageUrl)
             // по загрузке картинки
-            // в моделе убегающее замыкание, и когда она будет загружаться, то выдает дату дату
+            // в моделе убегающее замыкание, и когда она будет загружаться, то выдает дату
             // а перед этим активити индикатор крутит
         }
     }

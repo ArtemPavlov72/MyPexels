@@ -36,6 +36,7 @@ class PhotoViewCell: UICollectionViewCell {
     }
     
     //MARK: - Public Methods
+    //пока испльзуется в favoriteCollectionViewController, после можно удалить
     func configureCell(with photo: String) {
         imageView.fetchImage(from: photo)
     }
