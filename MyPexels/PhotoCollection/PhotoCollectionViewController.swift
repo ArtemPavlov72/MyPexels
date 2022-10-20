@@ -81,16 +81,16 @@ class PhotoCollectionViewController: UICollectionViewController {
         ? viewModel.filteringCellViewModel(at: indexPath)
         : viewModel.cellViewModel(at: indexPath)
         
-//        switch sizeOfPhoto {
-//        case .small, .medium:
-//            cell.configureCell(with: photo.src?.medium ?? "")
-//        case .large:
-//            cell.configureCell(with: photo.src?.large ?? "")
-//        }
+        //        switch sizeOfPhoto {
+        //        case .small, .medium:
+        //            cell.configureCell(with: photo.src?.medium ?? "")
+        //        case .large:
+        //            cell.configureCell(with: photo.src?.large ?? "")
+        //        }
         
         if isFiltering {
             if indexPath.item == viewModel.numberOfFilteredRows() - 10 {
-                viewModel.fetchSerchingData(from: searchController.searchBar.text!) {
+                viewModel.fetchSerchingData(from: searchController.searchBar.text!, newFetch: false) {
                     self.collectionView.reloadData()
                 }
             }
@@ -107,9 +107,11 @@ class PhotoCollectionViewController: UICollectionViewController {
     // MARK: - UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photoDetailVC = PhotoDetailsViewController()
+        
         photoDetailVC.viewModel = isFiltering
         ? viewModel.filteredPhotoDetailsViewModel(at: indexPath)
         : viewModel.photoDetailsViewModel(at: indexPath)
+        
         photoDetailVC.delegateTabBarVC = delegateTabBarVC
         photoDetailVC.delegateFavoriteVC = delegateFavoriteVC
         show(photoDetailVC, sender: nil)
@@ -138,7 +140,7 @@ extension PhotoCollectionViewController: PhotoCollectionViewControllerDelegate {
 // MARK: - UISearchResultsUpdating
 extension PhotoCollectionViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        viewModel.fetchSerchingData(from: searchController.searchBar.text!) {
+        viewModel.fetchSerchingData(from: searchController.searchBar.text!, newFetch: true) {
             self.collectionView.reloadData()
         }
     }

@@ -8,13 +8,12 @@
 import Foundation
 
 protocol PhotoCollectionViewModelProtocol {
-    var viewModelDidChange: ((PhotoCollectionViewModelProtocol) -> Void)? { get set }
     func fetchPexelsData(completion: @escaping() -> Void)
     func numberOfRows() -> Int
     func numberOfFilteredRows() -> Int
     func cellViewModel(at indexPath: IndexPath) -> PhotoViewCellViewModelProtocol
     func filteringCellViewModel(at indexPath: IndexPath) -> PhotoViewCellViewModelProtocol
-    func fetchSerchingData(from serchingText: String, completion: @escaping () -> Void)
+    func fetchSerchingData(from serchingText: String, newFetch: Bool, completion: @escaping () -> Void)
     func photoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol
     func filteredPhotoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol
     init (favoritePhotos: [PexelsPhoto])
@@ -22,12 +21,11 @@ protocol PhotoCollectionViewModelProtocol {
 
 class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
     
-    var viewModelDidChange: ((PhotoCollectionViewModelProtocol) -> Void)?
-    
     //MARK: - Private Properties
     private var pexelsData: Pexels?
     private var photo: Photo?
     private var photos: [Photo] = []
+    private var searchingText: String?
     private var filteredPhotos: [Photo] = []
     private var numberOfSearchingPage = 1
     private let numberOfPhotosOnPage = 30
@@ -83,10 +81,7 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
             numberOfPage: numberOfPage
         )
         {
-            //[weak self]
             result in
-            //guard let self = self else { return }
-            
             switch result {
             case .success(let pexelsData):
                 self.pexelsData = pexelsData
@@ -103,19 +98,19 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
         }
     }
     
-    func fetchSerchingData(from serchingText: String, completion: @escaping () -> Void) {
+    func fetchSerchingData(from serchingText: String, newFetch: Bool, completion: @escaping () -> Void) {
         numberOfSearchingPage = 1
         NetworkManager.shared.fetchSearchingPhoto(serchingText, from: Link.pexelsSearchingPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfSearchingPage) { result in
             switch result {
             case .success(let pexelsData):
                 self.pexelsData = pexelsData
-                if self.filteredPhotos.isEmpty{
+                if newFetch {
                     self.filteredPhotos = pexelsData.photos ?? []
                 } else {
                     self.filteredPhotos += pexelsData.photos ?? []
                 }
-                self.numberOfSearchingPage += 1
                 completion()
+                self.numberOfSearchingPage += 1
             case .failure(let error):
                 print(error)
             }
