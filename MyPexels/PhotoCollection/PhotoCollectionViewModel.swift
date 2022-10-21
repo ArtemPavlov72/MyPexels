@@ -8,6 +8,7 @@
 import Foundation
 
 protocol PhotoCollectionViewModelProtocol {
+    var numberOfItemsPerRow: Int { get }
     func fetchPexelsData(completion: @escaping() -> Void)
     func numberOfRows() -> Int
     func numberOfFilteredRows() -> Int
@@ -18,23 +19,14 @@ protocol PhotoCollectionViewModelProtocol {
     func updateSerchingData()
     func photoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol
     func filteredPhotoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol
-    
-    //func changeNumberOfItemsPerRow(_ number: NumberOfItemsOnRow, size: SizeOfPhoto)
-    var numberOfItemsPerRow: Int { get }
-    
     init (favoritePhotos: [PexelsPhoto])
 }
 
 class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
-    
+    //MARK: - Public Properties
     var numberOfItemsPerRow: Int {
         UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: true)
     }
-    
-//    func changeNumberOfItemsPerRow(_ number: NumberOfItemsOnRow, size: SizeOfPhoto) {
-//        
-//    }
-    
     
     //MARK: - Private Properties
     private var pexelsData: Pexels?
@@ -43,9 +35,7 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
     private var searchingText: String?
     private var filteredPhotos: [Photo] = []
     private var newSearh = false
-    private var numberOfSearchingPage = 1
     private let numberOfPhotosOnPage = 30
-    private var numberOfPage = 1
     private var favoritePhotos: [PexelsPhoto]
     
     //MARK: - Init
@@ -74,12 +64,12 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
     
     func cellViewModel(at indexPath: IndexPath) -> PhotoViewCellViewModelProtocol {
         let photo = photos[indexPath.item]
-        return PhotoViewCellViewModel(photo: photo, favoritePhoto: nil)
+        return PhotoViewCellViewModel(photo: photo, favoritePhoto: nil, numberOfItem: NumberOfItemsOnRow(rawValue: numberOfItemsPerRow) ?? .one)
     }
     
     func filteringCellViewModel(at indexPath: IndexPath) -> PhotoViewCellViewModelProtocol {
         let filteredPhoto = filteredPhotos[indexPath.item]
-        return PhotoViewCellViewModel(photo: filteredPhoto, favoritePhoto: nil)
+        return PhotoViewCellViewModel(photo: filteredPhoto, favoritePhoto: nil, numberOfItem: NumberOfItemsOnRow(rawValue: numberOfItemsPerRow) ?? .one)
     }
     
     func numberOfRows() -> Int {
@@ -91,6 +81,7 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
     }
     
     func fetchPexelsData(completion: @escaping () -> Void) {
+        var numberOfPage = 1
         NetworkManager.shared.fetchData(
             from: Link.pexelsCuratedPhotos.rawValue,
             withNumberOfPhotosOnPage: numberOfPhotosOnPage,
@@ -106,7 +97,7 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
                 } else {
                     self.photos += pexelsData.photos ?? []
                 }
-                self.numberOfPage += 1
+                numberOfPage += 1
                 completion()
             case .failure(let error):
                 print(error)
@@ -115,8 +106,8 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
     }
     
     func fetchSerchingData(from serchingText: String, completion: @escaping () -> Void) {
-        numberOfSearchingPage = 1
-        NetworkManager.shared.fetchSearchingPhoto(serchingText, from: Link.pexelsSearchingPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfSearchingPage) { result in
+        var numberOfPage = 1
+        NetworkManager.shared.fetchSearchingPhoto(serchingText, from: Link.pexelsSearchingPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { result in
             switch result {
             case .success(let pexelsData):
                 self.pexelsData = pexelsData
@@ -126,7 +117,7 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
                     self.filteredPhotos += pexelsData.photos ?? []
                 }
                 completion()
-                self.numberOfSearchingPage += 1
+                numberOfPage += 1
             case .failure(let error):
                 print(error)
             }

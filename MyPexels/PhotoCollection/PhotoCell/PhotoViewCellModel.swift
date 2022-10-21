@@ -9,14 +9,19 @@ import Foundation
 
 protocol PhotoViewCellViewModelProtocol {
     var pexelPhotoURL: String? { get }
-    init(photo: Photo?, favoritePhoto: PexelsPhoto?)
+    init(photo: Photo?, favoritePhoto: PexelsPhoto?, numberOfItem: NumberOfItemsOnRow)
 }
 
 class PhotoViewCellViewModel: PhotoViewCellViewModelProtocol {
     
     var pexelPhotoURL: String? {
         if photo != nil {
-            return photo?.src?.large
+            switch numberOfItem {
+            case .one, .two:
+                return photo?.src?.large
+            default:
+                return photo?.src?.medium
+            }
         } else {
             return favoritePhoto?.mediumSizeOfPhoto
         }
@@ -24,9 +29,11 @@ class PhotoViewCellViewModel: PhotoViewCellViewModelProtocol {
     
     private var photo: Photo?
     private var favoritePhoto: PexelsPhoto?
+    private var numberOfItem: NumberOfItemsOnRow?
     
-    required init(photo: Photo?, favoritePhoto: PexelsPhoto?) {
+    required init(photo: Photo?, favoritePhoto: PexelsPhoto?, numberOfItem: NumberOfItemsOnRow) {
         self.photo = photo
         self.favoritePhoto = favoritePhoto
+        self.numberOfItem = numberOfItem
     }
 }

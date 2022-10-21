@@ -15,7 +15,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     //MARK: - Private Properties
     private let cellID = "cell"
     private var activityIndicator: UIActivityIndicatorView?
-    
+
     private let searchController = UISearchController(searchResultsController: nil)
     private var searchBarIsEmpty: Bool {
         guard let text = searchController.searchBar.text else {return false}
@@ -41,6 +41,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupSearchController()
+        collectionView.reloadData() // обновляется при каждом переходе на вью, переделать, чтобы обновлялось только при смене количества ячеек на строчке
     }
     
     //MARK: - Private Methods
@@ -72,13 +73,6 @@ class PhotoCollectionViewController: UICollectionViewController {
         cell.viewModel = isFiltering
         ? viewModel.filteringCellViewModel(at: indexPath)
         : viewModel.cellViewModel(at: indexPath)
-        
-//                switch sizeOfPhoto {
-//                case .small, .medium:
-//                    cell.configureCell(with: photo.src?.medium ?? "")
-//                case .large:
-//                    cell.configureCell(with: photo.src?.large ?? "")
-//                }
         
         if isFiltering {
             if indexPath.item == viewModel.numberOfFilteredRows() - 10 {
@@ -114,9 +108,10 @@ class PhotoCollectionViewController: UICollectionViewController {
 //MARK: - UICollectionViewDelegateFlowLayout
 extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let paddingWidth = 20 * (CGFloat(viewModel.numberOfItemsPerRow) + 1)
+        let countOfItems = CGFloat(viewModel.numberOfItemsPerRow)
+        let paddingWidth = 20 * (countOfItems + 1)
         let avaibleWidth = collectionView.frame.width - paddingWidth
-        let widthPerItem = avaibleWidth / CGFloat(viewModel.numberOfItemsPerRow)
+        let widthPerItem = avaibleWidth / countOfItems
         return CGSize(width: widthPerItem, height: widthPerItem)
     }
 }
