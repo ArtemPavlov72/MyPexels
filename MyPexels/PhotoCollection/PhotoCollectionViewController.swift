@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol PhotoCollectionViewControllerDelegate {
-    func changeNumberOfItemsPerRow(_ number: CGFloat, size: SizeOfPhoto)
-}
-
 class PhotoCollectionViewController: UICollectionViewController {
     
     //MARK: - Public Properties
@@ -19,10 +15,6 @@ class PhotoCollectionViewController: UICollectionViewController {
     //MARK: - Private Properties
     private let cellID = "cell"
     private var activityIndicator: UIActivityIndicatorView?
-    private var sizeOfPhoto = SizeOfPhoto.medium
-    private var numberOfItemsPerRow: CGFloat = {
-        return CGFloat(UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: true))
-    }()
     
     private let searchController = UISearchController(searchResultsController: nil)
     private var searchBarIsEmpty: Bool {
@@ -81,16 +73,17 @@ class PhotoCollectionViewController: UICollectionViewController {
         ? viewModel.filteringCellViewModel(at: indexPath)
         : viewModel.cellViewModel(at: indexPath)
         
-        //        switch sizeOfPhoto {
-        //        case .small, .medium:
-        //            cell.configureCell(with: photo.src?.medium ?? "")
-        //        case .large:
-        //            cell.configureCell(with: photo.src?.large ?? "")
-        //        }
+//                switch sizeOfPhoto {
+//                case .small, .medium:
+//                    cell.configureCell(with: photo.src?.medium ?? "")
+//                case .large:
+//                    cell.configureCell(with: photo.src?.large ?? "")
+//                }
         
         if isFiltering {
             if indexPath.item == viewModel.numberOfFilteredRows() - 10 {
-                viewModel.fetchSerchingData(from: searchController.searchBar.text!, newFetch: false) {
+                viewModel.updateSerchingData()
+                viewModel.fetchSerchingData(from: searchController.searchBar.text!) {
                     self.collectionView.reloadData()
                 }
             }
@@ -121,26 +114,18 @@ class PhotoCollectionViewController: UICollectionViewController {
 //MARK: - UICollectionViewDelegateFlowLayout
 extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let paddingWidth = 20 * (numberOfItemsPerRow + 1)
+        let paddingWidth = 20 * (CGFloat(viewModel.numberOfItemsPerRow) + 1)
         let avaibleWidth = collectionView.frame.width - paddingWidth
-        let widthPerItem = avaibleWidth / numberOfItemsPerRow
+        let widthPerItem = avaibleWidth / CGFloat(viewModel.numberOfItemsPerRow)
         return CGSize(width: widthPerItem, height: widthPerItem)
-    }
-}
-
-//MARK: - PhotoCollectionViewControllerDelegate
-extension PhotoCollectionViewController: PhotoCollectionViewControllerDelegate {
-    func changeNumberOfItemsPerRow(_ number: CGFloat, size: SizeOfPhoto) {
-        numberOfItemsPerRow = number
-        sizeOfPhoto = size
-        collectionView.reloadData()
     }
 }
 
 // MARK: - UISearchResultsUpdating
 extension PhotoCollectionViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        viewModel.fetchSerchingData(from: searchController.searchBar.text!, newFetch: true) {
+        viewModel.serchingNewData()
+        viewModel.fetchSerchingData(from: searchController.searchBar.text!) {
             self.collectionView.reloadData()
         }
     }

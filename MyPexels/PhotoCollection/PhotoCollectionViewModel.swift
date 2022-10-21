@@ -13,13 +13,28 @@ protocol PhotoCollectionViewModelProtocol {
     func numberOfFilteredRows() -> Int
     func cellViewModel(at indexPath: IndexPath) -> PhotoViewCellViewModelProtocol
     func filteringCellViewModel(at indexPath: IndexPath) -> PhotoViewCellViewModelProtocol
-    func fetchSerchingData(from serchingText: String, newFetch: Bool, completion: @escaping () -> Void)
+    func fetchSerchingData(from serchingText: String, completion: @escaping () -> Void)
+    func serchingNewData()
+    func updateSerchingData()
     func photoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol
     func filteredPhotoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol
+    
+    //func changeNumberOfItemsPerRow(_ number: NumberOfItemsOnRow, size: SizeOfPhoto)
+    var numberOfItemsPerRow: Int { get }
+    
     init (favoritePhotos: [PexelsPhoto])
 }
 
 class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
+    
+    var numberOfItemsPerRow: Int {
+        UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: true)
+    }
+    
+//    func changeNumberOfItemsPerRow(_ number: NumberOfItemsOnRow, size: SizeOfPhoto) {
+//        
+//    }
+    
     
     //MARK: - Private Properties
     private var pexelsData: Pexels?
@@ -27,6 +42,7 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
     private var photos: [Photo] = []
     private var searchingText: String?
     private var filteredPhotos: [Photo] = []
+    private var newSearh = false
     private var numberOfSearchingPage = 1
     private let numberOfPhotosOnPage = 30
     private var numberOfPage = 1
@@ -98,13 +114,13 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
         }
     }
     
-    func fetchSerchingData(from serchingText: String, newFetch: Bool, completion: @escaping () -> Void) {
+    func fetchSerchingData(from serchingText: String, completion: @escaping () -> Void) {
         numberOfSearchingPage = 1
         NetworkManager.shared.fetchSearchingPhoto(serchingText, from: Link.pexelsSearchingPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfSearchingPage) { result in
             switch result {
             case .success(let pexelsData):
                 self.pexelsData = pexelsData
-                if newFetch {
+                if self.newSearh {
                     self.filteredPhotos = pexelsData.photos ?? []
                 } else {
                     self.filteredPhotos += pexelsData.photos ?? []
@@ -115,5 +131,13 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
                 print(error)
             }
         }
+    }
+    
+    func serchingNewData() {
+        newSearh = true
+    }
+    
+    func updateSerchingData() {
+        newSearh = false
     }
 }

@@ -63,6 +63,12 @@ enum SizeOfPhoto {
     case small, medium, large
 }
 
+enum NumberOfItemsOnRow: Int {
+    case one = 1
+    case two = 2
+    case three = 3
+}
+
 enum Link: String {
     case pexelsBaseURL = "https://api.pexels.com/v1"
     case pexelsCuratedPhotos = "https://api.pexels.com/v1/curated"
