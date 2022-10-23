@@ -32,6 +32,8 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
     private var pexelsData: Pexels?
     private var photo: Photo?
     private var photos: [Photo] = []
+    private var numberOfPage = 1
+    private var numberOfSearchingPage = 1
     private var searchingText: String?
     private var filteredPhotos: [Photo] = []
     private var newSearh = false
@@ -80,8 +82,16 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
         filteredPhotos.count
     }
     
+    func serchingNewData() {
+        newSearh = true
+    }
+    
+    func updateSerchingData() {
+        newSearh = false
+    }
+    
     func fetchPexelsData(completion: @escaping () -> Void) {
-        var numberOfPage = 1
+        print("\(self.numberOfPage)")
         NetworkManager.shared.fetchData(
             from: Link.pexelsCuratedPhotos.rawValue,
             withNumberOfPhotosOnPage: numberOfPhotosOnPage,
@@ -97,7 +107,7 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
                 } else {
                     self.photos += pexelsData.photos ?? []
                 }
-                numberOfPage += 1
+                self.numberOfPage += 1
                 completion()
             case .failure(let error):
                 print(error)
@@ -106,29 +116,22 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
     }
     
     func fetchSerchingData(from serchingText: String, completion: @escaping () -> Void) {
-        var numberOfPage = 1
+        
         NetworkManager.shared.fetchSearchingPhoto(serchingText, from: Link.pexelsSearchingPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { result in
             switch result {
             case .success(let pexelsData):
                 self.pexelsData = pexelsData
                 if self.newSearh {
+                    self.numberOfSearchingPage = 1
                     self.filteredPhotos = pexelsData.photos ?? []
                 } else {
                     self.filteredPhotos += pexelsData.photos ?? []
                 }
                 completion()
-                numberOfPage += 1
+                self.numberOfSearchingPage += 1
             case .failure(let error):
                 print(error)
             }
         }
-    }
-    
-    func serchingNewData() {
-        newSearh = true
-    }
-    
-    func updateSerchingData() {
-        newSearh = false
     }
 }

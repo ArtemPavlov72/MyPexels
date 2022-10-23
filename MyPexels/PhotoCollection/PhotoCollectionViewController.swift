@@ -10,7 +10,13 @@ import UIKit
 class PhotoCollectionViewController: UICollectionViewController {
     
     //MARK: - Public Properties
-    var viewModel: PhotoCollectionViewModelProtocol!
+    var viewModel: PhotoCollectionViewModelProtocol! {
+        didSet {
+            viewModel.fetchPexelsData() {
+                self.loadFirstData()
+            }
+        }
+    }
     
     //MARK: - Private Properties
     private let cellID = "cell"
@@ -26,16 +32,13 @@ class PhotoCollectionViewController: UICollectionViewController {
     }
     
     //MARK: - Public Properties
-    var favoritePhotos: [PexelsPhoto] = []
     var delegateTabBarVC: TabBarStartViewControllerDelegate?
     var delegateFavoriteVC: FavoriteCollectionViewControllerDelegate?
     
     //MARK: - Lify Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = PhotoCollectionViewModel(favoritePhotos: favoritePhotos)
         collectionView.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
-        loadFirstData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -75,14 +78,14 @@ class PhotoCollectionViewController: UICollectionViewController {
         : viewModel.cellViewModel(at: indexPath)
         
         if isFiltering {
-            if indexPath.item == viewModel.numberOfFilteredRows() - 10 {
+            if indexPath.item == viewModel.numberOfFilteredRows() - 2 {
                 viewModel.updateSerchingData()
                 viewModel.fetchSerchingData(from: searchController.searchBar.text!) {
                     self.collectionView.reloadData()
                 }
             }
         } else {
-            if indexPath.item == viewModel.numberOfRows() - 10 {
+            if indexPath.item == viewModel.numberOfRows() - 2 {
                 viewModel.fetchPexelsData() {
                     self.collectionView.reloadData()
                 }

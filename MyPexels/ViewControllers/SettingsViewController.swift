@@ -137,7 +137,7 @@ class SettingsViewController: UIViewController {
     //MARK: - Public Properties
     var delegateTabBarVC: TabBarStartViewControllerDelegate?
     var delegateFavoriteVC: FavoriteCollectionViewControllerDelegate?
-   // var delegatePhotoCollectionVC: PhotoCollectionViewControllerDelegate?
+   //  var delegatePhotoCollectionVC: PhotoCollectionViewControllerDelegate?
     
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {

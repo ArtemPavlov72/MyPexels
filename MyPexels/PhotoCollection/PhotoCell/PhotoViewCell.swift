@@ -14,7 +14,7 @@ class PhotoViewCell: UICollectionViewCell {
         let image = PexelsImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        image.layer.cornerRadius = 15
+        image.layer.cornerRadius = 25
         return image
     }()
     

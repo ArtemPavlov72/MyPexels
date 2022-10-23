@@ -13,6 +13,9 @@ protocol TabBarStartViewControllerDelegate {
                             
 class TabBarStartViewController: UITabBarController {
     
+    //MARK: - Public Properties
+    var viewModel: TabBarStartViewModelProtocol!
+    
     //MARK: - Private Properties
     private let photosVC = PhotoCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
     private let favoriteVC = FavoriteCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
@@ -22,8 +25,10 @@ class TabBarStartViewController: UITabBarController {
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTabBar()
+        
         loadFavouritePhotos()
+        viewModel = TabBarStartViewModel(favoritePhotos: favoritePhotos)
+        setupTabBar()
         updateFavotiteData(for: photosVC)
         updateFavotiteData(for: favoriteVC)
         updateFavotiteData(for: settingsVC)
@@ -53,7 +58,8 @@ class TabBarStartViewController: UITabBarController {
     }
     
     private func updateFavotiteData(for photoViewController: PhotoCollectionViewController) {
-        photoViewController.favoritePhotos = favoritePhotos
+        
+        photoViewController.viewModel = viewModel.photoCollectionViewModel()
         photoViewController.delegateFavoriteVC = favoriteVC
         photoViewController.delegateTabBarVC = self
     }
