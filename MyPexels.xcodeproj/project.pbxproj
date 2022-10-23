@@ -27,6 +27,7 @@
 		84D2BC91288B17B60007F4B8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2BC90288B17B60007F4B8 /* LoginViewController.swift */; };
 		84D2BC93288EFDF80007F4B8 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2BC92288EFDF80007F4B8 /* RootViewController.swift */; };
 		AC80749929042F13006BE70E /* TabBarStartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC80749829042F13006BE70E /* TabBarStartViewModel.swift */; };
+		AC80749D2905BBB0006BE70E /* FavoriteCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC80749C2905BBB0006BE70E /* FavoriteCollectionViewModel.swift */; };
 		AC9E466928D7955400141393 /* PhotoDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9E466828D7955400141393 /* PhotoDetailsViewModel.swift */; };
 		ACA1DB9C28F7F5D2005DC078 /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA1DB9B28F7F5D2005DC078 /* PhotoViewModel.swift */; };
 		ACAF447C28A978BF0053E5DC /* UserSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACAF447B28A978BF0053E5DC /* UserSettingsManager.swift */; };
@@ -62,6 +63,7 @@
 		84D2BC90288B17B60007F4B8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		84D2BC92288EFDF80007F4B8 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		AC80749829042F13006BE70E /* TabBarStartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarStartViewModel.swift; sourceTree = "<group>"; };
+		AC80749C2905BBB0006BE70E /* FavoriteCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCollectionViewModel.swift; sourceTree = "<group>"; };
 		AC9E466828D7955400141393 /* PhotoDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewModel.swift; sourceTree = "<group>"; };
 		ACA1DB9B28F7F5D2005DC078 /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
 		ACAF447B28A978BF0053E5DC /* UserSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsManager.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 			children = (
 				AC80749729042ED8006BE70E /* TabBarView */,
 				ACCEEFAE28FB3C1B0034FB29 /* PhotoCollection */,
+				AC80749A2905BB59006BE70E /* FavoriteCollection */,
 				AC9E466728D7954400141393 /* PhotoDetails */,
 				ACA1DB9A28F7F598005DC078 /* PhotoView */,
 				84525EC3283D0DE9005E5E6A /* ViewControllers */,
@@ -139,7 +142,6 @@
 			children = (
 				84D2BC92288EFDF80007F4B8 /* RootViewController.swift */,
 				84D2BC90288B17B60007F4B8 /* LoginViewController.swift */,
-				84525EBD283AA292005E5E6A /* FavoriteCollectionViewController.swift */,
 				84525EA9283A9857005E5E6A /* SettingsViewController.swift */,
 			);
 			path = ViewControllers;
@@ -199,6 +201,15 @@
 				AC80749829042F13006BE70E /* TabBarStartViewModel.swift */,
 			);
 			path = TabBarView;
+			sourceTree = "<group>";
+		};
+		AC80749A2905BB59006BE70E /* FavoriteCollection */ = {
+			isa = PBXGroup;
+			children = (
+				84525EBD283AA292005E5E6A /* FavoriteCollectionViewController.swift */,
+				AC80749C2905BBB0006BE70E /* FavoriteCollectionViewModel.swift */,
+			);
+			path = FavoriteCollection;
 			sourceTree = "<group>";
 		};
 		AC9E466728D7954400141393 /* PhotoDetails */ = {
@@ -368,6 +379,7 @@
 				842C1C2F28531F430056130B /* PexelsImageView.swift in Sources */,
 				84525ECA283F6245005E5E6A /* PhotoViewCell.swift in Sources */,
 				ACCEEFB028FB3C4F0034FB29 /* PhotoCollectionViewModel.swift in Sources */,
+				AC80749D2905BBB0006BE70E /* FavoriteCollectionViewModel.swift in Sources */,
 				84525EBA283A9D6C005E5E6A /* TabBarStartViewController.swift in Sources */,
 				AC9E466928D7955400141393 /* PhotoDetailsViewModel.swift in Sources */,
 				84D2BC8F288859640007F4B8 /* CollectionView.swift in Sources */,

@@ -8,21 +8,32 @@
 import Foundation
 
 protocol TabBarStartViewModelProtocol {
+    func loadFavoriteData(completion: @escaping () -> Void)
+    func getFavoritePhotos() -> [PexelsPhoto]
     func photoCollectionViewModel() -> PhotoCollectionViewModelProtocol
-    init (favoritePhotos: [PexelsPhoto])
 }
 
 class TabBarStartViewModel: TabBarStartViewModelProtocol {
-    //MARK: - Public Properties
-    var favoritePhotos: [PexelsPhoto] = []
+    func getFavoritePhotos() -> [PexelsPhoto] {
+        favoritePhotos
+    }
+    
+    //MARK: - Private Properties
+    private var favoritePhotos: [PexelsPhoto] = []
     
     //MARK: - Public Methods
     func photoCollectionViewModel() -> PhotoCollectionViewModelProtocol {
-        return PhotoCollectionViewModel(favoritePhotos: favoritePhotos)
+        return PhotoCollectionViewModel()
     }
     
-    //MARK: - Init
-    required init(favoritePhotos: [PexelsPhoto]) {
-        self.favoritePhotos = favoritePhotos
+    func loadFavoriteData(completion: @escaping () -> Void) {
+        StorageManager.shared.fetchFavoritePhotos { result in
+            switch result {
+            case .success(let photos):
+                self.favoritePhotos = photos
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }

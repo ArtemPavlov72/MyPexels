@@ -19,7 +19,7 @@ protocol PhotoCollectionViewModelProtocol {
     func updateSerchingData()
     func photoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol
     func filteredPhotoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol
-    init (favoritePhotos: [PexelsPhoto])
+    //init (favoritePhotos: [PexelsPhoto])
 }
 
 class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
@@ -38,15 +38,28 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
     private var filteredPhotos: [Photo] = []
     private var newSearh = false
     private let numberOfPhotosOnPage = 30
-    private var favoritePhotos: [PexelsPhoto]
+    private var favoritePhotos: [PexelsPhoto] = []
     
     //MARK: - Init
-    required init(favoritePhotos: [PexelsPhoto]) {
-        self.favoritePhotos = favoritePhotos
-    }
+//    required init(favoritePhotos: [PexelsPhoto]) {
+//        self.favoritePhotos = favoritePhotos
+//    }
     
     //MARK: - Public Methods
+    func loadFavoriteData() {
+        StorageManager.shared.fetchFavoritePhotos { result in
+            switch result {
+            case .success(let photos):
+                self.favoritePhotos = photos
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        
+    }
+    
     func photoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol {
+        loadFavoriteData()
         let photo = photos[indexPath.item]
         return PhotoDetailsViewModel(
             photo: photo,
@@ -56,6 +69,7 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
     }
     
     func filteredPhotoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol {
+        loadFavoriteData()
         let photo = filteredPhotos[indexPath.item]
         return PhotoDetailsViewModel(
             photo: photo,
