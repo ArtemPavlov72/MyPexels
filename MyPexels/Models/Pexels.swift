@@ -80,3 +80,4 @@ enum ApiKey: String {
     case pexelsKey = "563492ad6f91700001000001253d7c5e346445889db51ee382e45bd2"
     case keyForHeader = "Authorization"
 }
+

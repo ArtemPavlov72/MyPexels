@@ -10,6 +10,7 @@ import UIKit
 class PhotoCollectionViewController: UICollectionViewController {
     
     //MARK: - Public Properties
+    //после каждого изменения модели (лайк убрали) происходит обновление контроллера.. сделать лучше
     var viewModel: PhotoCollectionViewModelProtocol! {
         didSet {
             viewModel.fetchPexelsData() {
@@ -30,10 +31,6 @@ class PhotoCollectionViewController: UICollectionViewController {
     private var isFiltering: Bool {
         return searchController.isActive && !searchBarIsEmpty
     }
-    
-    //MARK: - Public Properties
-    var delegateTabBarVC: TabBarStartViewControllerDelegate?
-    var delegateFavoriteVC: FavoriteCollectionViewControllerDelegate?
     
     //MARK: - Lify Cycles Methods
     override func viewDidLoad() {
@@ -102,8 +99,6 @@ class PhotoCollectionViewController: UICollectionViewController {
         ? viewModel.photoDetailsViewModel(at: indexPath)
         : viewModel.photoDetailsViewModel(at: indexPath)
         
-        photoDetailVC.delegateTabBarVC = delegateTabBarVC
-        photoDetailVC.delegateFavoriteVC = delegateFavoriteVC
         show(photoDetailVC, sender: nil)
     }
 }

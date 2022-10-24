@@ -14,7 +14,6 @@ protocol FavoriteCollectionViewControllerDelegate {
 class FavoriteCollectionViewController: UICollectionViewController {
     
     //MARK: - Public Properties
-    var delegateTabBarVC: TabBarStartViewControllerDelegate?
     var viewModel: FavoriteCollectionViewModelProtocol!
     
     //MARK: - Private Properties
@@ -48,8 +47,6 @@ class FavoriteCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photoDetailVC = PhotoDetailsViewController()
         photoDetailVC.viewModel = viewModel.photoDetailsViewModel(at: indexPath)
-        photoDetailVC.delegateTabBarVC = delegateTabBarVC
-        photoDetailVC.delegateFavoriteVC = self
         show(photoDetailVC, sender: nil)
     }
 }

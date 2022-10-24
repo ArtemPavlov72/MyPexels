@@ -13,9 +13,6 @@ class PhotoDetailsViewController: UIViewController {
     var viewModel: PhotoDetailsViewModelProtocol! {
         didSet {
             viewModel.viewModelDidChange = { [weak self] viewModel in
-                //логику делегатов перенести во viewmodel
-                self?.delegateTabBarVC?.reloadFavoriteData()
-                self?.delegateFavoriteVC?.reloadData()
                 self?.installLike()
             }
             photogtapherNameLabel.text = viewModel.photogtapherNameLabel?.capitalized
@@ -27,9 +24,6 @@ class PhotoDetailsViewController: UIViewController {
             // а перед этим активити индикатор крутит
         }
     }
-
-    var delegateTabBarVC: TabBarStartViewControllerDelegate? //delete
-    var delegateFavoriteVC: FavoriteCollectionViewControllerDelegate? //delete
     
     //MARK: - Private Properties
     private lazy var pexelsImage: PexelsImageView = {

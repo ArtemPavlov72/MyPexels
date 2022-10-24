@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol TabBarStartViewControllerDelegate {
-    func reloadFavoriteData()
-}
-                            
 class TabBarStartViewController: UITabBarController {
     
     //MARK: - Public Properties
@@ -51,30 +47,18 @@ class TabBarStartViewController: UITabBarController {
     
     private func updateFavotiteData(for photoViewController: PhotoCollectionViewController) {
         photoViewController.viewModel = viewModel.photoCollectionViewModel()
-        photoViewController.delegateFavoriteVC = favoriteVC
-        photoViewController.delegateTabBarVC = self
     }
     
     private func updateFavotiteData(for favoriteViewController: FavoriteCollectionViewController) {
         favoriteViewController.viewModel = viewModel.favoriteCollectionViewModel()
-        favoriteViewController.delegateTabBarVC = self
     }
     
     private func updateFavotiteData(for userViewController: SettingsViewController) {
-        userViewController.delegateTabBarVC = self
-        userViewController.delegateFavoriteVC = favoriteVC
+        //инициализировать вью модель настроек
     }
     
     private func setupNavigationBar() {
         title = tabBar.selectedItem?.title
         navigationController?.navigationBar.prefersLargeTitles = true
-    }
-}
-
-//MARK: - TabBarStartViewControllerDelegate
-extension TabBarStartViewController: TabBarStartViewControllerDelegate {
-    func reloadFavoriteData() {
-        updateFavotiteData(for: favoriteVC)
-        updateFavotiteData(for: photosVC)
     }
 }

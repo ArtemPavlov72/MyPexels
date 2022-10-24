@@ -134,11 +134,6 @@ class SettingsViewController: UIViewController {
         }
     }()
     
-    //MARK: - Public Properties
-    var delegateTabBarVC: TabBarStartViewControllerDelegate?
-    var delegateFavoriteVC: FavoriteCollectionViewControllerDelegate?
-   //  var delegatePhotoCollectionVC: PhotoCollectionViewControllerDelegate?
-    
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -162,8 +157,6 @@ class SettingsViewController: UIViewController {
     @objc private func clearFavoriteButtonTapped() {
         showAlert(with: "All favorite photos will be deleted.", and: "Do you want to continue?") {
             StorageManager.shared.deleteFavoritePhotos()
-            self.delegateTabBarVC?.reloadFavoriteData()
-            self.delegateFavoriteVC?.reloadData()
         }
     }
     
