@@ -14,8 +14,7 @@ protocol PhotoDetailsViewModelProtocol {
     var isFavorte: Bool { get }
     var photoLink: NSURL { get }
     var viewModelDidChange: ((PhotoDetailsViewModelProtocol) -> Void)? { get set }
-    //убрать из инициализатора массив фаворит
-    init(photo: Photo?, favoritePhoto: PexelsPhoto?, favoritePhotos: [PexelsPhoto])
+    init(photo: Photo?, favoritePhoto: PexelsPhoto?)
     func favoriteButtonPressed()
     func photoViewModel() -> PhotoViewModelProtocol
 }
@@ -116,18 +115,12 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
     //MARK: - Private Properties
     private var photo: Photo?
     private var favoritePhoto: PexelsPhoto?
-    private var favoritePhotos: [PexelsPhoto]
+    private var favoritePhotos: [PexelsPhoto] = []
     
     //MARK: - Init
-    required init(
-        photo: Photo?,
-        favoritePhoto: PexelsPhoto?,
-        favoritePhotos: [PexelsPhoto]
-    )
-    {
+    required init(photo: Photo?, favoritePhoto: PexelsPhoto?) {
         self.photo = photo
         self.favoritePhoto = favoritePhoto
-        self.favoritePhotos = favoritePhotos
     }
     
     //MARK: - Public Methods

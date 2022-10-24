@@ -13,12 +13,10 @@ protocol PhotoCollectionViewModelProtocol {
     func numberOfRows() -> Int
     func numberOfFilteredRows() -> Int
     func cellViewModel(at indexPath: IndexPath) -> PhotoViewCellViewModelProtocol
-    func filteringCellViewModel(at indexPath: IndexPath) -> PhotoViewCellViewModelProtocol
     func fetchSerchingData(from serchingText: String, completion: @escaping () -> Void)
     func serchingNewData()
     func updateSerchingData()
     func photoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol
-    func filteredPhotoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol
 }
 
 class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
@@ -37,48 +35,26 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
     private var filteredPhotos: [Photo] = []
     private var newSearh = false
     private let numberOfPhotosOnPage = 30
-    private var favoritePhotos: [PexelsPhoto] = []
         
     //MARK: - Public Methods
-    private func loadFavoriteData() {
-        StorageManager.shared.fetchFavoritePhotos { result in
-            switch result {
-            case .success(let photos):
-                self.favoritePhotos = photos
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
     func photoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol {
-        loadFavoriteData()
-        let photo = photos[indexPath.item]
-        return PhotoDetailsViewModel(
-            photo: photo,
-            favoritePhoto: nil,
-            favoritePhotos: favoritePhotos
-        )
-    }
-    
-    func filteredPhotoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol {
-        loadFavoriteData()
-        let photo = filteredPhotos[indexPath.item]
-        return PhotoDetailsViewModel(
-            photo: photo,
-            favoritePhoto: nil,
-            favoritePhotos: favoritePhotos
-        )
+        let photo: Photo
+        
+        photo = filteredPhotos.isEmpty
+        ? photos[indexPath.item]
+        : filteredPhotos[indexPath.item]
+        
+        return PhotoDetailsViewModel(photo: photo, favoritePhoto: nil)
     }
     
     func cellViewModel(at indexPath: IndexPath) -> PhotoViewCellViewModelProtocol {
-        let photo = photos[indexPath.item]
+        let photo: Photo
+        
+        photo = filteredPhotos.isEmpty
+        ? photos[indexPath.item]
+        : filteredPhotos[indexPath.item]
+        
         return PhotoViewCellViewModel(photo: photo, favoritePhoto: nil, numberOfItem: NumberOfItemsOnRow(rawValue: numberOfItemsPerRow) ?? .one)
-    }
-    
-    func filteringCellViewModel(at indexPath: IndexPath) -> PhotoViewCellViewModelProtocol {
-        let filteredPhoto = filteredPhotos[indexPath.item]
-        return PhotoViewCellViewModel(photo: filteredPhoto, favoritePhoto: nil, numberOfItem: NumberOfItemsOnRow(rawValue: numberOfItemsPerRow) ?? .one)
     }
     
     func numberOfRows() -> Int {
@@ -98,14 +74,12 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
     }
     
     func fetchPexelsData(completion: @escaping () -> Void) {
-        print("\(self.numberOfPage)")
         NetworkManager.shared.fetchData(
             from: Link.pexelsCuratedPhotos.rawValue,
             withNumberOfPhotosOnPage: numberOfPhotosOnPage,
             numberOfPage: numberOfPage
         )
-        {
-            result in
+        { result in
             switch result {
             case .success(let pexelsData):
                 self.pexelsData = pexelsData
@@ -124,7 +98,13 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
     
     func fetchSerchingData(from serchingText: String, completion: @escaping () -> Void) {
         
-        NetworkManager.shared.fetchSearchingPhoto(serchingText, from: Link.pexelsSearchingPhotos.rawValue, withNumberOfPhotosOnPage: numberOfPhotosOnPage, numberOfPage: numberOfPage) { result in
+        NetworkManager.shared.fetchSearchingPhoto(
+            serchingText,
+            from: Link.pexelsSearchingPhotos.rawValue,
+            withNumberOfPhotosOnPage: numberOfPhotosOnPage,
+            numberOfPage: numberOfPage
+        )
+        { result in
             switch result {
             case .success(let pexelsData):
                 self.pexelsData = pexelsData

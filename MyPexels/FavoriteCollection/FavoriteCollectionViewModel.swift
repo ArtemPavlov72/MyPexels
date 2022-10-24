@@ -34,8 +34,7 @@ class FavoriteCollectionViewModel: FavoriteCollectionViewModelProtocol {
         let photo = favoritePhotos[indexPath.item]
         return PhotoDetailsViewModel(
             photo: nil,
-            favoritePhoto: photo,
-            favoritePhotos: favoritePhotos
+            favoritePhoto: photo
         )
     }
     

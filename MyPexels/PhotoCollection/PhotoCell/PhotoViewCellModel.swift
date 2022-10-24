@@ -14,6 +14,7 @@ protocol PhotoViewCellViewModelProtocol {
 
 class PhotoViewCellViewModel: PhotoViewCellViewModelProtocol {
     
+    //MARK: - Public Properties
     var pexelPhotoURL: String? {
         if photo != nil {
             switch numberOfItem {
@@ -32,10 +33,12 @@ class PhotoViewCellViewModel: PhotoViewCellViewModelProtocol {
         }
     }
     
+    //MARK: - Private Properties
     private var photo: Photo?
     private var favoritePhoto: PexelsPhoto?
-    private var numberOfItem: NumberOfItemsOnRow?
+    private var numberOfItem: NumberOfItemsOnRow
     
+    //MARK: - Init
     required init(photo: Photo?, favoritePhoto: PexelsPhoto?, numberOfItem: NumberOfItemsOnRow) {
         self.photo = photo
         self.favoritePhoto = favoritePhoto

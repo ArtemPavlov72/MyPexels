@@ -74,7 +74,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoViewCell
         cell.viewModel = isFiltering
-        ? viewModel.filteringCellViewModel(at: indexPath)
+        ? viewModel.cellViewModel(at: indexPath)
         : viewModel.cellViewModel(at: indexPath)
         
         if isFiltering {
@@ -99,7 +99,7 @@ class PhotoCollectionViewController: UICollectionViewController {
         let photoDetailVC = PhotoDetailsViewController()
         
         photoDetailVC.viewModel = isFiltering
-        ? viewModel.filteredPhotoDetailsViewModel(at: indexPath)
+        ? viewModel.photoDetailsViewModel(at: indexPath)
         : viewModel.photoDetailsViewModel(at: indexPath)
         
         photoDetailVC.delegateTabBarVC = delegateTabBarVC
