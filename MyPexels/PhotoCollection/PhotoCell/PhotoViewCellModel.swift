@@ -23,7 +23,12 @@ class PhotoViewCellViewModel: PhotoViewCellViewModelProtocol {
                 return photo?.src?.medium
             }
         } else {
-            return favoritePhoto?.mediumSizeOfPhoto
+            switch numberOfItem {
+            case .one, .two:
+                return favoritePhoto?.largeSizeOfPhoto
+            default:
+                return favoritePhoto?.mediumSizeOfPhoto
+            }
         }
     }
     

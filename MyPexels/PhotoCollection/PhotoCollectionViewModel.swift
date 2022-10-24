@@ -19,7 +19,6 @@ protocol PhotoCollectionViewModelProtocol {
     func updateSerchingData()
     func photoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol
     func filteredPhotoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol
-    //init (favoritePhotos: [PexelsPhoto])
 }
 
 class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
@@ -39,14 +38,9 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
     private var newSearh = false
     private let numberOfPhotosOnPage = 30
     private var favoritePhotos: [PexelsPhoto] = []
-    
-    //MARK: - Init
-//    required init(favoritePhotos: [PexelsPhoto]) {
-//        self.favoritePhotos = favoritePhotos
-//    }
-    
+        
     //MARK: - Public Methods
-    func loadFavoriteData() {
+    private func loadFavoriteData() {
         StorageManager.shared.fetchFavoritePhotos { result in
             switch result {
             case .success(let photos):
@@ -55,7 +49,6 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
                 print(error.localizedDescription)
             }
         }
-        
     }
     
     func photoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol {

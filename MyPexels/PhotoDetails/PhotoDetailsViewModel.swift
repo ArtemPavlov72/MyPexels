@@ -14,6 +14,7 @@ protocol PhotoDetailsViewModelProtocol {
     var isFavorte: Bool { get }
     var photoLink: NSURL { get }
     var viewModelDidChange: ((PhotoDetailsViewModelProtocol) -> Void)? { get set }
+    //убрать из инициализатора массив фаворит
     init(photo: Photo?, favoritePhoto: PexelsPhoto?, favoritePhotos: [PexelsPhoto])
     func favoriteButtonPressed()
     func photoViewModel() -> PhotoViewModelProtocol
@@ -64,7 +65,14 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
     var isFavorte: Bool {
         get {
             if favoritePhoto != nil {
-                return true
+                var liked = false
+                loadFavoritePhotos()
+                for favor in favoritePhotos {
+                    if favoritePhoto == favor {
+                        liked.toggle()
+                    }
+                }
+                return liked
             } else {
                 var liked = false
                 guard let pexelsPhotoId = photo?.id else { return liked }
@@ -78,17 +86,27 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
             }
         } set {
             if newValue == true {
-                guard let pexelsPhotoId = photo?.id else { return }
-                for favorPhoto in favoritePhotos {
-                    if pexelsPhotoId == Int(favorPhoto.id) {
-                        return
+                if favoritePhoto != nil {
+                    StorageManager.shared.savePexelsPhoto(pexelsPhoto: favoritePhoto)
+                    viewModelDidChange?(self)
+                } else {
+                    guard let pexelsPhotoId = photo?.id else { return }
+                    for favorPhoto in favoritePhotos {
+                        if pexelsPhotoId == Int(favorPhoto.id) {
+                            return
+                        }
                     }
+                    StorageManager.shared.savePhoto(pexelsPhoto: photo)
+                    viewModelDidChange?(self)
                 }
-                StorageManager.shared.savePhoto(pexelsPhoto: photo)
-                viewModelDidChange?(self)
             } else {
+                if favoritePhoto != nil {
+                    StorageManager.shared.deletePhoto(photo: favoritePhoto)
+                    viewModelDidChange?(self)
+                } else {
                 StorageManager.shared.deletePhoto2(photo: photo)
                 viewModelDidChange?(self)
+                }
             }
         }
     }

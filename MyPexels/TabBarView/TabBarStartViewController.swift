@@ -56,15 +56,13 @@ class TabBarStartViewController: UITabBarController {
     }
     
     private func updateFavotiteData(for favoriteViewController: FavoriteCollectionViewController) {
-        //favoriteViewController.favoritePhotos = favoritePhotos
-        favoriteViewController.favoritePhotos = viewModel.getFavoritePhotos()
+        favoriteViewController.viewModel = viewModel.favoriteCollectionViewModel()
         favoriteViewController.delegateTabBarVC = self
     }
     
     private func updateFavotiteData(for userViewController: SettingsViewController) {
         userViewController.delegateTabBarVC = self
         userViewController.delegateFavoriteVC = favoriteVC
-       // userViewController.delegatePhotoCollectionVC = photosVC
     }
     
     private func setupNavigationBar() {
@@ -76,7 +74,6 @@ class TabBarStartViewController: UITabBarController {
 //MARK: - TabBarStartViewControllerDelegate
 extension TabBarStartViewController: TabBarStartViewControllerDelegate {
     func reloadFavoriteData() {
-      //  loadFavouritePhotos()
         updateFavotiteData(for: favoriteVC)
         updateFavotiteData(for: photosVC)
     }

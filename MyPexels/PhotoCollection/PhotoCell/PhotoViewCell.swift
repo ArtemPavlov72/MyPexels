@@ -34,13 +34,7 @@ class PhotoViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    //MARK: - Public Methods
-    //пока испльзуется в favoriteCollectionViewController, после можно удалить
-    func configureCell(with photo: String) {
-        imageView.fetchImage(from: photo)
-    }
-    
+ 
     //MARK: - Private Methods
     private func setupItem() {
         addSubview(imageView)

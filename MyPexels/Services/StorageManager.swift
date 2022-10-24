@@ -62,8 +62,24 @@ class StorageManager {
         photo.height = Int64(pexelsPhoto?.height ?? 0)
         saveContext()
     }
+    
+    func savePexelsPhoto(pexelsPhoto: PexelsPhoto?) {
+        let photo = PexelsPhoto(context: viewContext)
+        photo.id = pexelsPhoto?.id ?? 0
+        photo.photographer = pexelsPhoto?.photographer
+        photo.descriptionOfPhoto = pexelsPhoto?.descriptionOfPhoto
+        photo.smallSizeOfPhoto = pexelsPhoto?.smallSizeOfPhoto
+        photo.mediumSizeOfPhoto = pexelsPhoto?.mediumSizeOfPhoto
+        photo.largeSizeOfPhoto = pexelsPhoto?.largeSizeOfPhoto
+        photo.originalSizeOfPhoto = pexelsPhoto?.originalSizeOfPhoto
+        photo.pexelsUrl = pexelsPhoto?.pexelsUrl
+        photo.width = pexelsPhoto?.width ?? 0
+        photo.height = pexelsPhoto?.height ?? 0
+        saveContext()
+    }
         
-    func deletePhoto(photo: PexelsPhoto) {
+    func deletePhoto(photo: PexelsPhoto?) {
+        guard let photo = photo else { return }
         viewContext.delete(photo)
         saveContext()
     }
