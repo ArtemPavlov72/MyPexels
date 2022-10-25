@@ -9,9 +9,11 @@ import UIKit
 
 class RootViewController: UIViewController {
     
-    //MARK: - Init RootViewController
+    //MARK: - Private Properties
+    private var viewModel: RootViewModelDelegate!
     private var currentRootVC: UIViewController
     
+    //MARK: - Init
     init() {
         currentRootVC = LoginViewController()
         super.init(nibName:  nil, bundle: nil)
@@ -24,34 +26,37 @@ class RootViewController: UIViewController {
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel = RootViewModel()
         loadRootController()
     }
     
     //MARK: - Public Methods
     func showLoginScreen() {
-        let newVC = UINavigationController(rootViewController: LoginViewController())
+        let loginVC = LoginViewController()
+        loginVC.viewModel = viewModel.loginViewModel()
         
+        let newVC = UINavigationController(rootViewController: loginVC)
         addChild(newVC)
         newVC.view.frame = view.bounds
         view.addSubview(newVC.view)
         newVC.didMove(toParent: self)
-        
         currentRootVC.willMove(toParent: nil)
         currentRootVC.view.removeFromSuperview()
         currentRootVC.removeFromParent()
-        
         currentRootVC = newVC
     }
     
     func switchToLogout() {
-        
         let loginVC = LoginViewController()
+        loginVC.viewModel = viewModel.loginViewModel()
+        
         let logoutScreen = UINavigationController(rootViewController: loginVC)
         animateDismissTransition(to: logoutScreen)
     }
     
     func switchToMainScreen() {
         let mainViewController = TabBarStartViewController()
+        mainViewController.viewModel = viewModel.tabBarStartViewModel()
         let mainScreen = UINavigationController(rootViewController:  mainViewController)
         animateFadeTransition(to: mainScreen)
     }
@@ -68,7 +73,6 @@ class RootViewController: UIViewController {
         currentRootVC.willMove(toParent: nil)
         addChild(new)
         transition(from: currentRootVC, to: new, duration: 0.3, options: [.transitionCrossDissolve, .curveEaseOut], animations: {
-            
         }) { completed in
             self.currentRootVC.removeFromParent()
             new.didMove(toParent: self)

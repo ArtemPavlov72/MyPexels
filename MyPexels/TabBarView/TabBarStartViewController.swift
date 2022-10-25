@@ -10,7 +10,12 @@ import UIKit
 class TabBarStartViewController: UITabBarController {
     
     //MARK: - Public Properties
-    private var viewModel: TabBarStartViewModelProtocol!
+    var viewModel: TabBarStartViewModelProtocol! {
+        didSet {
+            photosVC.viewModel = viewModel.photoCollectionViewModel()
+            favoriteVC.viewModel = viewModel.favoriteCollectionViewModel()
+        }
+    }
     
     //MARK: - Private Properties
     private let photosVC = PhotoCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
@@ -20,11 +25,7 @@ class TabBarStartViewController: UITabBarController {
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = TabBarStartViewModel()
         setupTabBar()
-        updateFavotiteData(for: photosVC)
-        updateFavotiteData(for: favoriteVC)
-        updateFavotiteData(for: settingsVC)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,18 +44,6 @@ class TabBarStartViewController: UITabBarController {
         favoriteVC.tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "heart"), tag: 2)
         settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "slider.vertical.3"), tag: 3) 
         viewControllers = [photosVC, favoriteVC, settingsVC]
-    }
-    
-    private func updateFavotiteData(for photoViewController: PhotoCollectionViewController) {
-        photoViewController.viewModel = viewModel.photoCollectionViewModel()
-    }
-    
-    private func updateFavotiteData(for favoriteViewController: FavoriteCollectionViewController) {
-        favoriteViewController.viewModel = viewModel.favoriteCollectionViewModel()
-    }
-    
-    private func updateFavotiteData(for userViewController: SettingsViewController) {
-        //инициализировать вью модель настроек
     }
     
     private func setupNavigationBar() {

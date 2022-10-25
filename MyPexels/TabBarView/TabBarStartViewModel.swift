@@ -13,15 +13,13 @@ protocol TabBarStartViewModelProtocol {
 }
 
 class TabBarStartViewModel: TabBarStartViewModelProtocol {
-    //MARK: - Private Properties
-    private var favoritePhotos: [PexelsPhoto] = []
     
     //MARK: - Public Methods
     func photoCollectionViewModel() -> PhotoCollectionViewModelProtocol {
-        return PhotoCollectionViewModel()
+        PhotoCollectionViewModel()
     }
     
     func favoriteCollectionViewModel() -> FavoriteCollectionViewModelProtocol {
-        return FavoriteCollectionViewModel()
+        FavoriteCollectionViewModel()
     }
 }

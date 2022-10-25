@@ -6,9 +6,11 @@
 //
 
 import UIKit
-import SnapKit
 
 class LoginViewController: UIViewController {
+    
+    //MARK: - Public Properties
+    var viewModel: LoginViewModelProtocol!
     
     //MARK: - Private Properties
     private lazy var nameTextField: UITextField = {
@@ -64,16 +66,10 @@ class LoginViewController: UIViewController {
         guard let inputText = nameTextField.text, !inputText.isEmpty else {return}
         let nameTrimmingText = inputText.trimmingCharacters(in: .whitespaces)
         
-        let user = User(
-            name: nameTrimmingText,
-            isRegistered: true,
-            pexelsImageCountPerRow: 2,
-            favoriteImageCountPerRow: 2
-        )
-        
-        UserSettingManager.shared.save(user: user)
-        
+        viewModel.enterButtonPressed(with: nameTrimmingText)
+                
         let tabBarStartVC = TabBarStartViewController()
+        tabBarStartVC.viewModel = viewModel.tabBarStartViewModel()
         tabBarStartVC.navigationItem.hidesBackButton = true
         
         AppDelegate.shared.rootViewController.switchToMainScreen()
