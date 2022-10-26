@@ -10,10 +10,11 @@ import Foundation
 protocol TabBarStartViewModelProtocol {
     func photoCollectionViewModel() -> PhotoCollectionViewModelProtocol
     func favoriteCollectionViewModel() -> FavoriteCollectionViewModelProtocol
+    func settingsViewModel() -> SettingViewModelProtocol
 }
 
 class TabBarStartViewModel: TabBarStartViewModelProtocol {
-    
+
     //MARK: - Public Methods
     func photoCollectionViewModel() -> PhotoCollectionViewModelProtocol {
         PhotoCollectionViewModel()
@@ -21,5 +22,9 @@ class TabBarStartViewModel: TabBarStartViewModelProtocol {
     
     func favoriteCollectionViewModel() -> FavoriteCollectionViewModelProtocol {
         FavoriteCollectionViewModel()
+    }
+    
+    func settingsViewModel() -> SettingViewModelProtocol {
+        SettingsViewModel()
     }
 }

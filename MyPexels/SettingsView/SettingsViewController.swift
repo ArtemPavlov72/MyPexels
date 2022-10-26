@@ -10,6 +10,8 @@ import SnapKit
 
 class SettingsViewController: UIViewController {
     
+    var viewModel: SettingViewModelProtocol!
+    
     //MARK: - Private Properties
     private lazy var clearFavoriteDataButton: UIButton = {
         let button = UIButton()
@@ -36,7 +38,7 @@ class SettingsViewController: UIViewController {
     private lazy var changeNumberOfItemsOnPVCButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 15
-        button.setTitle(" \(numberOfItemsOnPhotoVC) ", for: .normal)
+        button.setTitle(" \(viewModel.numberOfPhotoItems) ", for: .normal)
         button.backgroundColor = .systemGray2
         button.setTitleColor(UIColor.systemGray6, for: .normal)
         button.setTitleColor(UIColor.systemGray, for: .highlighted)
@@ -47,7 +49,7 @@ class SettingsViewController: UIViewController {
     private lazy var changeNumberOfItemsOnFVCButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 15
-        button.setTitle(" \(numberOfItemsOnFavoriteVC) ", for: .normal)
+        button.setTitle(" \(viewModel.numberOfFavoriteItems) ", for: .normal)
         button.backgroundColor = .systemGray2
         button.setTitleColor(UIColor.systemGray6, for: .normal)
         button.setTitleColor(UIColor.systemGray, for: .highlighted)
@@ -111,33 +113,12 @@ class SettingsViewController: UIViewController {
         stackView.addArrangedSubview(changeNumberOfItemsOnFVCButton)
         return stackView
     }()
-    
-    private var numberOfItemsOnPhotoVC: NumberOfItemsOnRow = {
-        switch UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: true) {
-        case 1:
-            return NumberOfItemsOnRow.one
-        case 2:
-            return NumberOfItemsOnRow.two
-        default:
-            return NumberOfItemsOnRow.three
-        }
-    }()
-    
-    private var numberOfItemsOnFavoriteVC: ItemsOfRow = {
-        switch UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: false) {
-        case 1:
-            return ItemsOfRow.one
-        case 2:
-            return ItemsOfRow.two
-        default:
-            return ItemsOfRow.three
-        }
-    }()
-    
+        
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        viewModelUpdate()
         setupSubViews(itemsVStackView, dataVStackView)
         setupConstraints()
     }
@@ -148,6 +129,13 @@ class SettingsViewController: UIViewController {
     }
     
     //MARK: - Private Methods
+    private func viewModelUpdate() {
+        viewModel.viewModelDidChange = { [weak self] viewModel in
+            self?.changeNumberOfItemsOnPVCButton.setTitle(" \(viewModel.numberOfPhotoItems) ", for: .normal)
+            self?.changeNumberOfItemsOnFVCButton.setTitle(" \(viewModel.numberOfFavoriteItems) ", for: .normal)
+        }
+    }
+    
     private func setupSubViews(_ subViews: UIView...) {
         subViews.forEach { subview in
             view.addSubview(subview)
@@ -156,50 +144,22 @@ class SettingsViewController: UIViewController {
     
     @objc private func clearFavoriteButtonTapped() {
         showAlert(with: "All favorite photos will be deleted.", and: "Do you want to continue?") {
-            StorageManager.shared.deleteFavoritePhotos()
+            self.viewModel.clearButtonTapped()
         }
     }
     
     @objc private func logoutButtonTapped() {
         showAlert(with: "All saved data will be deleted.", and: "Do you want to continue?") {
-            UserSettingManager.shared.deleteUserData()
-            AppDelegate.shared.rootViewController.switchToLogout()
-            StorageManager.shared.deleteFavoritePhotos()
+            self.viewModel.logoutButtonTapped()
         }
     }
     
     @objc private func changeItemsOnPhotoVCTapped() {
-        switch numberOfItemsOnPhotoVC {
-        case .one:
-            numberOfItemsOnPhotoVC = NumberOfItemsOnRow.two
-            changeNumberOfItemsOnPVCButton.setTitle(" \(numberOfItemsOnPhotoVC) ", for: .normal)
-            UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: true, to: 2)
-        case .two:
-            numberOfItemsOnPhotoVC = NumberOfItemsOnRow.three
-            changeNumberOfItemsOnPVCButton.setTitle(" \(numberOfItemsOnPhotoVC) ", for: .normal)
-            UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: true, to: 3)
-        case .three:
-            numberOfItemsOnPhotoVC = NumberOfItemsOnRow.one
-            changeNumberOfItemsOnPVCButton.setTitle(" \(numberOfItemsOnPhotoVC) ", for: .normal)
-            UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: true, to: 1)
-        }
+        viewModel.changeNumberOfPhotoItemsTapped()
     }
     
     @objc private func changeItemsOnFavoriteVCTapped() {
-        switch numberOfItemsOnFavoriteVC {
-        case .one:
-            numberOfItemsOnFavoriteVC = ItemsOfRow.two
-            changeNumberOfItemsOnFVCButton.setTitle(" \(numberOfItemsOnFavoriteVC) ", for: .normal)
-            UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: false, to: 2)
-        case .two:
-            numberOfItemsOnFavoriteVC = ItemsOfRow.three
-            changeNumberOfItemsOnFVCButton.setTitle(" \(numberOfItemsOnFavoriteVC) ", for: .normal)
-            UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: false, to: 3)
-        case .three:
-            numberOfItemsOnFavoriteVC = ItemsOfRow.one
-            changeNumberOfItemsOnFVCButton.setTitle(" \(numberOfItemsOnFavoriteVC) ", for: .normal)
-            UserSettingManager.shared.changeCountOfPhotosPerRowFor(photoCollectionView: false, to: 1)
-        }
+        viewModel.changeNumberOfFavoriteItemsTapped()
     }
     
     //MARK: - Setup Constraints
@@ -215,11 +175,11 @@ class SettingsViewController: UIViewController {
         }
         
         changeNumberOfItemsOnPVCButton.snp.makeConstraints { make in
-            make.width.equalTo(110)
+            make.width.equalTo(60)
         }
         
         changeNumberOfItemsOnFVCButton.snp.makeConstraints { make in
-            make.width.equalTo(110)
+            make.width.equalTo(60)
         }
     }
 }
@@ -236,14 +196,5 @@ extension SettingsViewController {
         alert.addAction(okAction)
         alert.addAction(cancelAction)
         present(alert, animated: true)
-    }
-}
-
-//MARK: - Number Of Photos On Row
-extension SettingsViewController {
-    enum ItemsOfRow: CGFloat {
-        case one = 1
-        case two = 2
-        case three = 3
     }
 }

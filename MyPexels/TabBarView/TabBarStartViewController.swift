@@ -14,6 +14,7 @@ class TabBarStartViewController: UITabBarController {
         didSet {
             photosVC.viewModel = viewModel.photoCollectionViewModel()
             favoriteVC.viewModel = viewModel.favoriteCollectionViewModel()
+            settingsVC.viewModel = viewModel.settingsViewModel()
         }
     }
     
@@ -42,7 +43,7 @@ class TabBarStartViewController: UITabBarController {
     private func setupTabBar() {
         photosVC.tabBarItem = UITabBarItem(title: "Pexels", image: UIImage(systemName: "house"), tag: 1)
         favoriteVC.tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "heart"), tag: 2)
-        settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "slider.vertical.3"), tag: 3) 
+        settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "slider.vertical.3"), tag: 3)
         viewControllers = [photosVC, favoriteVC, settingsVC]
     }
     

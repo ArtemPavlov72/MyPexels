@@ -21,7 +21,7 @@ class UserSettingManager {
     )
     
     private init() {}
-    
+    //сделать юзера опциональным
     private func fetchData() -> User {
         guard let data = defaults.data(forKey: key) else { return userNotRegistered  }
         guard let user = try? JSONDecoder().decode(User.self, from: data) else { return userNotRegistered }
