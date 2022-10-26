@@ -103,7 +103,7 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
                     StorageManager.shared.deletePhoto(photo: favoritePhoto)
                     viewModelDidChange?(self)
                 } else {
-                StorageManager.shared.deletePhoto2(photo: photo)
+                StorageManager.shared.deletePhoto(photo: photo)
                 viewModelDidChange?(self)
                 }
             }

@@ -72,28 +72,45 @@ class RootViewController: UIViewController {
     private func animateFadeTransition(to new: UIViewController, completion: (() -> Void)? = nil) {
         currentRootVC.willMove(toParent: nil)
         addChild(new)
-        transition(from: currentRootVC, to: new, duration: 0.3, options: [.transitionCrossDissolve, .curveEaseOut], animations: {
-        }) { completed in
-            self.currentRootVC.removeFromParent()
-            new.didMove(toParent: self)
-            self.currentRootVC = new
-            completion?()
-        }
+        
+        transition(
+            from: currentRootVC,
+            to: new,
+            duration: 0.3,
+            options: [.transitionCrossDissolve, .curveEaseOut],
+            animations: {
+            }) { completed in
+                self.currentRootVC.removeFromParent()
+                new.didMove(toParent: self)
+                self.currentRootVC = new
+                completion?()
+            }
     }
     
     private func animateDismissTransition(to new: UIViewController, completion: (() -> Void)? = nil) {
-        let initialFrame = CGRect(x: -view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height)
+        let initialFrame = CGRect(
+            x: -view.bounds.width,
+            y: 0,
+            width: view.bounds.width,
+            height: view.bounds.height
+        )
+        
         currentRootVC.willMove(toParent: nil)
         addChild(new)
         new.view.frame = initialFrame
         
-        transition(from: currentRootVC, to: new, duration: 0.3, options: [], animations: {
-            new.view.frame = self.view.bounds
-        }) { completed in
-            self.currentRootVC.removeFromParent()
-            new.didMove(toParent: self)
-            self.currentRootVC = new
-            completion?()
-        }
+        transition(
+            from: currentRootVC,
+            to: new,
+            duration: 0.3,
+            options: [],
+            animations: {
+                new.view.frame = self.view.bounds
+            }) { completed in
+                self.currentRootVC.removeFromParent()
+                new.didMove(toParent: self)
+                self.currentRootVC = new
+                completion?()
+            }
     }
 }

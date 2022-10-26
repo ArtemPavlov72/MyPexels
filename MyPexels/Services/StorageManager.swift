@@ -84,7 +84,7 @@ class StorageManager {
         saveContext()
     }
     
-    func deletePhoto2(photo: Photo?) {
+    func deletePhoto(photo: Photo?) {
         var favoritePhotos: [PexelsPhoto] = []
         fetchFavoritePhotos { result in
             switch result {

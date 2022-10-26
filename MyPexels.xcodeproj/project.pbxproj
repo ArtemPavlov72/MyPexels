@@ -127,14 +127,8 @@
 		84525EA4283A9857005E5E6A /* MyPexels */ = {
 			isa = PBXGroup;
 			children = (
-				AC0ADED42907A21F0024EDCD /* RootView */,
-				AC0ADED129070E310024EDCD /* LoginView */,
-				AC80749729042ED8006BE70E /* TabBarView */,
-				ACCEEFAE28FB3C1B0034FB29 /* PhotoCollection */,
-				AC80749A2905BB59006BE70E /* FavoriteCollection */,
-				AC9E466728D7954400141393 /* PhotoDetails */,
-				ACA1DB9A28F7F598005DC078 /* PhotoView */,
-				84525EC3283D0DE9005E5E6A /* SettingsView */,
+				AC0ADED92909506B0024EDCD /* ViewControllers + ViewModels */,
+				ACCEEFB128FDD1620034FB29 /* PhotoCell */,
 				84525ECB283F624D005E5E6A /* View */,
 				842C1C2B2853035B0056130B /* Utilities */,
 				84525EC8283DC15E005E5E6A /* Models */,
@@ -219,6 +213,21 @@
 			path = RootView;
 			sourceTree = "<group>";
 		};
+		AC0ADED92909506B0024EDCD /* ViewControllers + ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				AC0ADED42907A21F0024EDCD /* RootView */,
+				AC0ADED129070E310024EDCD /* LoginView */,
+				AC80749729042ED8006BE70E /* TabBarView */,
+				ACCEEFAE28FB3C1B0034FB29 /* PhotoCollection */,
+				AC80749A2905BB59006BE70E /* FavoriteCollection */,
+				AC9E466728D7954400141393 /* PhotoDetails */,
+				ACA1DB9A28F7F598005DC078 /* PhotoView */,
+				84525EC3283D0DE9005E5E6A /* SettingsView */,
+			);
+			path = "ViewControllers + ViewModels";
+			sourceTree = "<group>";
+		};
 		AC80749729042ED8006BE70E /* TabBarView */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,7 +267,6 @@
 		ACCEEFAE28FB3C1B0034FB29 /* PhotoCollection */ = {
 			isa = PBXGroup;
 			children = (
-				ACCEEFB128FDD1620034FB29 /* PhotoCell */,
 				84525EBB283A9E2D005E5E6A /* PhotoCollectionViewController.swift */,
 				ACCEEFAF28FB3C4F0034FB29 /* PhotoCollectionViewModel.swift */,
 			);

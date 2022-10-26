@@ -9,11 +9,11 @@ import Foundation
 
 protocol PhotoCollectionViewModelProtocol {
     var numberOfItemsPerRow: Int { get }
-    func fetchPexelsData(completion: @escaping() -> Void)
     func numberOfRows() -> Int
     func numberOfFilteredRows() -> Int
-    func cellViewModel(at indexPath: IndexPath) -> PhotoViewCellViewModelProtocol
+    func fetchPexelsData(completion: @escaping() -> Void)
     func fetchSerchingData(from serchingText: String, completion: @escaping () -> Void)
+    func cellViewModel(at indexPath: IndexPath) -> PhotoViewCellViewModelProtocol
     func serchingNewData()
     func updateSerchingData()
     func photoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol
@@ -54,7 +54,11 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
         ? photos[indexPath.item]
         : filteredPhotos[indexPath.item]
         
-        return PhotoViewCellViewModel(photo: photo, favoritePhoto: nil, numberOfItem: NumberOfItemsOnRow(rawValue: numberOfItemsPerRow) ?? .one)
+        return PhotoViewCellViewModel(
+            photo: photo,
+            favoritePhoto: nil,
+            numberOfItem: NumberOfItemsOnRow(rawValue: numberOfItemsPerRow) ?? .one
+        )
     }
     
     func numberOfRows() -> Int {

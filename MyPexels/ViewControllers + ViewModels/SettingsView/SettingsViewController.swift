@@ -10,6 +10,7 @@ import SnapKit
 
 class SettingsViewController: UIViewController {
     
+    //MARK: - Public Properties
     var viewModel: SettingViewModelProtocol!
     
     //MARK: - Private Properties
@@ -20,7 +21,11 @@ class SettingsViewController: UIViewController {
         button.backgroundColor = .systemOrange.withAlphaComponent(0.7)
         button.setTitleColor(UIColor.systemGray6, for: .normal)
         button.setTitleColor(UIColor.systemGray, for: .highlighted)
-        button.addTarget(self, action: #selector(clearFavoriteButtonTapped), for: .touchUpInside)
+        button.addTarget(
+            self,
+            action: #selector(clearFavoriteButtonTapped),
+            for: .touchUpInside
+        )
         return button
     }()
     
@@ -31,7 +36,11 @@ class SettingsViewController: UIViewController {
         button.backgroundColor = .systemRed.withAlphaComponent(0.6)
         button.setTitleColor(UIColor.systemGray6, for: .normal)
         button.setTitleColor(UIColor.systemGray, for: .highlighted)
-        button.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
+        button.addTarget(
+            self,
+            action: #selector(logoutButtonTapped),
+            for: .touchUpInside
+        )
         return button
     }()
     
@@ -42,7 +51,11 @@ class SettingsViewController: UIViewController {
         button.backgroundColor = .systemGray2
         button.setTitleColor(UIColor.systemGray6, for: .normal)
         button.setTitleColor(UIColor.systemGray, for: .highlighted)
-        button.addTarget(self, action: #selector(changeItemsOnPhotoVCTapped), for: .touchUpInside)
+        button.addTarget(
+            self,
+            action: #selector(changeItemsOnPhotoVCTapped),
+            for: .touchUpInside
+        )
         return button
     }()
     
@@ -53,7 +66,11 @@ class SettingsViewController: UIViewController {
         button.backgroundColor = .systemGray2
         button.setTitleColor(UIColor.systemGray6, for: .normal)
         button.setTitleColor(UIColor.systemGray, for: .highlighted)
-        button.addTarget(self, action: #selector(changeItemsOnFavoriteVCTapped), for: .touchUpInside)
+        button.addTarget(
+            self,
+            action: #selector(changeItemsOnFavoriteVCTapped),
+            for: .touchUpInside
+        )
         return button
     }()
     
@@ -131,8 +148,14 @@ class SettingsViewController: UIViewController {
     //MARK: - Private Methods
     private func viewModelUpdate() {
         viewModel.viewModelDidChange = { [weak self] viewModel in
-            self?.changeNumberOfItemsOnPVCButton.setTitle(" \(viewModel.numberOfPhotoItems) ", for: .normal)
-            self?.changeNumberOfItemsOnFVCButton.setTitle(" \(viewModel.numberOfFavoriteItems) ", for: .normal)
+            self?.changeNumberOfItemsOnPVCButton.setTitle(
+                "\(viewModel.numberOfPhotoItems)",
+                for: .normal
+            )
+            self?.changeNumberOfItemsOnFVCButton.setTitle(
+                "\(viewModel.numberOfFavoriteItems)",
+                for: .normal
+            )
         }
     }
     
@@ -143,13 +166,19 @@ class SettingsViewController: UIViewController {
     }
     
     @objc private func clearFavoriteButtonTapped() {
-        showAlert(with: "All favorite photos will be deleted.", and: "Do you want to continue?") {
+        showAlert(
+            with: "All favorite photos will be deleted.",
+            and: "Do you want to continue?"
+        ) {
             self.viewModel.clearButtonTapped()
         }
     }
     
     @objc private func logoutButtonTapped() {
-        showAlert(with: "All saved data will be deleted.", and: "Do you want to continue?") {
+        showAlert(
+            with: "All saved data will be deleted.",
+            and: "Do you want to continue?"
+        ) {
             self.viewModel.logoutButtonTapped()
         }
     }
@@ -186,15 +215,25 @@ class SettingsViewController: UIViewController {
 
 //MARK: - Alert Controller
 extension SettingsViewController {
-    private func showAlert(with title: String, and massage: String, completion: (() -> Void)?) {
-        let alert = UIAlertController(title: title, message: massage, preferredStyle: .alert)
+    private func showAlert(
+        with title: String,
+        and massage: String,
+        completion: (() -> Void)?
+    ) {
+        let alert = UIAlertController(
+            title: title, message: massage,
+            preferredStyle: .alert
+        )
+        
         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
             guard let completion = completion else { return }
             completion()
         }
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(okAction)
         alert.addAction(cancelAction)
+        
         present(alert, animated: true)
     }
 }

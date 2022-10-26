@@ -17,7 +17,8 @@ protocol PhotoViewModelProtocol {
 }
 
 class PhotoViewModel: PhotoViewModelProtocol {
-  
+    
+    //MARK: - Public Properties
     var photoWidth: Int {
         if photo != nil {
             return photo?.width ?? 0
@@ -62,6 +63,7 @@ class PhotoViewModel: PhotoViewModelProtocol {
         self.favoritePhoto = favoritePhoto
     }
     
+    //MARK: - Public Methods
     func loadingImage() {
         imageIsLoaded.toggle()
     }

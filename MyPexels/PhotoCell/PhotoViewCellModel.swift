@@ -9,7 +9,11 @@ import Foundation
 
 protocol PhotoViewCellViewModelProtocol {
     var pexelPhotoURL: String? { get }
-    init(photo: Photo?, favoritePhoto: PexelsPhoto?, numberOfItem: NumberOfItemsOnRow)
+    init(
+        photo: Photo?,
+        favoritePhoto: PexelsPhoto?,
+        numberOfItem: NumberOfItemsOnRow
+    )
 }
 
 class PhotoViewCellViewModel: PhotoViewCellViewModelProtocol {
@@ -39,7 +43,11 @@ class PhotoViewCellViewModel: PhotoViewCellViewModelProtocol {
     private var numberOfItem: NumberOfItemsOnRow
     
     //MARK: - Init
-    required init(photo: Photo?, favoritePhoto: PexelsPhoto?, numberOfItem: NumberOfItemsOnRow) {
+    required init(
+        photo: Photo?,
+        favoritePhoto: PexelsPhoto?,
+        numberOfItem: NumberOfItemsOnRow
+    ) {
         self.photo = photo
         self.favoritePhoto = favoritePhoto
         self.numberOfItem = numberOfItem
