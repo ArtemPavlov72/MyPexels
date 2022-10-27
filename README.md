@@ -1,9 +1,7 @@
 # MyPexels
 This app using [Pexels](https://www.pexels.com/ru-ru/) API and written in Swift with UIKit. [Here](https://www.pexels.com/ru-ru/api/documentation/) Pexels API documentation.
 
-For using MyPexels app, you need to install [SDWebImage](https://github.com/SDWebImage/SDWebImage) to project. 
-
-Please, use your own [API-key](https://www.pexels.com/api), then you using MyPexels App. 
+Please, use your own [API-key](https://www.pexels.com/api), when you using MyPexels app. It's easy =))
 
 ---
 ### MyPexels app staсk:
@@ -11,7 +9,7 @@ Please, use your own [API-key](https://www.pexels.com/api), then you using MyPex
 - No storyboard;
 - SDWebImage framework;
 - SnapKit framework;
-- MVC pattern;
+- MVVM pattern;
 - CoreData;
 - UserDefaults.
 ---
@@ -38,4 +36,6 @@ On this screen you can send photo, add photo to favorite photos or open photo in
 <img src="https://github.com/ArtemPavlov72/Screenshots/blob/main/Favorite%20screen.png" width="200">
 
 ---
-!!! Pexels Api did not work in Russian. If you live in Russia, use vpn.
+p.s.(1) Pexels Api not works in Russia. If you live in Russia, use vpn.
+
+p.s.(2) If you need MyPexels App in MVC pattern - write me =)
