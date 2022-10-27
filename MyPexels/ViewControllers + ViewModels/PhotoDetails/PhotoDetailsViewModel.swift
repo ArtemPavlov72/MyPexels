@@ -76,15 +76,12 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
                         }
                     }
                     StorageManager.shared.savePhoto(pexelsPhoto: photo)
-                    viewModelDidChange?(self)
                 }
             } else {
                 if favoritePhoto != nil {
-                    StorageManager.shared.deletePhoto(photo: favoritePhoto)
                     favoritePhoto = nil
-                } else {
-                    StorageManager.shared.deletePhoto(photo: photo)
                 }
+                StorageManager.shared.deletePhoto(photo: photo)
             }
             viewModelDidChange?(self)
         }
