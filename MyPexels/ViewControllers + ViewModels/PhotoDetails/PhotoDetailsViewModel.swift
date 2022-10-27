@@ -23,72 +23,52 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
 
     //MARK: - Public Properties
     var photoLink: NSURL {
-        if photo != nil {
-            guard let link = NSURL(string: photo?.url ?? "") else {
-                return NSURL(fileURLWithPath: "")
-            }
-            return link
-        } else {
-            guard let link = NSURL(string: favoritePhoto?.pexelsUrl ?? "") else {
-                return NSURL(fileURLWithPath: "")
-            }
-            return link
-        }
+        let link = photo != nil
+        ? NSURL(string: photo?.url ?? "")
+        : NSURL(string: favoritePhoto?.pexelsUrl ?? "")
+        return link ?? NSURL(fileURLWithPath: "")
     }
     
     var pexelsImageURL: String? {
-        if photo != nil {
-            return photo?.src?.large
-        } else {
-            return favoritePhoto?.mediumSizeOfPhoto
-        }
+        let url = photo != nil
+        ? photo?.src?.large
+        : favoritePhoto?.mediumSizeOfPhoto
+        return url
     }
     
     var photogtapherNameLabel: String? {
-        if photo != nil {
-            return photo?.photographer
-        } else {
-            return favoritePhoto?.photographer
-        }
+        let nameLabel = photo != nil
+        ? photo?.photographer
+        : favoritePhoto?.photographer
+        return nameLabel
     }
     
     var descriptionLabel: String? {
-        if photo != nil {
-            return photo?.alt
-        } else {
-            return favoritePhoto?.descriptionOfPhoto
-        }
+        let descriptionLabel = photo != nil
+        ? photo?.alt
+        : favoritePhoto?.descriptionOfPhoto
+        return descriptionLabel
     }
     
-    // do better in future
     var isFavorte: Bool {
         get {
+            var liked = false
+            loadFavoritePhotos()
             if favoritePhoto != nil {
-                var liked = false
-                loadFavoritePhotos()
-                for favor in favoritePhotos {
-                    if favoritePhoto == favor {
-                        liked.toggle()
-                    }
-                }
-                return liked
+                loadPhoto()
+                liked.toggle()
             } else {
-                var liked = false
                 guard let pexelsPhotoId = photo?.id else { return liked }
-                loadFavoritePhotos()
-                for favoritePhoto in favoritePhotos {
-                    if pexelsPhotoId == Int(favoritePhoto.id) {
+                for photo in favoritePhotos {
+                    if pexelsPhotoId == Int(photo.id) {
                         liked.toggle()
                     }
                 }
-                return liked
             }
+            return liked
         } set {
             if newValue == true {
-                if favoritePhoto != nil {
-                    StorageManager.shared.savePexelsPhoto(pexelsPhoto: favoritePhoto)
-                    viewModelDidChange?(self)
-                } else {
+                if favoritePhoto == nil {
                     guard let pexelsPhotoId = photo?.id else { return }
                     for favorPhoto in favoritePhotos {
                         if pexelsPhotoId == Int(favorPhoto.id) {
@@ -101,12 +81,12 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
             } else {
                 if favoritePhoto != nil {
                     StorageManager.shared.deletePhoto(photo: favoritePhoto)
-                    viewModelDidChange?(self)
+                    favoritePhoto = nil
                 } else {
-                StorageManager.shared.deletePhoto(photo: photo)
-                viewModelDidChange?(self)
+                    StorageManager.shared.deletePhoto(photo: photo)
                 }
             }
+            viewModelDidChange?(self)
         }
     }
     
@@ -142,5 +122,20 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    private func loadPhoto() {
+        NetworkManager.shared.fetchData(
+            from: Link.pexelsPhotoById.rawValue,
+            usingId: Int(favoritePhoto?.id ?? 0),
+            completion: { result in
+                switch result {
+                case .success(let photo):
+                    self.photo = photo
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        )
     }
 }

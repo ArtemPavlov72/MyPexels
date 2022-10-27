@@ -27,7 +27,11 @@ class FavoriteCollectionViewModel: FavoriteCollectionViewModelProtocol {
     //MARK: - Public Methods
     func cellViewModel(at indexPath: IndexPath) -> PhotoViewCellViewModelProtocol {
         let photo = favoritePhotos[indexPath.item]
-        return PhotoViewCellViewModel(photo: nil, favoritePhoto: photo, numberOfItem: NumberOfItemsOnRow(rawValue: numberOfItemsPerRow) ?? .one)
+        return PhotoViewCellViewModel(
+            photo: nil,
+            favoritePhoto: photo,
+            numberOfItem: NumberOfItemsOnRow(rawValue: numberOfItemsPerRow) ?? .one
+        )
     }
     
     func photoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol {

@@ -9,10 +9,9 @@
         <attribute name="originalSizeOfPhoto" optional="YES" attributeType="String"/>
         <attribute name="pexelsUrl" optional="YES" attributeType="String"/>
         <attribute name="photographer" optional="YES" attributeType="String"/>
-        <attribute name="smallSizeOfPhoto" optional="YES" attributeType="String"/>
         <attribute name="width" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="PexelsPhoto" positionX="-63" positionY="-18" width="128" height="179"/>
+        <element name="PexelsPhoto" positionX="-63" positionY="-18" width="128" height="164"/>
     </elements>
 </model>

@@ -19,9 +19,6 @@ class PhotoDetailsViewController: UIViewController {
             descriptionLabel.text = viewModel.descriptionLabel?.capitalized
             guard let imageUrl = viewModel.pexelsImageURL else { return }
             pexelsImage.fetchImage(from: imageUrl)
-            // по загрузке картинки
-            // в моделе убегающее замыкание, и когда она будет загружаться, то выдает дату
-            // а перед этим активити индикатор крутит
         }
     }
     
