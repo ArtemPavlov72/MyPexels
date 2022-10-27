@@ -9,6 +9,19 @@ import UIKit
 
 class PhotoDetailsViewController: UIViewController {
     
+    //MARK: - Public Properties
+    var viewModel: PhotoDetailsViewModelProtocol! {
+        didSet {
+            viewModel.viewModelDidChange = { [weak self] viewModel in
+                self?.installLike()
+            }
+            photogtapherNameLabel.text = viewModel.photogtapherNameLabel?.capitalized
+            descriptionLabel.text = viewModel.descriptionLabel?.capitalized
+            guard let imageUrl = viewModel.pexelsImageURL else { return }
+            pexelsImage.fetchImage(from: imageUrl)
+        }
+    }
+    
     //MARK: - Private Properties
     private lazy var pexelsImage: PexelsImageView = {
         let photo = PexelsImageView()
@@ -73,124 +86,44 @@ class PhotoDetailsViewController: UIViewController {
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
-
-    private var liked = false
-    
-    //MARK: - Public Properties
-    var photo: Photo?
-    var favoritePhoto: PexelsPhoto?
-    var favoritePhotos: [PexelsPhoto] = []
-    var delegateTabBarVC: TabBarStartViewControllerDelegate?
-    var delegateFavoriteVC: FavoriteCollectionViewControllerDelegate?
-    
+        
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupNavigationBar()
-        setupPhotoInfo()
-        setupSubViews(pexelsImage, horizontalStackView, photogtapherNameLabel, descriptionLabel)
+        installLike()
+        setupSubViews(
+            pexelsImage,
+            horizontalStackView,
+            photogtapherNameLabel,
+            descriptionLabel
+        )
         setupConstraints()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-        delegateFavoriteVC?.reloadData()
-        updateFavotitePhotos()
-    }
-    
     //MARK: - Private Methods
-    private func setupPhotoInfo() {
-        if favoritePhoto != nil {
-            getDetailsWith(
-                photoUrl: favoritePhoto?.largeSizeOfPhoto ?? "",
-                photographerName: favoritePhoto?.photographer ?? "",
-                descriptionOfPhoto: favoritePhoto?.descriptionOfPhoto ?? ""
-            )
-            loadPexelsDataFromFavourite()
-            setLike()
-        } else {
-            getDetailsWith(
-                photoUrl: photo?.src?.large ?? "",
-                photographerName: photo?.photographer ?? "",
-                descriptionOfPhoto: photo?.alt ?? ""
-            )
-            isLiked()
-        }
+    private func installLike() {
+        viewModel.isFavorte ? addLike() : removeLike()
     }
     
-    private func getDetailsWith(photoUrl: String, photographerName: String, descriptionOfPhoto: String) {
-        loadImage(from: photoUrl)
-        photogtapherNameLabel.text = photographerName.capitalized
-        descriptionLabel.text = descriptionOfPhoto.capitalized
-    }
-    
-    private func loadImage(from url: String) {
-        pexelsImage.fetchImage(from: url) {
-        }
-    }
-    
-    private func loadPexelsDataFromFavourite() {
-        guard let favoritePhotoId = favoritePhoto?.id else { return }
-        let id = Int(favoritePhotoId)
-        NetworkManager.shared.fetchData(from: Link.pexelsPhotoById.rawValue, usingId: id) { [weak self] result in
-            switch result {
-            case .success(let fetchedPhoto):
-                self?.photo = fetchedPhoto
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    private func updateFavotitePhotos() {
-        if liked {
-            guard let pexelsPhotoId = photo?.id else { return }
-            for favorPhoto in favoritePhotos {
-                if pexelsPhotoId == Int(favorPhoto.id) {
-                    return
-                }
-            }
-            StorageManager.shared.savePhoto(pexelsPhoto: photo)
-            delegateTabBarVC?.reloadFavoriteData()
-        } else {
-            guard favoritePhoto != nil else { return }
-            StorageManager.shared.deletePhoto(photo: favoritePhoto ?? PexelsPhoto())
-            delegateTabBarVC?.reloadFavoriteData()
-        }
-    }
-    
-    private func isLiked() {
-        guard let pexelsPhotoId = photo?.id else { return }
-        for favorPhoto in favoritePhotos {
-            if pexelsPhotoId == Int(favorPhoto.id) {
-                favoritePhoto = favorPhoto
-                setLike()
-            }
-        }
-    }
-    
-    private func setLike() {
-        liked = true
+    private func addLike() {
         likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         likeButton.tintColor = .systemYellow
     }
     
     private func removeLike() {
-        liked = false
         likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
         likeButton.tintColor = .systemGray6
     }
     
     @objc private func addToFavorite() {
-        liked ? removeLike() : setLike()
+        viewModel.favoriteButtonPressed()
     }
     
     @objc private func shareData() {
-        guard let link = photo?.url else { return }
-        guard let photoLink = NSURL(string: link) else { return }
         let activityViewController = UIActivityViewController(
-            activityItems: [photoLink],
+            activityItems: [viewModel.photoLink],
             applicationActivities: nil
         )
         self.present(activityViewController, animated: true, completion: nil)
@@ -208,7 +141,7 @@ class PhotoDetailsViewController: UIViewController {
     
     @objc private func originSizeButtonTapped() {
         let photoVC = PhotoViewController()
-        photoVC.photo = photo
+        photoVC.viewModel = viewModel.photoViewModel()
         show(photoVC, sender: nil)
     }
     

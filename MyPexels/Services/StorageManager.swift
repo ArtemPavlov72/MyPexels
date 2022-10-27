@@ -53,17 +53,37 @@ class StorageManager {
         photo.id = Int64(pexelsPhoto?.id ?? 0)
         photo.photographer = pexelsPhoto?.photographer
         photo.descriptionOfPhoto = pexelsPhoto?.alt
-        photo.smallSizeOfPhoto = pexelsPhoto?.src?.small
         photo.mediumSizeOfPhoto = pexelsPhoto?.src?.medium
         photo.largeSizeOfPhoto = pexelsPhoto?.src?.large
         photo.originalSizeOfPhoto = pexelsPhoto?.src?.original
         photo.pexelsUrl = pexelsPhoto?.url
+        photo.width = Int64(pexelsPhoto?.width ?? 0)
+        photo.height = Int64(pexelsPhoto?.height ?? 0)
         saveContext()
     }
-        
-    func deletePhoto(photo: PexelsPhoto) {
+            
+    func deletePhoto(photo: PexelsPhoto?) {
+        guard let photo = photo else { return }
         viewContext.delete(photo)
         saveContext()
+    }
+    
+    func deletePhoto(photo: Photo?) {
+        var favoritePhotos: [PexelsPhoto] = []
+        fetchFavoritePhotos { result in
+            switch result {
+            case .success(let photos):
+                favoritePhotos = photos
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        guard let pexelsPhotoId = photo?.id else { return }
+        for favorPhoto in favoritePhotos {
+            if pexelsPhotoId == Int(favorPhoto.id) {
+                deletePhoto(photo: favorPhoto)
+            }
+        }
     }
     
     // MARK: - Core Data Saving support

@@ -14,9 +14,16 @@ class PhotoViewCell: UICollectionViewCell {
         let image = PexelsImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        image.layer.cornerRadius = 15
+        image.layer.cornerRadius = 25
         return image
     }()
+    
+    var viewModel: PhotoViewCellViewModelProtocol! {
+        didSet {
+            guard let imageUrl = viewModel.pexelPhotoURL else { return }
+            imageView.fetchImage(from: imageUrl)
+        }
+    }
     
     //MARK: - Cell Init
     override init(frame: CGRect) {
@@ -27,12 +34,7 @@ class PhotoViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    //MARK: - Public Methods
-    func configureCell(with photo: String) {
-        imageView.fetchImage(from: photo) { }
-    }
-    
+ 
     //MARK: - Private Methods
     private func setupItem() {
         addSubview(imageView)

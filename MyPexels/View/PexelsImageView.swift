@@ -17,4 +17,10 @@ class PexelsImageView: UIImageView {
             completion()
         }
     }
+    
+    func fetchImage(from url: String) {
+        guard let url = URL(string: url) else { return }
+        sd_imageIndicator = SDWebImageActivityIndicator.gray
+        sd_setImage(with: url)
+    }
 }

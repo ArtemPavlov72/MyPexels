@@ -8,23 +8,17 @@
 import UIKit
 
 protocol FavoriteCollectionViewControllerDelegate {
-    func changeNumberOfItemsPerRow(_ number: CGFloat, size: SizeOfPhoto)
     func reloadData()
 }
 
 class FavoriteCollectionViewController: UICollectionViewController {
     
+    //MARK: - Public Properties
+    var viewModel: FavoriteCollectionViewModelProtocol!
+    
     //MARK: - Private Properties
     private let cellID = "cell"
     private var sizeOfPhoto = SizeOfPhoto.medium
-    private var numberOfUtemsPerRow: CGFloat = {
-        return CGFloat(UserSettingManager.shared.getCountOfPhotosPerRowFor(photoCollectionView: false))
-    }()
-    
-    
-    //MARK: - Public Properties
-    var favoritePhotos: [PexelsPhoto] = []
-    var delegateTabBarVC: TabBarStartViewControllerDelegate?
     
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
@@ -35,35 +29,24 @@ class FavoriteCollectionViewController: UICollectionViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.navigationBar.topItem?.searchController = nil
+        collectionView.reloadData()
     }
     
     // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return favoritePhotos.count
+        viewModel.numberOfRows()
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoViewCell
-        let photo = favoritePhotos[indexPath.item]
-        switch sizeOfPhoto {
-        case .small:
-            cell.configureCell(with: photo.mediumSizeOfPhoto ?? "")
-        case .medium:
-            cell.configureCell(with: photo.mediumSizeOfPhoto ?? "")
-        case .large:
-            cell.configureCell(with: photo.largeSizeOfPhoto ?? "")
-        }
+        cell.viewModel = viewModel.cellViewModel(at: indexPath)
         return cell
     }
     
     // MARK: - UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let favouritePhoto = favoritePhotos[indexPath.item]
         let photoDetailVC = PhotoDetailsViewController()
-        photoDetailVC.favoritePhoto = favouritePhoto
-        photoDetailVC.favoritePhotos = favoritePhotos
-        photoDetailVC.delegateTabBarVC = delegateTabBarVC
-        photoDetailVC.delegateFavoriteVC = self
+        photoDetailVC.viewModel = viewModel.photoDetailsViewModel(at: indexPath)
         show(photoDetailVC, sender: nil)
     }
 }
@@ -71,21 +54,16 @@ class FavoriteCollectionViewController: UICollectionViewController {
 //MARK: - UICollectionViewDelegateFlowLayout
 extension FavoriteCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let paddingWidth = 20 * (numberOfUtemsPerRow + 1)
+        let countOfItems = CGFloat(viewModel.numberOfItemsPerRow)
+        let paddingWidth = 20 * (countOfItems + 1)
         let avaibleWidth = collectionView.frame.width - paddingWidth
-        let widthPerItem = avaibleWidth / numberOfUtemsPerRow
+        let widthPerItem = avaibleWidth / countOfItems
         return CGSize(width: widthPerItem, height: widthPerItem)
     }
 }
 
 //MARK: - FavoriteCollectionViewControllerDelegate
 extension FavoriteCollectionViewController: FavoriteCollectionViewControllerDelegate {
-    func changeNumberOfItemsPerRow(_ number: CGFloat, size: SizeOfPhoto) {
-        numberOfUtemsPerRow = number
-        sizeOfPhoto = size
-        reloadData()
-    }
-    
     func reloadData() {
         collectionView.reloadData()
     }

@@ -63,6 +63,12 @@ enum SizeOfPhoto {
     case small, medium, large
 }
 
+enum NumberOfItemsOnRow: Int {
+    case one = 1
+    case two = 2
+    case three = 3
+}
+
 enum Link: String {
     case pexelsBaseURL = "https://api.pexels.com/v1"
     case pexelsCuratedPhotos = "https://api.pexels.com/v1/curated"
@@ -74,3 +80,4 @@ enum ApiKey: String {
     case pexelsKey = "563492ad6f91700001000001253d7c5e346445889db51ee382e45bd2"
     case keyForHeader = "Authorization"
 }
+

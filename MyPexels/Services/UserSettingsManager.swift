@@ -21,7 +21,6 @@ class UserSettingManager {
     )
     
     private init() {}
-    
     private func fetchData() -> User {
         guard let data = defaults.data(forKey: key) else { return userNotRegistered  }
         guard let user = try? JSONDecoder().decode(User.self, from: data) else { return userNotRegistered }
@@ -50,7 +49,9 @@ class UserSettingManager {
     
     func getCountOfPhotosPerRowFor(photoCollectionView: Bool) -> Int {
         let user = fetchData()
-        return photoCollectionView ? user.pexelsImageCountPerRow : user.favoriteImageCountPerRow
+        return photoCollectionView
+        ? user.pexelsImageCountPerRow
+        : user.favoriteImageCountPerRow
     }
     
     func deleteUserData() {
