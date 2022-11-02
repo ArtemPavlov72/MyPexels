@@ -10,17 +10,7 @@ import UIKit
 class PhotoDetailsViewController: UIViewController {
     
     //MARK: - Public Properties
-    var viewModel: PhotoDetailsViewModelProtocol! {
-        didSet {
-            viewModel.viewModelDidChange = { [weak self] viewModel in
-                self?.installLike()
-            }
-            photogtapherNameLabel.text = viewModel.photogtapherNameLabel?.capitalized
-            descriptionLabel.text = viewModel.descriptionLabel?.capitalized
-            guard let imageUrl = viewModel.pexelsImageURL else { return }
-            pexelsImage.fetchImage(from: imageUrl)
-        }
-    }
+    var viewModel: PhotoDetailsViewModelProtocol!
     
     //MARK: - Private Properties
     private lazy var pexelsImage: PexelsImageView = {
@@ -92,7 +82,8 @@ class PhotoDetailsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupNavigationBar()
-        installLike()
+        installLike(viewModel.isFavorte.value)
+        setupUI()
         setupSubViews(
             pexelsImage,
             horizontalStackView,
@@ -103,8 +94,18 @@ class PhotoDetailsViewController: UIViewController {
     }
     
     //MARK: - Private Methods
-    private func installLike() {
-        viewModel.isFavorte ? addLike() : removeLike()
+    private func setupUI() {
+        viewModel.isFavorte.bind(listener: { [weak self] value in
+            self?.installLike(value)
+        }) 
+        photogtapherNameLabel.text = viewModel.photogtapherNameLabel?.capitalized
+        descriptionLabel.text = viewModel.descriptionLabel?.capitalized
+        guard let imageUrl = viewModel.pexelsImageURL else { return }
+        pexelsImage.fetchImage(from: imageUrl)
+    }
+    
+    private func installLike(_ status: Bool) {
+        status ? addLike() : removeLike()
     }
     
     private func addLike() {

@@ -34,6 +34,7 @@
 		AC9E466928D7955400141393 /* PhotoDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9E466828D7955400141393 /* PhotoDetailsViewModel.swift */; };
 		ACA1DB9C28F7F5D2005DC078 /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA1DB9B28F7F5D2005DC078 /* PhotoViewModel.swift */; };
 		ACAF447C28A978BF0053E5DC /* UserSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACAF447B28A978BF0053E5DC /* UserSettingsManager.swift */; };
+		ACBD5DED290B038D00F3DC08 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBD5DEC290B038D00F3DC08 /* Box.swift */; };
 		ACC73BA128A6DEDE00E0C699 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC73BA028A6DEDE00E0C699 /* User.swift */; };
 		ACCEEFB028FB3C4F0034FB29 /* PhotoCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCEEFAF28FB3C4F0034FB29 /* PhotoCollectionViewModel.swift */; };
 		ACCEEFB328FDD1A00034FB29 /* PhotoViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCEEFB228FDD1A00034FB29 /* PhotoViewCellModel.swift */; };
@@ -73,6 +74,7 @@
 		AC9E466828D7955400141393 /* PhotoDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewModel.swift; sourceTree = "<group>"; };
 		ACA1DB9B28F7F5D2005DC078 /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
 		ACAF447B28A978BF0053E5DC /* UserSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsManager.swift; sourceTree = "<group>"; };
+		ACBD5DEC290B038D00F3DC08 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		ACC73BA028A6DEDE00E0C699 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		ACCEEFAF28FB3C4F0034FB29 /* PhotoCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewModel.swift; sourceTree = "<group>"; };
 		ACCEEFB228FDD1A00034FB29 /* PhotoViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewCellModel.swift; sourceTree = "<group>"; };
@@ -127,9 +129,9 @@
 		84525EA4283A9857005E5E6A /* MyPexels */ = {
 			isa = PBXGroup;
 			children = (
+				ACBD5DEB290B036D00F3DC08 /* Helpers */,
 				AC0ADED92909506B0024EDCD /* ViewControllers + ViewModels */,
-				ACCEEFB128FDD1620034FB29 /* PhotoCell */,
-				84525ECB283F624D005E5E6A /* View */,
+				84525ECB283F624D005E5E6A /* Views */,
 				842C1C2B2853035B0056130B /* Utilities */,
 				84525EC8283DC15E005E5E6A /* Models */,
 				84525ECE2841EC07005E5E6A /* Services */,
@@ -176,13 +178,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		84525ECB283F624D005E5E6A /* View */ = {
+		84525ECB283F624D005E5E6A /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				842C1C2E28531F430056130B /* PexelsImageView.swift */,
 				84D2BC8E288859640007F4B8 /* CollectionView.swift */,
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		84525ECE2841EC07005E5E6A /* Services */ = {
@@ -216,6 +218,7 @@
 		AC0ADED92909506B0024EDCD /* ViewControllers + ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				ACCEEFB128FDD1620034FB29 /* PhotoCell */,
 				AC0ADED42907A21F0024EDCD /* RootView */,
 				AC0ADED129070E310024EDCD /* LoginView */,
 				AC80749729042ED8006BE70E /* TabBarView */,
@@ -262,6 +265,14 @@
 				ACA1DB9B28F7F5D2005DC078 /* PhotoViewModel.swift */,
 			);
 			path = PhotoView;
+			sourceTree = "<group>";
+		};
+		ACBD5DEB290B036D00F3DC08 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				ACBD5DEC290B038D00F3DC08 /* Box.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		ACCEEFAE28FB3C1B0034FB29 /* PhotoCollection */ = {
@@ -416,6 +427,7 @@
 				AC0ADED329070E5A0024EDCD /* LoginViewModel.swift in Sources */,
 				84525EBA283A9D6C005E5E6A /* TabBarStartViewController.swift in Sources */,
 				AC9E466928D7955400141393 /* PhotoDetailsViewModel.swift in Sources */,
+				ACBD5DED290B038D00F3DC08 /* Box.swift in Sources */,
 				84D2BC8F288859640007F4B8 /* CollectionView.swift in Sources */,
 				84525EC7283DC15A005E5E6A /* Pexels.swift in Sources */,
 				84525ECD2841EBFA005E5E6A /* NetworkManager.swift in Sources */,

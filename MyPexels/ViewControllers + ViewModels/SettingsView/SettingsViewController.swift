@@ -47,7 +47,7 @@ class SettingsViewController: UIViewController {
     private lazy var changeNumberOfItemsOnPVCButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 15
-        button.setTitle(" \(viewModel.numberOfPhotoItems) ", for: .normal)
+        button.setTitle(" \(viewModel.numberOfPhotoItems.value) ", for: .normal)
         button.backgroundColor = .systemGray2
         button.setTitleColor(UIColor.systemGray6, for: .normal)
         button.setTitleColor(UIColor.systemGray, for: .highlighted)
@@ -62,7 +62,7 @@ class SettingsViewController: UIViewController {
     private lazy var changeNumberOfItemsOnFVCButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 15
-        button.setTitle(" \(viewModel.numberOfFavoriteItems) ", for: .normal)
+        button.setTitle(" \(viewModel.numberOfFavoriteItems.value) ", for: .normal)
         button.backgroundColor = .systemGray2
         button.setTitleColor(UIColor.systemGray6, for: .normal)
         button.setTitleColor(UIColor.systemGray, for: .highlighted)
@@ -147,13 +147,16 @@ class SettingsViewController: UIViewController {
     
     //MARK: - Private Methods
     private func viewModelUpdate() {
-        viewModel.viewModelDidChange = { [weak self] viewModel in
+        viewModel.numberOfPhotoItems.bind { [weak self] value in
             self?.changeNumberOfItemsOnPVCButton.setTitle(
-                "\(viewModel.numberOfPhotoItems)",
+                "\(value)",
                 for: .normal
             )
+        }
+        
+        viewModel.numberOfFavoriteItems.bind { [weak self] value in
             self?.changeNumberOfItemsOnFVCButton.setTitle(
-                "\(viewModel.numberOfFavoriteItems)",
+                "\(value)",
                 for: .normal
             )
         }

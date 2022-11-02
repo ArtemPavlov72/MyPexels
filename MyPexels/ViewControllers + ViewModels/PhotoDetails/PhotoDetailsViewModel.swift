@@ -11,9 +11,8 @@ protocol PhotoDetailsViewModelProtocol {
     var photogtapherNameLabel: String? { get }
     var descriptionLabel: String? { get }
     var pexelsImageURL: String? { get }
-    var isFavorte: Bool { get }
+    var isFavorte: Box<Bool> { get }
     var photoLink: NSURL { get }
-    var viewModelDidChange: ((PhotoDetailsViewModelProtocol) -> Void)? { get set }
     init(photo: Photo?, favoritePhoto: PexelsPhoto?)
     func favoriteButtonPressed()
     func photoViewModel() -> PhotoViewModelProtocol
@@ -50,59 +49,39 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
         return descriptionLabel
     }
     
-    var isFavorte: Bool {
-        get {
-            var liked = false
-            loadFavoritePhotos()
-            if favoritePhoto != nil {
-                loadPhoto()
-                liked.toggle()
-            } else {
-                guard let pexelsPhotoId = photo?.id else { return liked }
-                for photo in favoritePhotos {
-                    if pexelsPhotoId == Int(photo.id) {
-                        liked.toggle()
-                    }
-                }
-            }
-            return liked
-        } set {
-            if newValue == true {
-                if favoritePhoto == nil {
-                    guard let pexelsPhotoId = photo?.id else { return }
-                    for favorPhoto in favoritePhotos {
-                        if pexelsPhotoId == Int(favorPhoto.id) {
-                            return
-                        }
-                    }
-                    StorageManager.shared.savePhoto(pexelsPhoto: photo)
-                }
-            } else {
-                if favoritePhoto != nil {
-                    favoritePhoto = nil
-                }
-                StorageManager.shared.deletePhoto(photo: photo)
-            }
-            viewModelDidChange?(self)
-        }
-    }
-    
-    var viewModelDidChange: ((PhotoDetailsViewModelProtocol) -> Void)?
+    var isFavorte: Box<Bool> = Box(false)
     
     //MARK: - Private Properties
     private var photo: Photo?
     private var favoritePhoto: PexelsPhoto?
     private var favoritePhotos: [PexelsPhoto] = []
     
+    
     //MARK: - Init
     required init(photo: Photo?, favoritePhoto: PexelsPhoto?) {
         self.photo = photo
         self.favoritePhoto = favoritePhoto
+        self.isFavorte = Box(setStatus())
     }
     
     //MARK: - Public Methods
     func favoriteButtonPressed() {
-        isFavorte.toggle()
+        if !isFavorte.value {
+            guard let pexelsPhotoId = photo?.id else { return }
+            for favorPhoto in favoritePhotos {
+                if pexelsPhotoId == Int(favorPhoto.id) {
+                    return
+                }
+            }
+            StorageManager.shared.savePhoto(pexelsPhoto: photo)
+            isFavorte.value = true
+        } else {
+            if favoritePhoto != nil {
+                favoritePhoto = nil
+            }
+            StorageManager.shared.deletePhoto(photo: photo)
+            isFavorte.value = false
+        }
     }
     
     func photoViewModel() -> PhotoViewModelProtocol {
@@ -134,5 +113,22 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
                 }
             }
         )
+    }
+    
+    private func setStatus() -> Bool {
+        var liked = false
+        loadFavoritePhotos()
+        if favoritePhoto != nil {
+            loadPhoto()
+            liked.toggle()
+        } else {
+            guard let pexelsPhotoId = photo?.id else { return liked }
+            for photo in favoritePhotos {
+                if pexelsPhotoId == Int(photo.id) {
+                    liked.toggle()
+                }
+            }
+        }
+        return liked
     }
 }

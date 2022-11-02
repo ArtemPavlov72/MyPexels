@@ -8,9 +8,8 @@
 import Foundation
 
 protocol SettingViewModelProtocol {
-    var numberOfPhotoItems: String { get }
-    var numberOfFavoriteItems: String { get }
-    var viewModelDidChange: ((SettingViewModelProtocol) -> Void)? { get set }
+    var numberOfPhotoItems: Box<String> { get }
+    var numberOfFavoriteItems: Box<String> { get }
     func clearButtonTapped()
     func logoutButtonTapped()
     func changeNumberOfPhotoItemsTapped()
@@ -20,25 +19,25 @@ protocol SettingViewModelProtocol {
 class SettingsViewModel: SettingViewModelProtocol {
     
     //MARK: - Public Properties
-    var numberOfPhotoItems: String {
-        get {
-            String(UserSettingManager.shared.getCountOfPhotosPerRowFor(
-                photoCollectionView: true))
-        } set {
-            viewModelDidChange?(self)
-        }
-    }
+    var numberOfPhotoItems: Box<String>
     
-    var numberOfFavoriteItems: String {
-        get {
-            String(UserSettingManager.shared.getCountOfPhotosPerRowFor(
-                photoCollectionView: false))
-        } set {
-            viewModelDidChange?(self)
-        }
-    }
+    var numberOfFavoriteItems: Box<String>
     
-    var viewModelDidChange: ((SettingViewModelProtocol) -> Void)?
+    //MARK: - Init
+    required init() {
+        numberOfPhotoItems = Box(
+            String(
+                UserSettingManager.shared.getCountOfPhotosPerRowFor(
+                    photoCollectionView: true)
+            )
+        )
+        numberOfFavoriteItems = Box(
+            String(
+                UserSettingManager.shared.getCountOfPhotosPerRowFor(
+                    photoCollectionView: false)
+            )
+        )
+    }
     
     //MARK: - Public Methods
     func clearButtonTapped() {
@@ -53,37 +52,69 @@ class SettingsViewModel: SettingViewModelProtocol {
     
     func changeNumberOfPhotoItemsTapped() {
         switch UserSettingManager.shared.getCountOfPhotosPerRowFor(
-            photoCollectionView: true) {
+            photoCollectionView: true
+        ) {
         case 1:
             UserSettingManager.shared.changeCountOfPhotosPerRowFor(
-                photoCollectionView: true, to: 2)
-            numberOfPhotoItems = "2"
+                photoCollectionView: true,
+                to: 2
+            )
+            numberOfPhotoItems.value = String(
+                UserSettingManager.shared.getCountOfPhotosPerRowFor(
+                    photoCollectionView: true)
+            )
         case 2:
             UserSettingManager.shared.changeCountOfPhotosPerRowFor(
-                photoCollectionView: true, to: 3)
-            numberOfPhotoItems = "3"
+                photoCollectionView: true,
+                to: 3
+            )
+            numberOfPhotoItems.value = String(
+                UserSettingManager.shared.getCountOfPhotosPerRowFor(
+                    photoCollectionView: true)
+            )
         default:
             UserSettingManager.shared.changeCountOfPhotosPerRowFor(
-                photoCollectionView: true, to: 1)
-            numberOfPhotoItems = "1"
+                photoCollectionView: true,
+                to: 1
+            )
+            numberOfPhotoItems.value = String(
+                UserSettingManager.shared.getCountOfPhotosPerRowFor(
+                    photoCollectionView: true)
+            )
         }
     }
     
     func changeNumberOfFavoriteItemsTapped() {
         switch UserSettingManager.shared.getCountOfPhotosPerRowFor(
-            photoCollectionView: false) {
+            photoCollectionView: false
+        ) {
         case 1:
             UserSettingManager.shared.changeCountOfPhotosPerRowFor(
-                photoCollectionView: false, to: 2)
-            numberOfFavoriteItems = "2"
+                photoCollectionView: false,
+                to: 2
+            )
+            numberOfFavoriteItems.value = String(
+                UserSettingManager.shared.getCountOfPhotosPerRowFor(
+                    photoCollectionView: false)
+            )
         case 2:
             UserSettingManager.shared.changeCountOfPhotosPerRowFor(
-                photoCollectionView: false, to: 3)
-            numberOfFavoriteItems = "3"
+                photoCollectionView: false,
+                to: 3
+            )
+            numberOfFavoriteItems.value = String(
+                UserSettingManager.shared.getCountOfPhotosPerRowFor(
+                    photoCollectionView: false)
+            )
         default:
             UserSettingManager.shared.changeCountOfPhotosPerRowFor(
-                photoCollectionView: false, to: 1)
-            numberOfFavoriteItems = "1"
+                photoCollectionView: false,
+                to: 1
+            )
+            numberOfFavoriteItems.value = String(
+                UserSettingManager.shared.getCountOfPhotosPerRowFor(
+                    photoCollectionView: false)
+            )
         }
     }
 }
