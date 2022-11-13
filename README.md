@@ -9,7 +9,7 @@ Please, use your own [API-key](https://www.pexels.com/api), when you using MyPex
 - No storyboard;
 - SDWebImage framework;
 - SnapKit framework;
-- MVVM pattern;
+- MVVM pattern (+ Boxing);
 - CoreData;
 - UserDefaults.
 ---
