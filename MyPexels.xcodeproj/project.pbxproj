@@ -29,17 +29,30 @@
 		AC0ADED329070E5A0024EDCD /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0ADED229070E5A0024EDCD /* LoginViewModel.swift */; };
 		AC0ADED62907A2350024EDCD /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0ADED52907A2350024EDCD /* RootViewModel.swift */; };
 		AC0ADED82907B1F00024EDCD /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0ADED72907B1F00024EDCD /* SettingsViewModel.swift */; };
+		AC5C5557293E6363009F96B1 /* PhotoCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC5C5556293E6363009F96B1 /* PhotoCellTests.swift */; };
+		AC5C555B293E66B4009F96B1 /* PexelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC5C555A293E66B4009F96B1 /* PexelsTests.swift */; };
 		AC80749929042F13006BE70E /* TabBarStartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC80749829042F13006BE70E /* TabBarStartViewModel.swift */; };
 		AC80749D2905BBB0006BE70E /* FavoriteCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC80749C2905BBB0006BE70E /* FavoriteCollectionViewModel.swift */; };
 		AC9E466928D7955400141393 /* PhotoDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9E466828D7955400141393 /* PhotoDetailsViewModel.swift */; };
 		ACA1DB9C28F7F5D2005DC078 /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA1DB9B28F7F5D2005DC078 /* PhotoViewModel.swift */; };
 		ACAF447C28A978BF0053E5DC /* UserSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACAF447B28A978BF0053E5DC /* UserSettingsManager.swift */; };
 		ACBD5DED290B038D00F3DC08 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBD5DEC290B038D00F3DC08 /* Box.swift */; };
+		ACC57AE529216D65008DC8C4 /* MyPexelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC57AE429216D65008DC8C4 /* MyPexelsTests.swift */; };
 		ACC73BA128A6DEDE00E0C699 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC73BA028A6DEDE00E0C699 /* User.swift */; };
 		ACCEEFB028FB3C4F0034FB29 /* PhotoCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCEEFAF28FB3C4F0034FB29 /* PhotoCollectionViewModel.swift */; };
 		ACCEEFB328FDD1A00034FB29 /* PhotoViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCEEFB228FDD1A00034FB29 /* PhotoViewCellModel.swift */; };
 		F052EAFE8DC31F196B239A58 /* Pods_MyPexels.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5514C95BCB175494A06E58CF /* Pods_MyPexels.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		ACC57AE629216D65008DC8C4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 84525E9A283A9857005E5E6A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 84525EA1283A9857005E5E6A;
+			remoteInfo = MyPexels;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		5514C95BCB175494A06E58CF /* Pods_MyPexels.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyPexels.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,12 +82,16 @@
 		AC0ADED229070E5A0024EDCD /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		AC0ADED52907A2350024EDCD /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		AC0ADED72907B1F00024EDCD /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		AC5C5556293E6363009F96B1 /* PhotoCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCellTests.swift; sourceTree = "<group>"; };
+		AC5C555A293E66B4009F96B1 /* PexelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PexelsTests.swift; sourceTree = "<group>"; };
 		AC80749829042F13006BE70E /* TabBarStartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarStartViewModel.swift; sourceTree = "<group>"; };
 		AC80749C2905BBB0006BE70E /* FavoriteCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCollectionViewModel.swift; sourceTree = "<group>"; };
 		AC9E466828D7955400141393 /* PhotoDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewModel.swift; sourceTree = "<group>"; };
 		ACA1DB9B28F7F5D2005DC078 /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
 		ACAF447B28A978BF0053E5DC /* UserSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsManager.swift; sourceTree = "<group>"; };
 		ACBD5DEC290B038D00F3DC08 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		ACC57AE229216D65008DC8C4 /* MyPexelsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyPexelsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACC57AE429216D65008DC8C4 /* MyPexelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPexelsTests.swift; sourceTree = "<group>"; };
 		ACC73BA028A6DEDE00E0C699 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		ACCEEFAF28FB3C4F0034FB29 /* PhotoCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewModel.swift; sourceTree = "<group>"; };
 		ACCEEFB228FDD1A00034FB29 /* PhotoViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewCellModel.swift; sourceTree = "<group>"; };
@@ -86,6 +103,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				F052EAFE8DC31F196B239A58 /* Pods_MyPexels.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACC57ADF29216D65008DC8C4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				84525EA4283A9857005E5E6A /* MyPexels */,
+				ACC57AE329216D65008DC8C4 /* MyPexelsTests */,
 				84525EA3283A9857005E5E6A /* Products */,
 				D608FDEE46D3540612D3BECE /* Pods */,
 				5C8E47DA8E62852736A0C2FD /* Frameworks */,
@@ -122,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				84525EA2283A9857005E5E6A /* MyPexels.app */,
+				ACC57AE229216D65008DC8C4 /* MyPexelsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -231,6 +257,22 @@
 			path = "ViewControllers + ViewModels";
 			sourceTree = "<group>";
 		};
+		AC5C5558293E636F009F96B1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				AC5C5556293E6363009F96B1 /* PhotoCellTests.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		AC5C5559293E6693009F96B1 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AC5C555A293E66B4009F96B1 /* PexelsTests.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		AC80749729042ED8006BE70E /* TabBarView */ = {
 			isa = PBXGroup;
 			children = (
@@ -273,6 +315,16 @@
 				ACBD5DEC290B038D00F3DC08 /* Box.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		ACC57AE329216D65008DC8C4 /* MyPexelsTests */ = {
+			isa = PBXGroup;
+			children = (
+				AC5C5559293E6693009F96B1 /* Models */,
+				ACC57AE429216D65008DC8C4 /* MyPexelsTests.swift */,
+				AC5C5558293E636F009F96B1 /* Views */,
+			);
+			path = MyPexelsTests;
 			sourceTree = "<group>";
 		};
 		ACCEEFAE28FB3C1B0034FB29 /* PhotoCollection */ = {
@@ -324,6 +376,24 @@
 			productReference = 84525EA2283A9857005E5E6A /* MyPexels.app */;
 			productType = "com.apple.product-type.application";
 		};
+		ACC57AE129216D65008DC8C4 /* MyPexelsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACC57AEA29216D65008DC8C4 /* Build configuration list for PBXNativeTarget "MyPexelsTests" */;
+			buildPhases = (
+				ACC57ADE29216D65008DC8C4 /* Sources */,
+				ACC57ADF29216D65008DC8C4 /* Frameworks */,
+				ACC57AE029216D65008DC8C4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ACC57AE729216D65008DC8C4 /* PBXTargetDependency */,
+			);
+			name = MyPexelsTests;
+			productName = MyPexelsTests;
+			productReference = ACC57AE229216D65008DC8C4 /* MyPexelsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -336,6 +406,10 @@
 				TargetAttributes = {
 					84525EA1283A9857005E5E6A = {
 						CreatedOnToolsVersion = 13.4;
+					};
+					ACC57AE129216D65008DC8C4 = {
+						CreatedOnToolsVersion = 13.4.1;
+						TestTargetID = 84525EA1283A9857005E5E6A;
 					};
 				};
 			};
@@ -353,6 +427,7 @@
 			projectRoot = "";
 			targets = (
 				84525EA1283A9857005E5E6A /* MyPexels */,
+				ACC57AE129216D65008DC8C4 /* MyPexelsTests */,
 			);
 		};
 /* End PBXProject section */
@@ -364,6 +439,13 @@
 			files = (
 				84525EB2283A9859005E5E6A /* LaunchScreen.storyboard in Resources */,
 				84525EAF283A9859005E5E6A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACC57AE029216D65008DC8C4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,7 +530,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ACC57ADE29216D65008DC8C4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC5C5557293E6363009F96B1 /* PhotoCellTests.swift in Sources */,
+				ACC57AE529216D65008DC8C4 /* MyPexelsTests.swift in Sources */,
+				AC5C555B293E66B4009F96B1 /* PexelsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		ACC57AE729216D65008DC8C4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 84525EA1283A9857005E5E6A /* MyPexels */;
+			targetProxy = ACC57AE629216D65008DC8C4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		84525EB0283A9859005E5E6A /* LaunchScreen.storyboard */ = {
@@ -634,6 +734,42 @@
 			};
 			name = Release;
 		};
+		ACC57AE829216D65008DC8C4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QQ7NB58NL6;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = PavlovAA.MyPexelsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyPexels.app/MyPexels";
+			};
+			name = Debug;
+		};
+		ACC57AE929216D65008DC8C4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QQ7NB58NL6;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = PavlovAA.MyPexelsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyPexels.app/MyPexels";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -651,6 +787,15 @@
 			buildConfigurations = (
 				84525EB7283A9859005E5E6A /* Debug */,
 				84525EB8283A9859005E5E6A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ACC57AEA29216D65008DC8C4 /* Build configuration list for PBXNativeTarget "MyPexelsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACC57AE829216D65008DC8C4 /* Debug */,
+				ACC57AE929216D65008DC8C4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

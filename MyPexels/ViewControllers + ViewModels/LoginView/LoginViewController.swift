@@ -15,7 +15,7 @@ class LoginViewController: UIViewController {
     //MARK: - Private Properties
     private lazy var nameTextField: UITextField = {
         let name = UITextField()
-        name.layer.cornerRadius = 15
+       // name.layer.cornerRadius = 15
         name.placeholder = "Enter your name"
         return name
     }()

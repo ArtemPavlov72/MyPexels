@@ -79,10 +79,10 @@ class RootViewController: UIViewController {
             duration: 0.3,
             options: [.transitionCrossDissolve, .curveEaseOut],
             animations: {
-            }) { completed in
-                self.currentRootVC.removeFromParent()
+            }) { [weak self] completed  in
+                self?.currentRootVC.removeFromParent()
                 new.didMove(toParent: self)
-                self.currentRootVC = new
+                self?.currentRootVC = new
                 completion?()
             }
     }
@@ -106,10 +106,10 @@ class RootViewController: UIViewController {
             options: [],
             animations: {
                 new.view.frame = self.view.bounds
-            }) { completed in
-                self.currentRootVC.removeFromParent()
+            }) { [weak self] completed in
+                self?.currentRootVC.removeFromParent()
                 new.didMove(toParent: self)
-                self.currentRootVC = new
+                self?.currentRootVC = new
                 completion?()
             }
     }

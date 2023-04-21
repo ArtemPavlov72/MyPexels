@@ -23,7 +23,7 @@ class FavoriteCollectionViewController: UICollectionViewController {
     //MARK: - Life Cycles Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionView?.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
+        collectionView.register(PhotoViewCell.self, forCellWithReuseIdentifier: cellID)
     }
     
     override func viewDidAppear(_ animated: Bool) {
