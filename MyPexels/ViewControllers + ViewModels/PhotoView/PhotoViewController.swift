@@ -58,7 +58,7 @@ class PhotoViewController: UIViewController {
         navigationItem.rightBarButtonItem?.isEnabled = viewModel.imageIsLoaded
     }
     
-    @objc private func saveAction() {
+    @objc func saveAction() {
         guard let image = pexelsPhoto.image else { return }
         UIImageWriteToSavedPhotosAlbum(image, self, #selector(imageWillSave(_:_:_:)), nil)
     }

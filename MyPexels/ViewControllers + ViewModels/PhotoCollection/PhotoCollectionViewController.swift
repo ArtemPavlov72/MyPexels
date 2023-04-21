@@ -45,6 +45,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     }
     
     //MARK: - Private Methods
+    //может убрать логику в дидсет вьюмодели?
     private func loadFirstData() {
         activityIndicator = showSpinner(in: view)
         
