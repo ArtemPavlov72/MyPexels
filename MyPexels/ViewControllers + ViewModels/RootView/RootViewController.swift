@@ -91,10 +91,10 @@ class RootViewController: UIViewController {
             animations: {
                 newVC.view.frame = self.view.bounds
             }
-        ) { completed in
-            self.currentRootVC.removeFromParent()
+        ) { [weak self] completed in
+            self?.currentRootVC.removeFromParent()
             newVC.didMove(toParent: self)
-            self.currentRootVC = newVC
+            self?.currentRootVC = newVC
             completion?()
         }
     }

@@ -48,8 +48,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     //может убрать логику в дидсет вьюмодели?
     private func loadFirstData() {
         activityIndicator = showSpinner(in: view)
-        
-        viewModel.fetchPexelsData() {
+        viewModel.fetchPexelsData() { 
             self.activityIndicator?.stopAnimating()
             self.collectionView.reloadData()
         }

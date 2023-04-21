@@ -45,22 +45,23 @@ class TabBarStartViewController: UITabBarController {
     
     //MARK: - Private Methods
     private func setupTabBar() {
-        photosVC.tabBarItem = UITabBarItem(
-            title: "Pexels",
-            image: UIImage(systemName: "house"),
-            tag: 1
-        )
-        favoriteVC.tabBarItem = UITabBarItem(
-            title: "Favorite",
-            image: UIImage(systemName: "heart"),
-            tag: 2
-        )
-        settingsVC.tabBarItem = UITabBarItem(
-            title: "Settings",
-            image: UIImage(systemName: "slider.vertical.3"),
-            tag: 3
-        )
+        addTabBarItem(for: photosVC, title: "Pexels", image: "house", tag: 1)
+        addTabBarItem(for: favoriteVC, title: "Favorite", image: "heart", tag: 2)
+        addTabBarItem(for: settingsVC, title: "Settings", image: "slider.vertical.3", tag: 3)
         viewControllers = [photosVC, favoriteVC, settingsVC]
+    }
+    
+    private func addTabBarItem(
+        for viewController: UIViewController,
+        title: String,
+        image: String,
+        tag: Int
+    ) {
+        viewController.tabBarItem = UITabBarItem(
+            title: title,
+            image: UIImage(systemName: image),
+            tag: tag
+        )
     }
     
     private func setupNavigationBar() {
