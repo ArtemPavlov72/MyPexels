@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		842C1C2D28530B120056130B /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842C1C2C28530B120056130B /* UIView.swift */; };
 		842C1C2F28531F430056130B /* PexelsImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842C1C2E28531F430056130B /* PexelsImageView.swift */; };
 		84525EA6283A9857005E5E6A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84525EA5283A9857005E5E6A /* AppDelegate.swift */; };
 		84525EAA283A9857005E5E6A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84525EA9283A9857005E5E6A /* SettingsViewController.swift */; };
@@ -31,6 +30,7 @@
 		AC0ADED82907B1F00024EDCD /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0ADED72907B1F00024EDCD /* SettingsViewModel.swift */; };
 		AC5C5557293E6363009F96B1 /* PhotoCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC5C5556293E6363009F96B1 /* PhotoCellTests.swift */; };
 		AC5C555B293E66B4009F96B1 /* PexelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC5C555A293E66B4009F96B1 /* PexelsTests.swift */; };
+		AC5D404C29F281CD00A974DB /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC5D404B29F281CD00A974DB /* UIViewController.swift */; };
 		AC80749929042F13006BE70E /* TabBarStartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC80749829042F13006BE70E /* TabBarStartViewModel.swift */; };
 		AC80749D2905BBB0006BE70E /* FavoriteCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC80749C2905BBB0006BE70E /* FavoriteCollectionViewModel.swift */; };
 		AC9E466928D7955400141393 /* PhotoDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9E466828D7955400141393 /* PhotoDetailsViewModel.swift */; };
@@ -58,7 +58,6 @@
 		5514C95BCB175494A06E58CF /* Pods_MyPexels.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyPexels.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EF438F0F58FD7E44F7BE963 /* Pods-MyPexels.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyPexels.debug.xcconfig"; path = "Target Support Files/Pods-MyPexels/Pods-MyPexels.debug.xcconfig"; sourceTree = "<group>"; };
 		67799ED0AC123E714FB0672F /* Pods-MyPexels.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyPexels.release.xcconfig"; path = "Target Support Files/Pods-MyPexels/Pods-MyPexels.release.xcconfig"; sourceTree = "<group>"; };
-		842C1C2C28530B120056130B /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		842C1C2E28531F430056130B /* PexelsImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PexelsImageView.swift; sourceTree = "<group>"; };
 		84525EA2283A9857005E5E6A /* MyPexels.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPexels.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84525EA5283A9857005E5E6A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +83,7 @@
 		AC0ADED72907B1F00024EDCD /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		AC5C5556293E6363009F96B1 /* PhotoCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCellTests.swift; sourceTree = "<group>"; };
 		AC5C555A293E66B4009F96B1 /* PexelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PexelsTests.swift; sourceTree = "<group>"; };
+		AC5D404B29F281CD00A974DB /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		AC80749829042F13006BE70E /* TabBarStartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarStartViewModel.swift; sourceTree = "<group>"; };
 		AC80749C2905BBB0006BE70E /* FavoriteCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCollectionViewModel.swift; sourceTree = "<group>"; };
 		AC9E466828D7955400141393 /* PhotoDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewModel.swift; sourceTree = "<group>"; };
@@ -124,12 +124,12 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		842C1C2B2853035B0056130B /* Utilities */ = {
+		842C1C2B2853035B0056130B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				842C1C2C28530B120056130B /* UIView.swift */,
+				AC5D404B29F281CD00A974DB /* UIViewController.swift */,
 			);
-			path = Utilities;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		84525E99283A9857005E5E6A = {
@@ -158,7 +158,7 @@
 				ACBD5DEB290B036D00F3DC08 /* Helpers */,
 				AC0ADED92909506B0024EDCD /* ViewControllers + ViewModels */,
 				84525ECB283F624D005E5E6A /* Views */,
-				842C1C2B2853035B0056130B /* Utilities */,
+				842C1C2B2853035B0056130B /* Extensions */,
 				84525EC8283DC15E005E5E6A /* Models */,
 				84525ECE2841EC07005E5E6A /* Services */,
 				84525EC4283D11D2005E5E6A /* App */,
@@ -501,7 +501,6 @@
 				84525EBE283AA292005E5E6A /* FavoriteCollectionViewController.swift in Sources */,
 				AC80749929042F13006BE70E /* TabBarStartViewModel.swift in Sources */,
 				84D2BC93288EFDF80007F4B8 /* RootViewController.swift in Sources */,
-				842C1C2D28530B120056130B /* UIView.swift in Sources */,
 				842C1C2F28531F430056130B /* PexelsImageView.swift in Sources */,
 				84525ECA283F6245005E5E6A /* PhotoViewCell.swift in Sources */,
 				ACCEEFB028FB3C4F0034FB29 /* PhotoCollectionViewModel.swift in Sources */,
@@ -512,6 +511,7 @@
 				ACBD5DED290B038D00F3DC08 /* Box.swift in Sources */,
 				84D2BC8F288859640007F4B8 /* CollectionView.swift in Sources */,
 				84525EC7283DC15A005E5E6A /* Pexels.swift in Sources */,
+				AC5D404C29F281CD00A974DB /* UIViewController.swift in Sources */,
 				84525ECD2841EBFA005E5E6A /* NetworkManager.swift in Sources */,
 				84A6078E2860D92F003311A4 /* Pexels.xcdatamodeld in Sources */,
 				84D14026284FB8FE00374A45 /* PhotoDetailsViewController.swift in Sources */,

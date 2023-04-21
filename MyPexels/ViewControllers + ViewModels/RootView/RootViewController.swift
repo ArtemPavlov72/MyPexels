@@ -10,7 +10,7 @@ import UIKit
 class RootViewController: UIViewController {
     
     //MARK: - Private Properties
-    private var viewModel: RootViewModelDelegate!
+    private var viewModel: RootViewModelDelegate?
     private var currentRootVC: UIViewController
     
     //MARK: - Init
@@ -33,7 +33,7 @@ class RootViewController: UIViewController {
     //MARK: - Public Methods
     func showLoginScreen() {
         let loginVC = LoginViewController()
-        loginVC.viewModel = viewModel.loginViewModel()
+        loginVC.viewModel = viewModel?.loginViewModel()
         
         let newVC = UINavigationController(rootViewController: loginVC)
         addChild(newVC)
@@ -48,17 +48,17 @@ class RootViewController: UIViewController {
     
     func switchToLogout() {
         let loginVC = LoginViewController()
-        loginVC.viewModel = viewModel.loginViewModel()
+        loginVC.viewModel = viewModel?.loginViewModel()
         
         let logoutScreen = UINavigationController(rootViewController: loginVC)
-        animateDismissTransition(to: logoutScreen)
+        animateTransition(to: logoutScreen, isLogout: true)
     }
     
     func switchToMainScreen() {
         let mainViewController = TabBarStartViewController()
-        mainViewController.viewModel = viewModel.tabBarStartViewModel()
+        mainViewController.viewModel = viewModel?.tabBarStartViewModel()
         let mainScreen = UINavigationController(rootViewController:  mainViewController)
-        animateFadeTransition(to: mainScreen)
+        animateTransition(to: mainScreen, isLogout: false)
     }
     
     //MARK: - Private Methods
@@ -69,48 +69,33 @@ class RootViewController: UIViewController {
         currentRootVC.didMove(toParent: self)
     }
     
-    private func animateFadeTransition(to new: UIViewController, completion: (() -> Void)? = nil) {
+    private func animateTransition(to newVC: UIViewController, isLogout: Bool, completion: (() -> Void)? = nil) {
+        if isLogout {
+            let initialFrame = CGRect(
+                x: -view.bounds.width,
+                y: 0,
+                width: view.bounds.width,
+                height: view.bounds.height
+            )
+            newVC.view.frame = initialFrame
+        }
+        
         currentRootVC.willMove(toParent: nil)
-        addChild(new)
+        addChild(newVC)
         
         transition(
             from: currentRootVC,
-            to: new,
+            to: newVC,
             duration: 0.3,
-            options: [.transitionCrossDissolve, .curveEaseOut],
+            options: isLogout ? [] : [.transitionCrossDissolve, .curveEaseOut],
             animations: {
-            }) { [weak self] completed  in
-                self?.currentRootVC.removeFromParent()
-                new.didMove(toParent: self)
-                self?.currentRootVC = new
-                completion?()
+                newVC.view.frame = self.view.bounds
             }
-    }
-    
-    private func animateDismissTransition(to new: UIViewController, completion: (() -> Void)? = nil) {
-        let initialFrame = CGRect(
-            x: -view.bounds.width,
-            y: 0,
-            width: view.bounds.width,
-            height: view.bounds.height
-        )
-        
-        currentRootVC.willMove(toParent: nil)
-        addChild(new)
-        new.view.frame = initialFrame
-        
-        transition(
-            from: currentRootVC,
-            to: new,
-            duration: 0.3,
-            options: [],
-            animations: {
-                new.view.frame = self.view.bounds
-            }) { [weak self] completed in
-                self?.currentRootVC.removeFromParent()
-                new.didMove(toParent: self)
-                self?.currentRootVC = new
-                completion?()
-            }
+        ) { completed in
+            self.currentRootVC.removeFromParent()
+            newVC.didMove(toParent: self)
+            self.currentRootVC = newVC
+            completion?()
+        }
     }
 }

@@ -64,6 +64,15 @@ class PhotoCollectionViewController: UICollectionViewController {
         definesPresentationContext = true
     }
     
+    private func showSpinner(in view: UIView) -> UIActivityIndicatorView {
+        let activityIndicator = UIActivityIndicatorView(frame: view.bounds)
+        activityIndicator.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+        return activityIndicator
+    }
+    
     // MARK: - UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         isFiltering ? viewModel.numberOfFilteredRows() : viewModel.numberOfRows()
@@ -71,10 +80,8 @@ class PhotoCollectionViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoViewCell
-        cell.viewModel = isFiltering
-        ? viewModel.cellViewModel(at: indexPath)
-        : viewModel.cellViewModel(at: indexPath)
-        
+        cell.viewModel = viewModel.cellViewModel(at: indexPath)
+ 
         if isFiltering {
             if indexPath.item == viewModel.numberOfFilteredRows() - 2 {
                 viewModel.updateSerchingData()
@@ -95,11 +102,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     // MARK: - UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photoDetailVC = PhotoDetailsViewController()
-        
-        photoDetailVC.viewModel = isFiltering
-        ? viewModel.photoDetailsViewModel(at: indexPath)
-        : viewModel.photoDetailsViewModel(at: indexPath)
-        
+        photoDetailVC.viewModel = viewModel.photoDetailsViewModel(at: indexPath)
         show(photoDetailVC, sender: nil)
     }
 }

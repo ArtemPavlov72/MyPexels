@@ -15,7 +15,6 @@ class LoginViewController: UIViewController {
     //MARK: - Private Properties
     private lazy var nameTextField: UITextField = {
         let name = UITextField()
-       // name.layer.cornerRadius = 15
         name.placeholder = "Enter your name"
         return name
     }()
@@ -49,13 +48,7 @@ class LoginViewController: UIViewController {
         setupConstraints()
     }
     
-    //MARK: - Private Methods
-    private func setupSubViews(_ subViews: UIView...) {
-        subViews.forEach { subview in
-            view.addSubview(subview)
-        }
-    }
-    
+    //MARK: - Private Methods    
     private func setupConstraints() {
         verticalStackView.snp.makeConstraints { make in
             make.center.equalTo(view)

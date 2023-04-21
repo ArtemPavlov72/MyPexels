@@ -162,12 +162,6 @@ class SettingsViewController: UIViewController {
         }
     }
     
-    private func setupSubViews(_ subViews: UIView...) {
-        subViews.forEach { subview in
-            view.addSubview(subview)
-        }
-    }
-    
     @objc private func clearFavoriteButtonTapped() {
         showAlert(
             with: "All favorite photos will be deleted.",

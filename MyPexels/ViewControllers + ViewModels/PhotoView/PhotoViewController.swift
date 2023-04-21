@@ -43,12 +43,6 @@ class PhotoViewController: UIViewController {
     }
     
     //MARK: - Private Methods
-    private func setupSubViews(_ subViews: UIView...) {
-        subViews.forEach { subview in
-            view.addSubview(subview)
-        }
-    }
-    
     private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .save,

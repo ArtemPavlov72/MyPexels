@@ -130,12 +130,6 @@ class PhotoDetailsViewController: UIViewController {
         self.present(activityViewController, animated: true, completion: nil)
     }
     
-    private func setupSubViews(_ subViews: UIView...) {
-        subViews.forEach { subview in
-            view.addSubview(subview)
-        }
-    }
-    
     private func setupNavigationBar() {
         navigationItem.largeTitleDisplayMode = .never
     }
