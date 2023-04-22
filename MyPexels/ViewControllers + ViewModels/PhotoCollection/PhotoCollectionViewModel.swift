@@ -83,7 +83,8 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
             withNumberOfPhotosOnPage: numberOfPhotosOnPage,
             numberOfPage: numberOfPage
         )
-        { result in
+        { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let pexelsData):
                 self.pexelsData = pexelsData
@@ -108,7 +109,8 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
             withNumberOfPhotosOnPage: numberOfPhotosOnPage,
             numberOfPage: numberOfPage
         )
-        { result in
+        { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let pexelsData):
                 self.pexelsData = pexelsData

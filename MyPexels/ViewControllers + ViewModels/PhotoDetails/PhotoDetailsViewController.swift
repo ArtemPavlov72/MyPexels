@@ -95,9 +95,11 @@ class PhotoDetailsViewController: UIViewController {
     
     //MARK: - Private Methods
     private func setupUI() {
-        viewModel.isFavorte.bind(listener: { [weak self] value in
-            self?.installLike(value)
-        }) 
+        viewModel.isFavorte.bind(
+            listener: { [weak self] value in
+                self?.installLike(value)
+            }
+        )
         photogtapherNameLabel.text = viewModel.photogtapherNameLabel?.capitalized
         descriptionLabel.text = viewModel.descriptionLabel?.capitalized
         guard let imageUrl = viewModel.pexelsImageURL else { return }

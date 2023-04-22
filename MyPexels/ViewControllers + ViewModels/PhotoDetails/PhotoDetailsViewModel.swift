@@ -66,20 +66,15 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
     
     //MARK: - Public Methods
     func favoriteButtonPressed() {
+        guard let pexelsPhoto = photo else { return }
         if !isFavorte.value {
-            guard let pexelsPhotoId = photo?.id else { return }
-            for favorPhoto in favoritePhotos {
-                if pexelsPhotoId == Int(favorPhoto.id) {
-                    return
-                }
+            _ = favoritePhotos.map { photo in
+                guard pexelsPhoto.id != Int(photo.id) else {return}
             }
-            StorageManager.shared.savePhoto(pexelsPhoto: photo)
+            StorageManager.shared.savePhoto(pexelsPhoto: pexelsPhoto)
             isFavorte.value = true
         } else {
-            if favoritePhoto != nil {
-                favoritePhoto = nil
-            }
-            StorageManager.shared.deletePhoto(photo: photo)
+            StorageManager.shared.deletePhoto(photo: pexelsPhoto)
             isFavorte.value = false
         }
     }
@@ -90,10 +85,10 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
     
     //MARK: - Private Methods
     private func loadFavoritePhotos() {
-        StorageManager.shared.fetchFavoritePhotos { result in
+        StorageManager.shared.fetchFavoritePhotos { [weak self] result in
             switch result {
             case .success(let photos):
-                self.favoritePhotos = photos
+                self?.favoritePhotos = photos
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -104,10 +99,10 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
         NetworkManager.shared.fetchData(
             from: Link.pexelsPhotoById.rawValue,
             usingId: Int(favoritePhoto?.id ?? 0),
-            completion: { result in
+            completion: { [weak self] result in
                 switch result {
                 case .success(let photo):
-                    self.photo = photo
+                    self?.photo = photo
                 case .failure(let error):
                     print(error.localizedDescription)
                 }

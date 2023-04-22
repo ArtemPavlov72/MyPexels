@@ -48,17 +48,17 @@ class StorageManager {
     }
     
     //MARK: - Private Methods of Photos
-    func savePhoto(pexelsPhoto: Photo?) {
+    func savePhoto(pexelsPhoto: Photo) {
         let photo = PexelsPhoto(context: viewContext)
-        photo.id = Int64(pexelsPhoto?.id ?? 0)
-        photo.photographer = pexelsPhoto?.photographer
-        photo.descriptionOfPhoto = pexelsPhoto?.alt
-        photo.mediumSizeOfPhoto = pexelsPhoto?.src?.medium
-        photo.largeSizeOfPhoto = pexelsPhoto?.src?.large
-        photo.originalSizeOfPhoto = pexelsPhoto?.src?.original
-        photo.pexelsUrl = pexelsPhoto?.url
-        photo.width = Int64(pexelsPhoto?.width ?? 0)
-        photo.height = Int64(pexelsPhoto?.height ?? 0)
+        photo.id = Int64(pexelsPhoto.id ?? 0)
+        photo.photographer = pexelsPhoto.photographer
+        photo.descriptionOfPhoto = pexelsPhoto.alt
+        photo.mediumSizeOfPhoto = pexelsPhoto.src?.medium
+        photo.largeSizeOfPhoto = pexelsPhoto.src?.large
+        photo.originalSizeOfPhoto = pexelsPhoto.src?.original
+        photo.pexelsUrl = pexelsPhoto.url
+        photo.width = Int64(pexelsPhoto.width ?? 0)
+        photo.height = Int64(pexelsPhoto.height ?? 0)
         saveContext()
     }
             
@@ -68,7 +68,7 @@ class StorageManager {
         saveContext()
     }
     
-    func deletePhoto(photo: Photo?) {
+    func deletePhoto(photo: Photo) {
         var favoritePhotos: [PexelsPhoto] = []
         fetchFavoritePhotos { result in
             switch result {
@@ -78,11 +78,10 @@ class StorageManager {
                 print(error.localizedDescription)
             }
         }
-        guard let pexelsPhotoId = photo?.id else { return }
-        for favorPhoto in favoritePhotos {
-            if pexelsPhotoId == Int(favorPhoto.id) {
-                deletePhoto(photo: favorPhoto)
-            }
+        guard let pexelsPhotoId = photo.id else { return }
+        _ = favoritePhotos.map { favorPhoto in
+            guard pexelsPhotoId == Int(favorPhoto.id) else {return}
+            deletePhoto(photo: favorPhoto)
         }
     }
     

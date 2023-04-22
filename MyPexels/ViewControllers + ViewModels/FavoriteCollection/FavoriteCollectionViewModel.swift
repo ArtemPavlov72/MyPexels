@@ -49,10 +49,10 @@ class FavoriteCollectionViewModel: FavoriteCollectionViewModelProtocol {
     
     //MARK: - Private Methods
     private func loadFavoriteData() {
-        StorageManager.shared.fetchFavoritePhotos { result in
+        StorageManager.shared.fetchFavoritePhotos { [weak self] result in
             switch result {
             case .success(let photos):
-                self.favoritePhotos = photos
+                self?.favoritePhotos = photos
             case .failure(let error):
                 print(error.localizedDescription)
             }

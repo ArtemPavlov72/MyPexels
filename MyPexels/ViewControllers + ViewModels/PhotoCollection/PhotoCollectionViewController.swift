@@ -48,9 +48,9 @@ class PhotoCollectionViewController: UICollectionViewController {
     //может убрать логику в дидсет вьюмодели?
     private func loadFirstData() {
         activityIndicator = showSpinner(in: view)
-        viewModel.fetchPexelsData() { 
-            self.activityIndicator?.stopAnimating()
-            self.collectionView.reloadData()
+        viewModel.fetchPexelsData() { [weak self] in
+            self?.activityIndicator?.stopAnimating()
+            self?.collectionView.reloadData()
         }
     }
     
@@ -84,14 +84,14 @@ class PhotoCollectionViewController: UICollectionViewController {
         if isFiltering {
             if indexPath.item == viewModel.numberOfFilteredRows() - 2 {
                 viewModel.updateSerchingData()
-                viewModel.fetchSerchingData(from: searchController.searchBar.text!) {
-                    self.collectionView.reloadData()
+                viewModel.fetchSerchingData(from: searchController.searchBar.text!) { [weak self] in
+                    self?.collectionView.reloadData()
                 }
             }
         } else {
             if indexPath.item == viewModel.numberOfRows() - 2 {
-                viewModel.fetchPexelsData() {
-                    self.collectionView.reloadData()
+                viewModel.fetchPexelsData() { [weak self] in
+                    self?.collectionView.reloadData()
                 }
             }
         }
@@ -121,8 +121,8 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
 extension PhotoCollectionViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.serchingNewData()
-        viewModel.fetchSerchingData(from: searchController.searchBar.text!) {
-            self.collectionView.reloadData()
+        viewModel.fetchSerchingData(from: searchController.searchBar.text!) { [weak self] in
+            self?.collectionView.reloadData()
         }
     }
 }
