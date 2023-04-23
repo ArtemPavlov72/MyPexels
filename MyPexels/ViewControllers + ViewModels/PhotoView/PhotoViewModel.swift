@@ -20,19 +20,15 @@ class PhotoViewModel: PhotoViewModelProtocol {
     
     //MARK: - Public Properties
     var photoWidth: Int {
-        if photo != nil {
-            return photo?.width ?? 0
-        } else {
-            return Int(favoritePhoto?.width ?? 0)
-        }
+        return photo != nil
+        ? photo?.width ?? 0
+        : Int(favoritePhoto?.width ?? 0)
     }
     
     var photoHeight: Int {
-        if photo != nil {
-            return photo?.height ?? 0
-        } else {
-            return Int(favoritePhoto?.height ?? 0)
-        }
+        return photo != nil
+        ? photo?.height ?? 0
+        : Int(favoritePhoto?.height ?? 0)
     }
     
     var imageIsLoaded: Bool{
@@ -45,11 +41,9 @@ class PhotoViewModel: PhotoViewModelProtocol {
     }
     
     var pexelsImageURL: String? {
-        if photo != nil {
-            return photo?.src?.original
-        } else {
-            return favoritePhoto?.originalSizeOfPhoto
-        }
+        return photo != nil
+        ? photo?.src?.original
+        : favoritePhoto?.originalSizeOfPhoto
     }
     
     //MARK: - Private Properties

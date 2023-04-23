@@ -113,12 +113,13 @@ class PhotoDetailsViewModel: PhotoDetailsViewModelProtocol {
     private func setStatus() -> Bool {
         var liked = false
         loadFavoritePhotos()
+        
         if favoritePhoto != nil {
             loadPhoto()
             liked.toggle()
         } else {
             guard let pexelsPhotoId = photo?.id else { return liked }
-            for photo in favoritePhotos {
+            _ = favoritePhotos.map { photo in
                 if pexelsPhotoId == Int(photo.id) {
                     liked.toggle()
                 }

@@ -38,22 +38,12 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
         
     //MARK: - Public Methods
     func photoDetailsViewModel(at indexPath: IndexPath) -> PhotoDetailsViewModelProtocol {
-        let photo: Photo
-        
-        photo = filteredPhotos.isEmpty
-        ? photos[indexPath.item]
-        : filteredPhotos[indexPath.item]
-        
+        let photo = getPhoto(at: indexPath)
         return PhotoDetailsViewModel(photo: photo, favoritePhoto: nil)
     }
     
     func cellViewModel(at indexPath: IndexPath) -> PhotoViewCellViewModelProtocol {
-        let photo: Photo
-        
-        photo = filteredPhotos.isEmpty
-        ? photos[indexPath.item]
-        : filteredPhotos[indexPath.item]
-        
+        let photo = getPhoto(at: indexPath)
         return PhotoViewCellViewModel(
             photo: photo,
             favoritePhoto: nil,
@@ -126,5 +116,14 @@ class PhotoCollectionViewModel: PhotoCollectionViewModelProtocol {
                 print(error)
             }
         }
+    }
+    
+    //MARK: - Private Methods
+    private func getPhoto(at indexPath: IndexPath) -> Photo {
+        let photo: Photo
+        photo = filteredPhotos.isEmpty
+        ? photos[indexPath.item]
+        : filteredPhotos[indexPath.item]
+        return photo
     }
 }
